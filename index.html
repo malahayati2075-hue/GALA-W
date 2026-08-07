@@ -524,11 +524,20 @@ function formatPaste(text) {
     return text.split('\n').map(line => `▪️ ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n');
 }
 
-// Format Plain Text (Tanpa Bullet & Tanpa Nomor)
-function formatPastePlain(text) {
+// Format Daftar Pasien (Bersihkan nomor dari Excel yang berantakan, lalu buat nomor baru berurutan)
+function formatPatientList(text) {
     if (!text) return "-";
-    let lines = text.split('\n').map(line => line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')).filter(line => line.length > 0);
-    return lines.length > 0 ? lines.join('\n') : "-";
+    let lines = text.split('\n')
+                    .map(line => line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' '))
+                    .filter(line => line.length > 0);
+    
+    if (lines.length === 0) return "-";
+    
+    return lines.map((line, index) => {
+        // Hapus nomor awal jika user paste dari excel (cth: "1. ", "2) ", "3- ", "1, ")
+        let cleanedLine = line.replace(/^\s*\d+[\.\)\-\,]\s*/, '');
+        return `${index + 1}. ${cleanedLine}`;
+    }).join('\n');
 }
 
 function getVal(id) { let el = document.getElementById(id); return el ? el.value.trim() : ""; }
@@ -557,11 +566,11 @@ function buildReport(slideNum) {
         txt += `───────────────────\n\n`;
         
         txt += `🧑‍🤝‍🧑 *DAFTAR PASIEN*\n`;
-        let rjText = formatPastePlain(getVal('pasienRJ'));
+        let rjText = formatPatientList(getVal('pasienRJ'));
         let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0);
         txt += `🏥 *Rawat Jalan:*\n${rjText}\n\n`;
         
-        let ruangText = formatPastePlain(getVal('pasienRuang'));
+        let ruangText = formatPatientList(getVal('pasienRuang'));
         let ruangCount = (getVal('pasienRuang') ? getVal('pasienRuang').split('\n').filter(l => l.trim().length > 0).length : 0);
         txt += `🚪 *Ruangan:*\n${ruangText}\n`;
         txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`;
