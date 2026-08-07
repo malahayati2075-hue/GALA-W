@@ -524,12 +524,11 @@ function formatPaste(text) {
     return text.split('\n').map(line => `▪️ ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n');
 }
 
-// Format Penomoran untuk Daftar Orang
-function formatPasteNumbered(text) {
+// Format Plain Text (Tanpa Bullet & Tanpa Nomor)
+function formatPastePlain(text) {
     if (!text) return "-";
     let lines = text.split('\n').map(line => line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')).filter(line => line.length > 0);
-    if(lines.length === 0) return "-";
-    return lines.map((line, index) => `${index + 1}. ${line}`).join('\n');
+    return lines.length > 0 ? lines.join('\n') : "-";
 }
 
 function getVal(id) { let el = document.getElementById(id); return el ? el.value.trim() : ""; }
@@ -558,11 +557,11 @@ function buildReport(slideNum) {
         txt += `───────────────────\n\n`;
         
         txt += `🧑‍🤝‍🧑 *DAFTAR PASIEN*\n`;
-        let rjText = formatPasteNumbered(getVal('pasienRJ'));
+        let rjText = formatPastePlain(getVal('pasienRJ'));
         let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0);
         txt += `🏥 *Rawat Jalan:*\n${rjText}\n\n`;
         
-        let ruangText = formatPasteNumbered(getVal('pasienRuang'));
+        let ruangText = formatPastePlain(getVal('pasienRuang'));
         let ruangCount = (getVal('pasienRuang') ? getVal('pasienRuang').split('\n').filter(l => l.trim().length > 0).length : 0);
         txt += `🚪 *Ruangan:*\n${ruangText}\n`;
         txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`;
