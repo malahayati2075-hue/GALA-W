@@ -51,7 +51,7 @@
         .app-header {
             position: relative;
             min-height: 280px;
-            background-image: url('headergalaw.png');
+            background-image: url('headerGALA-W.png');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -518,13 +518,13 @@ function adjustVal(id, delta) {
     if (newVal < 0) newVal = 0; el.value = newVal;
 }
 
-// Format Bullet untuk text biasa
+// Format Bullet Standar
 function formatPaste(text) {
     if (!text) return "-";
-    return text.split('\n').map(line => `• ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n');
+    return text.split('\n').map(line => `▪️ ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n');
 }
 
-// Format Penomoran untuk Daftar Pasien/Orang
+// Format Penomoran untuk Daftar Orang
 function formatPasteNumbered(text) {
     if (!text) return "-";
     let lines = text.split('\n').map(line => line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')).filter(line => line.length > 0);
@@ -552,9 +552,10 @@ function buildReport(slideNum) {
         let staffCount = 0;
         for(let i=1; i<=6; i++) {
             let nm = getVal('agt'+i);
-            if(nm) { staffCount++; txt += ` ${staffCount}. ${nm}\n`; }
+            if(nm) { staffCount++; txt += `${staffCount}. ${nm}\n`; }
         }
         txt += `└ _Total Anggota: ${staffCount}_\n\n`;
+        txt += `───────────────────\n\n`;
         
         txt += `🧑‍🤝‍🧑 *DAFTAR PASIEN*\n`;
         let rjText = formatPasteNumbered(getVal('pasienRJ'));
@@ -565,17 +566,33 @@ function buildReport(slideNum) {
         let ruangCount = (getVal('pasienRuang') ? getVal('pasienRuang').split('\n').filter(l => l.trim().length > 0).length : 0);
         txt += `🚪 *Ruangan:*\n${ruangText}\n`;
         txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`;
+        txt += `───────────────────\n\n`;
         
         txt += `⚠️ *MASALAH*\n`;
-        txt += `🤒 *Pasien:* ${formatPaste(getVal('masalahPasien'))}\n`;
-        txt += `🔧 *Mesin/Alat:* ${formatPaste(getVal('masalahMesin'))}\n\n`;
+        let mPasien = getVal('masalahPasien');
+        txt += `▪️ ${'Pasien'.padEnd(12)} : \n`;
+        if(mPasien) {
+            mPasien.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   ▸ ${l.trim()}\n`);
+        } else { txt += `   ▸ -\n`; }
+        
+        let mMesin = getVal('masalahMesin');
+        txt += `▪️ ${'Mesin/Alat'.padEnd(12)} : \n`;
+        if(mMesin) {
+            mMesin.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   ▸ ${l.trim()}\n`);
+        } else { txt += `   ▸ -\n`; }
+        txt += `\n───────────────────\n\n`;
         
         txt += `📦 *SISA ALAT & INVENTARIS*\n`;
         txt += `💧 *HF/Dialyzer:*\n`;
-        txt += ` ▫️ 70: ${getVal('hf70') || '0'} | 90: ${getVal('hf90') || '0'} | 110: ${getVal('hf110') || '0'}\n`;
-        txt += ` ▫️ 130: ${getVal('hf130') || '0'} | 150: ${getVal('hf150') || '0'} | 170: ${getVal('hf170') || '0'}\n`;
-        txt += `💉 *Sisa GD Stick:* ${getVal('gdStick') || '-'}\n`;
-        txt += `🛏️ *BOR / Sisa Bed:* ${getVal('sisaBed') || '-'}\n`;
+        txt += `▪️ ${'HF 70'.padEnd(12)} : ${getVal('hf70') || '0'}\n`;
+        txt += `▪️ ${'HF 90'.padEnd(12)} : ${getVal('hf90') || '0'}\n`;
+        txt += `▪️ ${'HF 110'.padEnd(12)} : ${getVal('hf110') || '0'}\n`;
+        txt += `▪️ ${'HF 130'.padEnd(12)} : ${getVal('hf130') || '0'}\n`;
+        txt += `▪️ ${'HF 150'.padEnd(12)} : ${getVal('hf150') || '0'}\n`;
+        txt += `▪️ ${'HF 170'.padEnd(12)} : ${getVal('hf170') || '0'}\n`;
+        txt += `\n`;
+        txt += `▪️ ${'GD Stick'.padEnd(12)} : ${getVal('gdStick') || '-'}\n`;
+        txt += `▪️ ${'Sisa Bed'.padEnd(12)} : ${getVal('sisaBed') || '-'}\n`;
         txt += `\n═══════════════════\n`;
         txt += `📤 Dikirim oleh: *${getVal('pengirim1')}*`;
     } 
@@ -592,19 +609,35 @@ function buildReport(slideNum) {
                 staffCount++;
                 let bS = getVal('p_bed'+i+'_start'); let bE = getVal('p_bed'+i+'_end');
                 let bedStr = (bS !== "0" && bE !== "0" && bS !== "" && bE !== "") ? ` (Bed ${bS}-${bE})` : "";
-                let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value).join(', ');
-                txt += ` ${staffCount}. *${nama}${bedStr}* : ${jobs || '-'}\n`;
+                
+                txt += `${staffCount}. *${nama}${bedStr}* : \n`;
+                
+                let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value);
+                if(jobs.length > 0) {
+                    jobs.forEach(job => { txt += `   ▪️ ${job}\n`; });
+                } else {
+                    txt += `   ▪️ -\n`;
+                }
             }
         }
+        txt += `\n───────────────────\n\n`;
         
-        txt += `\n🧹 *TUGAS PADATKARYA*\n`;
+        txt += `🧹 *TUGAS PADATKARYA*\n`;
         let namaPadat = getVal('namaPadatkarya');
         if(namaPadat) {
             staffCount++;
-            let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value).join(', ');
-            txt += ` ${staffCount}. *${namaPadat}* : ${jobsPadat || '-'}\n`;
-        } else { txt += ` -\n`; }
+            txt += `${staffCount}. *${namaPadat}* : \n`;
+            let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value);
+            if(jobsPadat.length > 0) {
+                jobsPadat.forEach(job => txt += `   ▪️ ${job}\n`);
+            } else {
+                txt += `   ▪️ -\n`;
+            }
+        } else { 
+            txt += `1. -\n`; 
+        }
         txt += `└ _Total Petugas: ${staffCount}_\n\n`;
+        txt += `───────────────────\n\n`;
         
         if(getVal('rencanaTindakan')) {
             txt += `💡 *RENCANA TINDAKAN UMUM*\n${formatPaste(getVal('rencanaTindakan'))}\n\n`;
@@ -625,7 +658,15 @@ function buildReport(slideNum) {
                 if(nama) {
                     adaPasien = true;
                     txt += `${idx}. *${nama}*\n`;
-                    txt += `   📝 Rencana: ${rencana || '-'}\n\n`;
+                    txt += `   📝 Rencana: \n`;
+                    if(rencana) {
+                        rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => {
+                            txt += `   ▪️ ${r}\n`;
+                        });
+                    } else {
+                        txt += `   ▪️ -\n`;
+                    }
+                    txt += `\n`;
                     idx++;
                 }
             }
@@ -642,11 +683,17 @@ function buildReport(slideNum) {
         txt += `═══════════════════\n\n`;
         
         txt += `1️⃣ *TIM 1 (Shift 1):*\n${formatPaste(getVal('bedKosongT1S1'))}\n\n`;
+        txt += `───────────────────\n\n`;
         txt += `2️⃣ *TIM 1 (Shift 2):*\n${formatPaste(getVal('bedKosongT1S2'))}\n\n`;
+        txt += `───────────────────\n\n`;
         txt += `3️⃣ *TIM 2 (Shift 1):*\n${formatPaste(getVal('bedKosongT2S1'))}\n\n`;
+        txt += `───────────────────\n\n`;
         txt += `4️⃣ *TIM 2 (Shift 2):*\n${formatPaste(getVal('bedKosongT2S2'))}\n\n`;
         
-        if(getVal('keteranganBed')) { txt += `📝 *Keterangan:*\n${formatPaste(getVal('keteranganBed'))}\n\n`; }
+        if(getVal('keteranganBed')) { 
+            txt += `───────────────────\n\n`;
+            txt += `📝 *Keterangan:*\n${formatPaste(getVal('keteranganBed'))}\n\n`; 
+        }
         txt += `═══════════════════\n`;
         txt += `📤 Dikirim oleh: *${getVal('pengirim4')}*`;
     }
