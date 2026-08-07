@@ -282,8 +282,10 @@
         </div>
         <label>Pasien Rawat Jalan (Bisa Paste dari Excel)</label>
         <textarea id="pasienRJ" placeholder="Nama Pasien 1&#10;Nama Pasien 2"></textarea>
-        <label>Pasien Ruangan (Bisa Paste dari Excel)</label>
-        <textarea id="pasienRuang" placeholder="Nama Pasien / Ruangan&#10;Nama Pasien / Ruangan"></textarea>
+        
+        <label>Pasien Ruangan (Rawat Inap)</label>
+        <div id="ruanganContainer" style="margin-top: 15px;"></div>
+        <button class="btn-add" onclick="tambahPasienRuang()"><i class="fa-solid fa-circle-plus"></i> Tambah Pasien Ruangan</button>
 
         <div class="section-title">
             <div class="icon-box" style="background:#fff1f2; color:var(--accent);">⚠️</div>
@@ -472,7 +474,26 @@ for (let i = 1; i <= 5; i++) {
 }
 perawatContainer.innerHTML = perawatHTML;
 
-// Slide 3 Logic
+// Slide 1 Logic: Pasien Ruangan (Rawat Inap)
+let ruanganCount = 0;
+function tambahPasienRuang() {
+    ruanganCount++;
+    const container = document.getElementById('ruanganContainer');
+    const card = document.createElement('div');
+    card.className = 'patient-card'; card.id = `ruanganCard-${ruanganCount}`;
+    card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <input type="text" id="namaPasienRuang-${ruanganCount}" placeholder="Nama / No RM / Ruangan" style="flex:1; margin-right:10px;">
+            <button class="delete-pasien" onclick="hapusPasienRuang(${ruanganCount})"><i class="fa-solid fa-circle-xmark"></i></button>
+        </div>
+        <textarea id="detailPasienRuang-${ruanganCount}" placeholder="Masukkan data kondisi pasien di sini (KU, TD, UF, QD, QB, Heparin, Lab, dll)..." style="min-height: 120px;"></textarea>
+    `;
+    container.appendChild(card);
+}
+function hapusPasienRuang(id) { document.getElementById(`ruanganCard-${id}`).remove(); }
+tambahPasienRuang();
+
+// Slide 3 Logic: Kartu Tindakan
 let patientCount = 0;
 const tindakanOptions = ["ODC BTKV", "Poli Bedah TKV", "Poli Jantung", "Poli Urologi", "Radiologi", "Poli Saraf", "Transfusi", "Laborat", "Poli Anak", "Poli Kandungan", "Poli Mata"];
 
@@ -518,23 +539,18 @@ function adjustVal(id, delta) {
     if (newVal < 0) newVal = 0; el.value = newVal;
 }
 
-// Format Bullet Standar
 function formatPaste(text) {
     if (!text) return "-";
     return text.split('\n').map(line => `▪️ ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n');
 }
 
-// Format Daftar Pasien (Bersihkan nomor dari Excel yang berantakan, lalu buat nomor baru berurutan)
 function formatPatientList(text) {
     if (!text) return "-";
     let lines = text.split('\n')
                     .map(line => line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' '))
                     .filter(line => line.length > 0);
-    
     if (lines.length === 0) return "-";
-    
     return lines.map((line, index) => {
-        // Hapus nomor awal jika user paste dari excel (cth: "1. ", "2) ", "3- ", "1, ")
         let cleanedLine = line.replace(/^\s*\d+[\.\)\-\,]\s*/, '');
         return `${index + 1}. ${cleanedLine}`;
     }).join('\n');
@@ -570,9 +586,31 @@ function buildReport(slideNum) {
         let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0);
         txt += `🏥 *Rawat Jalan:*\n${rjText}\n\n`;
         
-        let ruangText = formatPatientList(getVal('pasienRuang'));
-        let ruangCount = (getVal('pasienRuang') ? getVal('pasienRuang').split('\n').filter(l => l.trim().length > 0).length : 0);
-        txt += `🚪 *Ruangan:*\n${ruangText}\n`;
+        let ruangCount = 0;
+        let ruangIdx = 1;
+        let ruangText = "";
+        for(let i=1; i<=ruanganCount; i++) {
+            let card = document.getElementById(`ruanganCard-${i}`);
+            if(card) {
+                let nama = getVal(`namaPasienRuang-${i}`);
+                let detail = getVal(`detailPasienRuang-${i}`);
+                if(nama) {
+                    ruangCount++;
+                    ruangText += `${ruangIdx}. *${nama}*\n`;
+                    if(detail) {
+                        detail.split('\n').filter(l => l.trim().length > 0).forEach(l => {
+                            ruangText += `   ▸ ${l.trim().replace(/^\s*\d+[\.\)\-\,]\s*/, '')}\n`;
+                        });
+                    } else {
+                        ruangText += `   ▸ -\n`;
+                    }
+                    ruangText += `\n`;
+                    ruangIdx++;
+                }
+            }
+        }
+        if(ruangCount === 0) ruangText = "-\n";
+        txt += `🚪 *Ruangan:*\n${ruangText}`;
         txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`;
         txt += `───────────────────\n\n`;
         
@@ -733,8 +771,14 @@ function resetData() {
         });
         document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
         document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+        
+        document.getElementById('ruanganContainer').innerHTML = "";
+        ruanganCount = 0; tambahPasienRuang();
+
         document.getElementById('patientPlanContainer').innerHTML = "";
-        patientCount = 0; tambahPasien(); switchTab(1);
+        patientCount = 0; tambahPasien();
+        
+        switchTab(1);
     }
 }
 </script>
