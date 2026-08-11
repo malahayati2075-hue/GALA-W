@@ -590,18 +590,16 @@ async function fetchSheetData() {
         if(result.data && result.data.length > 0) {
             let html = '';
             result.data.forEach(item => {
-                // Memisahkan "Header: Value" agar valuenya bisa diwarna kuning
+                // Pisahkan "Header: Value"
                 let parts = item.split(": ");
                 if(parts.length === 2) {
-                    // Sembunyikan jika valuenya 0 atau kosong agar header tidak penuh sesak
-                    if(parts[1] !== "0" && parts[1] !== "") {
-                        html += `<span>${parts[0]}: <b>${parts[1]}</b></span>`;
-                    }
+                    // Tampilkan semua data, walau valuenya "0"
+                    html += `<span>${parts[0]}: <b>${parts[1]}</b></span>`;
                 } else {
                     html += `<span>${item}</span>`;
                 }
             });
-            document.getElementById('sheetHeaderData').innerHTML = html || 'Tidak ada data laporan aktif';
+            document.getElementById('sheetHeaderData').innerHTML = html;
         } else {
             document.getElementById('sheetHeaderData').innerHTML = 'Belum ada data tersimpan di baris Spreadsheet';
         }
