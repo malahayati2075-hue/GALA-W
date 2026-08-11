@@ -662,7 +662,7 @@ function adjustVal(id, delta) {
 
 function formatPaste(text) {
     if (!text) return "-";
-    return text.split('\n').map(line => `▪️ ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n');
+    return text.split('\n').map(line => `- ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n');
 }
 
 function formatPatientList(text) {
@@ -689,11 +689,11 @@ function buildReport(slideNum) {
     let txt = "";
     
     if(slideNum === 1) {
-        txt += `📋 *LAPORAN ON POINT HD* 📋\n`;
-        txt += `📅 *${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`;
+        txt += `*LAPORAN ON POINT HD*\n`;
+        txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`;
         txt += `═══════════════════\n\n`;
         
-        txt += `👨‍⚕️ *ANGGOTA TIM ${getVal('tim1')}*\n`;
+        txt += `*ANGGOTA TIM ${getVal('tim1')}*\n`;
         let staffCount = 0;
         for(let i=1; i<=6; i++) {
             let nm = getVal('agt'+i);
@@ -702,10 +702,10 @@ function buildReport(slideNum) {
         txt += `└ _Total Anggota: ${staffCount}_\n\n`;
         txt += `───────────────────\n\n`;
         
-        txt += `🧑‍🤝‍🧑 *DAFTAR PASIEN*\n`;
+        txt += `*DAFTAR PASIEN*\n`;
         let rjText = formatPatientList(getVal('pasienRJ'));
         let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0);
-        txt += `🏥 *Rawat Jalan:*\n${rjText}\n\n`;
+        txt += `*Rawat Jalan:*\n${rjText}\n\n`;
         
         let ruangCount = 0;
         let ruangIdx = 1;
@@ -720,10 +720,10 @@ function buildReport(slideNum) {
                     ruangText += `${ruangIdx}. *${nama}*\n`;
                     if(detail) {
                         detail.split('\n').filter(l => l.trim().length > 0).forEach(l => {
-                            ruangText += `   ▸ ${l.trim().replace(/^\s*\d+[\.\)\-\,]\s*/, '')}\n`;
+                            ruangText += `   > ${l.trim().replace(/^\s*\d+[\.\)\-\,]\s*/, '')}\n`;
                         });
                     } else {
-                        ruangText += `   ▸ -\n`;
+                        ruangText += `   > -\n`;
                     }
                     ruangText += `\n`;
                     ruangIdx++;
@@ -731,44 +731,44 @@ function buildReport(slideNum) {
             }
         }
         if(ruangCount === 0) ruangText = "-\n";
-        txt += `🚪 *Ruangan:*\n${ruangText}`;
+        txt += `*Ruangan:*\n${ruangText}`;
         txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`;
         txt += `───────────────────\n\n`;
         
-        txt += `⚠️ *MASALAH*\n`;
+        txt += `*MASALAH*\n`;
         let mPasien = getVal('masalahPasien');
-        txt += `▪️ ${'Pasien'.padEnd(12)} : \n`;
+        txt += `- ${'Pasien'.padEnd(12)} : \n`;
         if(mPasien) {
-            mPasien.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   ▸ ${l.trim()}\n`);
-        } else { txt += `   ▸ -\n`; }
+            mPasien.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`);
+        } else { txt += `   > -\n`; }
         
         let mMesin = getVal('masalahMesin');
-        txt += `▪️ ${'Mesin/Alat'.padEnd(12)} : \n`;
+        txt += `- ${'Mesin/Alat'.padEnd(12)} : \n`;
         if(mMesin) {
-            mMesin.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   ▸ ${l.trim()}\n`);
-        } else { txt += `   ▸ -\n`; }
+            mMesin.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`);
+        } else { txt += `   > -\n`; }
         txt += `\n───────────────────\n\n`;
         
-        txt += `📦 *SISA ALAT & INVENTARIS*\n`;
-        txt += `💧 *HF/Dialyzer:*\n`;
-        txt += `▪️ ${'HF 70'.padEnd(12)} : ${getVal('hf70') || '0'}\n`;
-        txt += `▪️ ${'HF 90'.padEnd(12)} : ${getVal('hf90') || '0'}\n`;
-        txt += `▪️ ${'HF 110'.padEnd(12)} : ${getVal('hf110') || '0'}\n`;
-        txt += `▪️ ${'HF 130'.padEnd(12)} : ${getVal('hf130') || '0'}\n`;
-        txt += `▪️ ${'HF 150'.padEnd(12)} : ${getVal('hf150') || '0'}\n`;
-        txt += `▪️ ${'HF 170'.padEnd(12)} : ${getVal('hf170') || '0'}\n`;
+        txt += `*SISA ALAT & INVENTARIS*\n`;
+        txt += `*HF/Dialyzer:*\n`;
+        txt += `- ${'HF 70'.padEnd(12)} : ${getVal('hf70') || '0'}\n`;
+        txt += `- ${'HF 90'.padEnd(12)} : ${getVal('hf90') || '0'}\n`;
+        txt += `- ${'HF 110'.padEnd(12)} : ${getVal('hf110') || '0'}\n`;
+        txt += `- ${'HF 130'.padEnd(12)} : ${getVal('hf130') || '0'}\n`;
+        txt += `- ${'HF 150'.padEnd(12)} : ${getVal('hf150') || '0'}\n`;
+        txt += `- ${'HF 170'.padEnd(12)} : ${getVal('hf170') || '0'}\n`;
         txt += `\n`;
-        txt += `▪️ ${'GD Stick'.padEnd(12)} : ${getVal('gdStick') || '-'}\n`;
-        txt += `▪️ ${'Sisa Bed'.padEnd(12)} : ${getVal('sisaBed') || '-'}\n`;
+        txt += `- ${'GD Stick'.padEnd(12)} : ${getVal('gdStick') || '-'}\n`;
+        txt += `- ${'Sisa Bed'.padEnd(12)} : ${getVal('sisaBed') || '-'}\n`;
         txt += `\n═══════════════════\n`;
-        txt += `📤 Dikirim oleh: *${getVal('pengirim1')}*`;
+        txt += `Dikirim oleh: *${getVal('pengirim1')}*`;
     } 
     else if(slideNum === 2) {
-        txt += `📌 *JOB DESK PETUGAS HD* 📌\n`;
-        txt += `📅 *${formatDate(getVal('tanggal2'))} | Shift ${getVal('shift2')} | Tim ${getVal('tim2')}*\n`;
+        txt += `*JOB DESK PETUGAS HD*\n`;
+        txt += `*${formatDate(getVal('tanggal2'))} | Shift ${getVal('shift2')} | Tim ${getVal('tim2')}*\n`;
         txt += `═══════════════════\n\n`;
         
-        txt += `🧑‍⚕️ *TUGAS PERAWAT & BED*\n`;
+        txt += `*TUGAS PERAWAT & BED*\n`;
         let staffCount = 0;
         for(let i=1; i<=5; i++) {
             let nama = getVal('perawat'+i);
@@ -781,24 +781,24 @@ function buildReport(slideNum) {
                 
                 let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value);
                 if(jobs.length > 0) {
-                    jobs.forEach(job => { txt += `   ▪️ ${job}\n`; });
+                    jobs.forEach(job => { txt += `   - ${job}\n`; });
                 } else {
-                    txt += `   ▪️ -\n`;
+                    txt += `   - -\n`;
                 }
             }
         }
         txt += `\n───────────────────\n\n`;
         
-        txt += `🧹 *TUGAS PADATKARYA*\n`;
+        txt += `*TUGAS PADATKARYA*\n`;
         let namaPadat = getVal('namaPadatkarya');
         if(namaPadat) {
             staffCount++;
             txt += `${staffCount}. *${namaPadat}* : \n`;
             let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value);
             if(jobsPadat.length > 0) {
-                jobsPadat.forEach(job => txt += `   ▪️ ${job}\n`);
+                jobsPadat.forEach(job => txt += `   - ${job}\n`);
             } else {
-                txt += `   ▪️ -\n`;
+                txt += `   - -\n`;
             }
         } else { 
             txt += `1. -\n`; 
@@ -807,14 +807,14 @@ function buildReport(slideNum) {
         txt += `───────────────────\n\n`;
         
         if(getVal('rencanaTindakan')) {
-            txt += `💡 *RENCANA TINDAKAN UMUM*\n${formatPaste(getVal('rencanaTindakan'))}\n\n`;
+            txt += `*RENCANA TINDAKAN UMUM*\n${formatPaste(getVal('rencanaTindakan'))}\n\n`;
         }
         txt += `═══════════════════\n`;
-        txt += `📤 Dikirim oleh: *${getVal('pengirim2')}*`;
+        txt += `Dikirim oleh: *${getVal('pengirim2')}*`;
     } 
     else if(slideNum === 3) {
-        txt += `🗓️ *PERENCANAAN TINDAKAN PASIEN HD* 🗓️\n`;
-        txt += `📅 *Tanggal: ${formatDate(getVal('tanggal3'))}*\n`;
+        txt += `*PERENCANAAN TINDAKAN PASIEN HD*\n`;
+        txt += `*Tanggal: ${formatDate(getVal('tanggal3'))}*\n`;
         txt += `═══════════════════\n\n`;
         
         let adaPasien = false; let idx = 1;
@@ -825,13 +825,13 @@ function buildReport(slideNum) {
                 if(nama) {
                     adaPasien = true;
                     txt += `${idx}. *${nama}*\n`;
-                    txt += `   📝 Rencana: \n`;
+                    txt += `   Rencana: \n`;
                     if(rencana) {
                         rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => {
-                            txt += `   ▪️ ${r}\n`;
+                            txt += `   - ${r}\n`;
                         });
                     } else {
-                        txt += `   ▪️ -\n`;
+                        txt += `   - -\n`;
                     }
                     txt += `\n`;
                     idx++;
@@ -842,31 +842,31 @@ function buildReport(slideNum) {
         else txt += `└ _Total Pasien: ${idx - 1}_\n\n`;
         
         txt += `═══════════════════\n`;
-        txt += `📤 Dikirim oleh: *${getVal('pengirim3')}*`;
+        txt += `Dikirim oleh: *${getVal('pengirim3')}*`;
     }
     else if(slideNum === 4) {
-        txt += `🛏️ *LAPORAN BED KOSONG HD* 🛏️\n`;
-        txt += `📅 *Tanggal: ${formatDate(getVal('tanggal4'))}*\n`;
+        txt += `*LAPORAN BED KOSONG HD*\n`;
+        txt += `*Tanggal: ${formatDate(getVal('tanggal4'))}*\n`;
         txt += `═══════════════════\n\n`;
         
-        txt += `1️⃣ *TIM 1 (Shift 1):*\n${formatPaste(getVal('bedKosongT1S1'))}\n\n`;
+        txt += `1. *TIM 1 (Shift 1):*\n${formatPaste(getVal('bedKosongT1S1'))}\n\n`;
         txt += `───────────────────\n\n`;
-        txt += `2️⃣ *TIM 1 (Shift 2):*\n${formatPaste(getVal('bedKosongT1S2'))}\n\n`;
+        txt += `2. *TIM 1 (Shift 2):*\n${formatPaste(getVal('bedKosongT1S2'))}\n\n`;
         txt += `───────────────────\n\n`;
-        txt += `3️⃣ *TIM 1 (Shift 3):*\n${formatPaste(getVal('bedKosongT1S3'))}\n\n`;
+        txt += `3. *TIM 1 (Shift 3):*\n${formatPaste(getVal('bedKosongT1S3'))}\n\n`;
         txt += `───────────────────\n\n`;
-        txt += `4️⃣ *TIM 2 (Shift 1):*\n${formatPaste(getVal('bedKosongT2S1'))}\n\n`;
+        txt += `4. *TIM 2 (Shift 1):*\n${formatPaste(getVal('bedKosongT2S1'))}\n\n`;
         txt += `───────────────────\n\n`;
-        txt += `5️⃣ *TIM 2 (Shift 2):*\n${formatPaste(getVal('bedKosongT2S2'))}\n\n`;
+        txt += `5. *TIM 2 (Shift 2):*\n${formatPaste(getVal('bedKosongT2S2'))}\n\n`;
         txt += `───────────────────\n\n`;
-        txt += `6️⃣ *TIM 2 (Shift 3):*\n${formatPaste(getVal('bedKosongT2S3'))}\n\n`;
+        txt += `6. *TIM 2 (Shift 3):*\n${formatPaste(getVal('bedKosongT2S3'))}\n\n`;
         
         if(getVal('keteranganBed')) { 
             txt += `───────────────────\n\n`;
-            txt += `📝 *Keterangan:*\n${formatPaste(getVal('keteranganBed'))}\n\n`; 
+            txt += `*Keterangan:*\n${formatPaste(getVal('keteranganBed'))}\n\n`; 
         }
         txt += `═══════════════════\n`;
-        txt += `📤 Dikirim oleh: *${getVal('pengirim4')}*`;
+        txt += `Dikirim oleh: *${getVal('pengirim4')}*`;
     }
     return txt;
 }
