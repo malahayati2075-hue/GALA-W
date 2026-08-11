@@ -96,6 +96,34 @@
         .prayer-times .loc { font-weight: 700; color: #fff; margin-bottom: 2px; display: block; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2px; }
         .prayer-times span { font-weight: 700; color: #ffe53b; }
 
+        /* === STYLE DATA SPREADSHEET HEADER === */
+        .sheet-header-data {
+            position: relative;
+            z-index: 2;
+            padding: 8px 15px;
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(4px);
+            text-align: center;
+            font-size: 0.7rem; /* Sama dengan jadwal sholat */
+            line-height: 1.5;
+            color: #fff;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-bottom: 10px;
+        }
+        .sheet-header-data span {
+            display: inline-block;
+            margin: 0 8px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .sheet-header-data b {
+            color: #ffe53b; /* Warna kuning seperti jadwal sholat */
+            margin-left: 3px;
+        }
+
         .header-content { position: relative; z-index: 2; text-align: center; padding: 20px; margin-bottom: 10px; }
         
         .app-header h1 {
@@ -358,6 +386,12 @@
                 Jadwal Sholat
             </div>
         </div>
+        
+        <!-- BARIS DATA REALTIME DARI SPREADSHEET -->
+        <div class="sheet-header-data" id="sheetHeaderData">
+            <span>Memuat data spreadsheet...</span>
+        </div>
+
         <div class="header-content">
             <h1>GALA-W</h1>
             <p>Generator Laporan Hemodialisis - WhatsApp</p>
@@ -545,6 +579,38 @@
 </div>
 
 <script>
+// === URL WEB APP APPS SCRIPT ===
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxsa4x0AegUb6e6NlFnFyTsGFN5RtFakZOeu8UcWhLbQ8gGujGe_FoZD7GEJqznee__/exec";
+
+// === FETCH DATA DARI SPREADSHEET KE HEADER ===
+async function fetchSheetData() {
+    try {
+        const response = await fetch(SHEET_API_URL);
+        const result = await response.json();
+        if(result.data && result.data.length > 0) {
+            let html = '';
+            result.data.forEach(item => {
+                // Memisahkan "Header: Value" agar valuenya bisa diwarna kuning
+                let parts = item.split(": ");
+                if(parts.length === 2) {
+                    // Sembunyikan jika valuenya 0 atau kosong agar header tidak penuh sesak
+                    if(parts[1] !== "0" && parts[1] !== "") {
+                        html += `<span>${parts[0]}: <b>${parts[1]}</b></span>`;
+                    }
+                } else {
+                    html += `<span>${item}</span>`;
+                }
+            });
+            document.getElementById('sheetHeaderData').innerHTML = html || 'Tidak ada data laporan aktif';
+        } else {
+            document.getElementById('sheetHeaderData').innerHTML = 'Belum ada data tersimpan di baris Spreadsheet';
+        }
+    } catch (e) {
+        document.getElementById('sheetHeaderData').innerHTML = '<span style="color:#ffcccc;">Gagal memuat data spreadsheet</span>';
+    }
+}
+fetchSheetData();
+
 // === JAM REALTIME ===
 function updateClock() {
     const now = new Date();
