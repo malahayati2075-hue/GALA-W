@@ -19,6 +19,9 @@
             --input-bg: #f8fafc;
             --wa-dark: #075E54;
             --wa-green: #25D366;
+            --ri-red: #c62828;
+            --ri-white: #ffffff;
+            --arema-blue: #0d47a1;
         }
 
         * {
@@ -65,7 +68,7 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(7,94,84,0.95) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(13, 71, 161, 0.95) 100%);
             z-index: 1;
         }
 
@@ -110,18 +113,39 @@
         .app-header p { margin: 10px 0 0 0; font-size: 0.9rem; opacity: 0.95; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
 
         .nav-header {
-            display: flex; background: #fff; padding: 10px; gap: 8px;
+            display: flex; background: #fff; padding: 12px; gap: 10px;
             border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 10;
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
         .tab-btn {
-            flex: 1; background: var(--input-bg); border: none; padding: 12px 5px;
+            flex: 1; background: linear-gradient(145deg, #ffffff, #eef2f7);
+            border: 1px solid rgba(0,0,0,0.05); padding: 12px 5px;
             font-size: 0.75rem; font-weight: 700; color: var(--text-muted); cursor: pointer;
-            border-radius: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            border-radius: 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.08), -4px -4px 10px rgba(255,255,255,0.9);
         }
-        .tab-btn i { font-size: 1.3rem; font-style: normal; }
-        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 6px 15px rgba(13, 148, 136, 0.3); transform: translateY(-3px); }
+        .tab-btn i { 
+            font-size: 1.3rem; font-style: normal; 
+            background: linear-gradient(145deg, #f1f5f9, #ffffff);
+            width: 42px; height: 42px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 2px 2px 5px #d1d5db, inset -2px -2px 5px #ffffff;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--ri-red) 0%, var(--ri-white) 20%, var(--ri-white) 30%, var(--arema-blue) 35%, #1976d2 100%);
+            color: #fff; 
+            box-shadow: 6px 6px 16px rgba(13, 71, 161, 0.35), -4px -4px 12px rgba(255,255,255,0.9);
+            border: 1px solid rgba(255,255,255,0.4);
+            transform: translateY(-4px);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .tab-btn.active i {
+            background: rgba(255,255,255,0.25);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.4);
+            color: #fff;
+        }
 
         .page { padding: 30px; display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
@@ -134,6 +158,94 @@
             font-size: 1.4rem; box-shadow: 0 4px 8px rgba(13, 148, 136, 0.15);
         }
         .section-title h2 { font-size: 1.1rem; margin: 0; color: var(--text-main); font-weight: 800; }
+
+        .main-title-3d {
+            background: linear-gradient(135deg, var(--ri-red) 0%, #e53935 15%, var(--ri-white) 25%, var(--ri-white) 30%, var(--arema-blue) 35%, #1976d2 100%);
+            border-radius: 18px;
+            padding: 22px 20px;
+            box-shadow: 0 12px 28px rgba(13, 71, 161, 0.25), inset 0 2px 5px rgba(255,255,255,0.6), inset 0 -4px 10px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.4);
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .main-title-3d .icon-box {
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .main-title-3d h2 {
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Animasi Bendera Merah Putih Berkibar */
+        .waving-flag {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            font-size: 3rem;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 85px;
+            height: 60px;
+            background: linear-gradient(to bottom, #c62828 50%, #ffffff 50%);
+            border-radius: 2px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            z-index: 0;
+            transform-origin: left center;
+            animation: flagWave 2.5s ease-in-out infinite;
+            overflow: hidden;
+        }
+        .waving-flag::before { /* Tiang bendera */
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: -10px;
+            bottom: -10px;
+            width: 5px;
+            background: linear-gradient(to right, #555, #999, #555);
+            border-radius: 2px;
+            z-index: 1;
+        }
+        .waving-flag::after { /* Efek bayangan melambai */
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%, rgba(0,0,0,0.2) 40%, transparent 60%, rgba(0,0,0,0.2) 80%, transparent 100%);
+            background-size: 60px 100%;
+            animation: flagShade 2.5s linear infinite;
+            z-index: 1;
+        }
+        .waving-flag span { position: relative; z-index: 2; }
+
+        @keyframes flagWave {
+            0%, 100% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); }
+            25% { transform: translateY(-50%) skewY(6deg) perspective(100px) rotateY(-10deg); }
+            50% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); }
+            75% { transform: translateY(-50%) skewY(-6deg) perspective(100px) rotateY(10deg); }
+        }
+        @keyframes flagShade {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 0; }
+        }
+
+        @media (max-width: 480px) {
+            .waving-flag { width: 65px; height: 45px; font-size: 2rem; }
+        }
+
+        .main-title-3d > .icon-box, .main-title-3d > h2 { position: relative; z-index: 3; }
 
         label { display: block; font-weight: 600; margin-top: 12px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
 
@@ -260,7 +372,8 @@
     </div>
 
     <div id="slide1" class="page active">
-        <div class="section-title">
+        <div class="section-title main-title-3d">
+            <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">📝</div>
             <h2>Laporan On Point</h2>
         </div>
@@ -316,11 +429,12 @@
             <button class="btn btn-wa" onclick="kirimWA(1)"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
             <button class="btn btn-pdf" onclick="cetakPDF(1)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
         </div>
-        <button class="btn-reset" onclick="resetData()"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
+        <button class="btn-reset" onclick="resetData(1)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
     </div>
 
     <div id="slide2" class="page">
-        <div class="section-title">
+        <div class="section-title main-title-3d">
+            <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">📌</div>
             <h2>Job Desk Petugas</h2>
         </div>
@@ -365,10 +479,12 @@
             <button class="btn btn-wa" onclick="kirimWA(2)"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
             <button class="btn btn-pdf" onclick="cetakPDF(2)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
         </div>
+        <button class="btn-reset" onclick="resetData(2)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
     </div>
 
     <div id="slide3" class="page">
-        <div class="section-title">
+        <div class="section-title main-title-3d">
+            <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">🗓️</div>
             <h2>Perencanaan Tindakan Pasien</h2>
         </div>
@@ -382,10 +498,12 @@
             <button class="btn btn-wa" onclick="kirimWA(3)"><i class="fa-brands fa-whatsapp"></i> Kirim Rencana WA</button>
             <button class="btn btn-pdf" onclick="cetakPDF(3)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
         </div>
+        <button class="btn-reset" onclick="resetData(3)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
     </div>
 
     <div id="slide4" class="page">
-        <div class="section-title">
+        <div class="section-title main-title-3d">
+            <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">🛏️</div>
             <h2>Laporan Bed Kosong</h2>
         </div>
@@ -397,17 +515,19 @@
             <div class="icon-box">1️⃣</div>
             <h2>Tim 1</h2>
         </div>
-        <div class="grid-2">
+        <div class="grid-3">
             <div><label>Bed Kosong Shift 1</label><textarea id="bedKosongT1S1" placeholder="Contoh: Bed 17, 19..."></textarea></div>
             <div><label>Bed Kosong Shift 2</label><textarea id="bedKosongT1S2" placeholder="Contoh: Bed 20, 22..."></textarea></div>
+            <div><label>Bed Kosong Shift 3</label><textarea id="bedKosongT1S3" placeholder="Contoh: Bed 24, 26..."></textarea></div>
         </div>
         <div class="section-title">
             <div class="icon-box">2️⃣</div>
             <h2>Tim 2</h2>
         </div>
-        <div class="grid-2">
+        <div class="grid-3">
             <div><label>Bed Kosong Shift 1</label><textarea id="bedKosongT2S1" placeholder="Contoh: Bed 31, 33..."></textarea></div>
             <div><label>Bed Kosong Shift 2</label><textarea id="bedKosongT2S2" placeholder="Contoh: Bed 35, 37..."></textarea></div>
+            <div><label>Bed Kosong Shift 3</label><textarea id="bedKosongT2S3" placeholder="Contoh: Bed 39, 41..."></textarea></div>
         </div>
         <label>Keterangan</label>
         <textarea id="keteranganBed" placeholder="Tulis keterangan tambahan di sini..."></textarea>
@@ -415,6 +535,7 @@
             <button class="btn btn-wa" onclick="kirimWA(4)"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
             <button class="btn btn-pdf" onclick="cetakPDF(4)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
         </div>
+        <button class="btn-reset" onclick="resetData(4)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
     </div>
 </div>
 
@@ -732,9 +853,13 @@ function buildReport(slideNum) {
         txt += `───────────────────\n\n`;
         txt += `2️⃣ *TIM 1 (Shift 2):*\n${formatPaste(getVal('bedKosongT1S2'))}\n\n`;
         txt += `───────────────────\n\n`;
-        txt += `3️⃣ *TIM 2 (Shift 1):*\n${formatPaste(getVal('bedKosongT2S1'))}\n\n`;
+        txt += `3️⃣ *TIM 1 (Shift 3):*\n${formatPaste(getVal('bedKosongT1S3'))}\n\n`;
         txt += `───────────────────\n\n`;
-        txt += `4️⃣ *TIM 2 (Shift 2):*\n${formatPaste(getVal('bedKosongT2S2'))}\n\n`;
+        txt += `4️⃣ *TIM 2 (Shift 1):*\n${formatPaste(getVal('bedKosongT2S1'))}\n\n`;
+        txt += `───────────────────\n\n`;
+        txt += `5️⃣ *TIM 2 (Shift 2):*\n${formatPaste(getVal('bedKosongT2S2'))}\n\n`;
+        txt += `───────────────────\n\n`;
+        txt += `6️⃣ *TIM 2 (Shift 3):*\n${formatPaste(getVal('bedKosongT2S3'))}\n\n`;
         
         if(getVal('keteranganBed')) { 
             txt += `───────────────────\n\n`;
@@ -764,7 +889,7 @@ function cetakPDF(slideNum) {
     window.print();
 }
 
-function resetData() {
+function resetData(tabNum = 1) {
     if(confirm("Yakin mereset SEMUA data di semua halaman?")) {
         document.querySelectorAll('input[type="text"], textarea, input[type="date"], input[type="number"]').forEach(el => {
             el.value = ""; if(el.type === 'number') el.value = 0;
@@ -778,7 +903,7 @@ function resetData() {
         document.getElementById('patientPlanContainer').innerHTML = "";
         patientCount = 0; tambahPasien();
         
-        switchTab(1);
+        switchTab(tabNum);
     }
 }
 </script>
