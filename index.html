@@ -613,11 +613,15 @@
         </div>
         <label>Keterangan</label>
         <textarea id="keteranganBed" placeholder="Tulis keterangan tambahan di sini..."></textarea>
-        <div class="btn-group">
-            <button class="btn btn-wa" onclick="kirimWA(4)"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
-            <button class="btn btn-pdf" onclick="cetakPDF(4)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+                <div class="btn-group">
+            <button class="btn btn-wa" onclick="kirimMonitoringWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
+            <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Sheet</button>
         </div>
-        <button class="btn-reset" onclick="resetData(4)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
+        <div class="btn-group" style="margin-top: 12px;">
+            <button class="btn btn-pdf" onclick="cetakMonitoringPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+            <a href="https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/edit?gid=652284391#gid=652284391" target="_blank" class="btn btn-pdf" style="text-decoration: none;"><i class="fa-solid fa-table"></i> Buka Spreadsheet</a>
+        </div>
+        <button class="btn-reset" onclick="resetMonitoringTable()"><i class="fa-solid fa-eraser"></i> Kosongkan Tabel Input</button>
     </div>
 
     <!-- SLIDE 5: MONITORING -->
@@ -966,6 +970,39 @@ async function submitMonitoringSheet() {
 }
 
 // Fungsi Format WA untuk Monitoring
+function buildMonitoringReport() {
+    let txt = `*MONITORING PASIEN HD*\n`;
+    txt += `*${formatDate(getVal('tanggal5'))}*\n`;
+    txt += `═══════════════════\n\n`;
+    let count = 0;
+    
+    for(let i=1; i<=12; i++) {
+        let nama = getVal(`mon_nama_${i}`);
+        if(nama) {
+            count++;
+            txt += `${count}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`;
+            txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`;
+            txt += `   UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`;
+            txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`;
+            if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`;
+            txt += `\n`;
+        }
+    }
+    
+    if(count === 0) txt += "Tidak ada data monitoring terinput.\n";
+    txt += `═══════════════════\n`;
+    txt += `Dikirim oleh: *${getVal('pengirim5')}*`;
+    return txt;
+}
+
+function cetakMonitoringPDF() {
+    if(getVal('pengirim5') === "") {
+        alert("❌ Nama Pengirim wajib diisi!"); switchTab(5);
+        document.getElementById('pengirim5').focus(); return;
+    }
+    document.getElementById('printContent').innerText = buildMonitoringReport();
+    window.print();
+}
 function kirimMonitoringWA() {
     if(getVal('pengirim5') === "") {
         alert("❌ Nama Pengirim wajib diisi!"); switchTab(5);
