@@ -809,8 +809,9 @@ tambahPasien();
 const monitorBody = document.getElementById('monitoringBody');
 let monRowsHTML = '';
 for(let i=1; i<=12; i++) { // Membuat 12 baris kosong
+    // Ditambahkan div wrapper dengan position:relative untuk dropdown autocomplete
     monRowsHTML += `<tr>
-        <td><input type="text" id="mon_nama_${i}" placeholder="Nama Pasien"></td>
+        <td><div style="position: relative;"><input type="text" id="mon_nama_${i}" placeholder="Nama Pasien" autocomplete="off"></div></td>
         <td><select id="mon_jk_${i}"><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td>
         <td><select id="mon_goldar_${i}"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td>
         <td><input type="text" id="mon_tb_${i}" placeholder="cm"></td>
@@ -825,6 +826,81 @@ for(let i=1; i<=12; i++) { // Membuat 12 baris kosong
     </tr>`;
 }
 monitorBody.innerHTML = monRowsHTML;
+
+// === SCRIPT AUTOCOMPLETE NAMA PASIEN ===
+let patientNames = [];
+
+async function fetchPatientNames() {
+    try {
+        const response = await fetch(MONITORING_API_URL);
+        const result = await response.json();
+        if(result.status === 'success' && result.data) {
+            patientNames = result.data;
+        }
+    } catch(e) {
+        console.error("Gagal memuat daftar pasien", e);
+    }
+}
+
+function setupAutocomplete(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    const list = document.createElement('div');
+    list.style.position = 'absolute';
+    list.style.left = '0';
+    list.style.top = '100%';
+    list.style.width = '100%';
+    list.style.maxHeight = '150px';
+    list.style.overflowY = 'auto';
+    list.style.backgroundColor = '#fff';
+    list.style.border = '1px solid var(--border-color)';
+    list.style.borderRadius = '8px';
+    list.style.boxShadow = '0 8px 16px rgba(0,0,0,0.15)';
+    list.style.zIndex = '1000';
+    list.style.display = 'none';
+    input.parentNode.appendChild(list);
+
+    input.addEventListener('input', function() {
+        let val = this.value;
+        list.innerHTML = '';
+        if (!val) { list.style.display = 'none'; return; }
+        
+        let count = 0;
+        for (let i = 0; i < patientNames.length; i++) {
+            if (patientNames[i] && patientNames[i].toUpperCase().includes(val.toUpperCase())) {
+                let item = document.createElement('div');
+                let nameStr = patientNames[i];
+                let matchStart = nameStr.toUpperCase().indexOf(val.toUpperCase());
+                item.innerHTML = nameStr.substring(0, matchStart) + "<strong style='color:var(--primary);'>" + nameStr.substring(matchStart, matchStart + val.length) + "</strong>" + nameStr.substring(matchStart + val.length);
+                item.style.padding = '10px 12px';
+                item.style.cursor = 'pointer';
+                item.style.fontSize = '0.8rem';
+                item.style.borderBottom = '1px solid #f1f5f9';
+                
+                item.addEventListener('mousedown', function(e) {
+                    e.preventDefault(); // Cegah blur sebelum klik terbaca
+                    input.value = nameStr;
+                    list.style.display = 'none';
+                });
+                
+                list.appendChild(item);
+                count++;
+                if (count >= 10) break; // Batasi 10 saran
+            }
+        }
+        list.style.display = count > 0 ? 'block' : 'none';
+    });
+
+    input.addEventListener('blur', function() {
+        setTimeout(() => { list.style.display = 'none'; }, 150);
+    });
+}
+
+fetchPatientNames();
+for(let i=1; i<=12; i++) {
+    setupAutocomplete(`mon_nama_${i}`);
+}
 
 // Fungsi Kirim ke Spreadsheet Khusus Monitoring
 async function submitMonitoringSheet() {
