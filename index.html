@@ -104,7 +104,7 @@
             background: rgba(0,0,0,0.25);
             backdrop-filter: blur(4px);
             text-align: center;
-            font-size: 0.7rem; /* Sama dengan jadwal sholat */
+            font-size: 0.7rem;
             line-height: 1.5;
             color: #fff;
             border-top: 1px solid rgba(255,255,255,0.1);
@@ -120,7 +120,7 @@
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
         .sheet-header-data b {
-            color: #ffe53b; /* Warna kuning seperti jadwal sholat */
+            color: #ffe53b;
             margin-left: 3px;
         }
 
@@ -363,6 +363,53 @@
         .rencana-tools { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
         .btn-clear-rencana { background: #fff1f2; color: var(--accent); border: 1px solid #fecdd3; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
 
+        /* CSS UNTUK MONITORING TABLE */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background: #fff;
+        }
+        .monitoring-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 1000px; 
+        }
+        .monitoring-table th {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 5px;
+            font-weight: 700;
+            border: 1px solid #0f766e;
+            text-align: center;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+        }
+        .monitoring-table td {
+            border: 1px solid var(--border-color);
+            padding: 0;
+        }
+        .monitoring-table input, .monitoring-table select {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 8px 5px;
+            font-size: 0.8rem;
+            text-align: center;
+            font-family: inherit;
+            color: var(--text-main);
+            border-radius: 0;
+        }
+        .monitoring-table input:focus, .monitoring-table select:focus {
+            outline: 2px solid var(--primary-light);
+            background: #f0fdfa;
+        }
+
         .print-area { display: none; padding: 40px; }
         @media print {
             body { background: #fff; }
@@ -403,6 +450,7 @@
         <button class="tab-btn" onclick="switchTab(2)"><i>👥</i><span>Job Desk</span></button>
         <button class="tab-btn" onclick="switchTab(3)"><i>✅</i><span>Tindakan</span></button>
         <button class="tab-btn" onclick="switchTab(4)"><i>🛏️</i><span>Bed Kosong</span></button>
+        <button class="tab-btn" onclick="switchTab(5)"><i>📊</i><span>Monitoring</span></button>
     </div>
 
     <div id="slide1" class="page active">
@@ -571,6 +619,54 @@
         </div>
         <button class="btn-reset" onclick="resetData(4)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
     </div>
+
+    <!-- SLIDE 5: MONITORING -->
+    <div id="slide5" class="page">
+        <div class="section-title main-title-3d">
+            <div class="waving-flag"><span>81</span></div>
+            <div class="icon-box">📊</div>
+            <h2>Monitoring Pasien HD</h2>
+        </div>
+        <div class="grid-2">
+            <div><label>Tanggal</label><input type="date" id="tanggal5"></div>
+            <div><label>Pengirim</label><input type="text" id="pengirim5" placeholder="Nama Anda (Wajib diisi)"></div>
+        </div>
+
+        <div class="section-title">
+            <div class="icon-box">📝</div>
+            <h2>Input Tabel Monitoring</h2>
+        </div>
+        
+        <div class="table-container">
+            <table class="monitoring-table" id="monitoringTable">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Gol Darah</th>
+                        <th>TB</th>
+                        <th>BB</th>
+                        <th>Tekanan Darah</th>
+                        <th>UFG</th>
+                        <th>Heparin</th>
+                        <th>EPO/FE</th>
+                        <th>Kt/V</th>
+                        <th>Transfusi <ada/tdk></th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody id="monitoringBody">
+                    <!-- Baris dibuat otomatis oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-wa" onclick="kirimMonitoringWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
+            <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Sheet</button>
+        </div>
+        <button class="btn-reset" onclick="resetMonitoringTable()"><i class="fa-solid fa-eraser"></i> Kosongkan Tabel Input</button>
+    </div>
 </div>
 
 <div class="print-area" id="printArea">
@@ -580,7 +676,8 @@
 
 <script>
 // === URL WEB APP APPS SCRIPT ===
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw1WEWVI5QfY2j-bk8oxqC2Ysc2oHDVsVQri3I_f_CM5vSrNO3pzGFK2pSXA5fmlaCP/exec";
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw1WEWVI5QfY2j-bk8oxqC2Ysc2oHDVsVQri3I_f_CM5vSrNO3pzGFK2pSXA5fmlaCP/exec"; // URL lama untuk header
+const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwpWv-Wj5Vb5Dn9QiRG3Z14eAaar1uEHEoCcn1dnSp-XXuo8DFPPk4LEBQyfko_wEGrAA/exec"; // URL Khusus Monitoring
 
 // === FETCH DATA DARI SPREADSHEET KE HEADER ===
 async function fetchSheetData() {
@@ -590,10 +687,8 @@ async function fetchSheetData() {
         if(result.data && result.data.length > 0) {
             let html = '';
             result.data.forEach(item => {
-                // Pisahkan "Header: Value"
                 let parts = item.split(": ");
                 if(parts.length === 2) {
-                    // Tampilkan semua data, walau valuenya "0"
                     html += `<span>${parts[0]}: <b>${parts[1]}</b></span>`;
                 } else {
                     html += `<span>${item}</span>`;
@@ -709,6 +804,141 @@ function toggleManual(id, isChecked) {
 function clearRencana(id) { document.getElementById(`rencanaPasien-${id}`).value = ""; }
 function hapusPasien(id) { document.getElementById(`patientCard-${id}`).remove(); }
 tambahPasien();
+
+// === LOGIKA SLIDE 5: MONITORING ===
+const monitorBody = document.getElementById('monitoringBody');
+let monRowsHTML = '';
+for(let i=1; i<=12; i++) { // Membuat 12 baris kosong
+    monRowsHTML += `<tr>
+        <td><input type="text" id="mon_nama_${i}" placeholder="Nama Pasien"></td>
+        <td><select id="mon_jk_${i}"><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td>
+        <td><select id="mon_goldar_${i}"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td>
+        <td><input type="text" id="mon_tb_${i}" placeholder="cm"></td>
+        <td><input type="text" id="mon_bb_${i}" placeholder="kg"></td>
+        <td><input type="text" id="mon_td_${i}" placeholder="120/80"></td>
+        <td><input type="text" id="mon_ufg_${i}" placeholder="cc"></td>
+        <td><input type="text" id="mon_heparin_${i}" placeholder="iu"></td>
+        <td><input type="text" id="mon_epo_${i}" placeholder="-"></td>
+        <td><input type="text" id="mon_ktv_${i}" placeholder="-"></td>
+        <td><select id="mon_transfusi_${i}"><option value="Tidak">Tidak</option><option value="Ada">Ada</option></select></td>
+        <td><input type="text" id="mon_ket_${i}" placeholder="Keterangan"></td>
+    </tr>`;
+}
+monitorBody.innerHTML = monRowsHTML;
+
+// Fungsi Kirim ke Spreadsheet Khusus Monitoring
+async function submitMonitoringSheet() {
+    if(getVal('pengirim5') === "") {
+        alert("❌ Nama Pengirim wajib diisi!"); switchTab(5);
+        document.getElementById('pengirim5').focus(); return;
+    }
+
+    let dataRows = [];
+    for(let i=1; i<=12; i++) {
+        let nama = getVal(`mon_nama_${i}`);
+        if(nama) {
+            dataRows.push([
+                nama,
+                getVal(`mon_jk_${i}`),
+                getVal(`mon_goldar_${i}`),
+                getVal(`mon_tb_${i}`),
+                getVal(`mon_bb_${i}`),
+                getVal(`mon_td_${i}`),
+                getVal(`mon_ufg_${i}`),
+                getVal(`mon_heparin_${i}`),
+                getVal(`mon_epo_${i}`),
+                getVal(`mon_ktv_${i}`),
+                getVal(`mon_transfusi_${i}`),
+                getVal(`mon_ket_${i}`)
+            ]);
+        }
+    }
+
+    if(dataRows.length === 0) {
+        alert("❌ Tidak ada data monitoring terisi! Silakan isi minimal 1 nama pasien.");
+        return;
+    }
+
+    let btn = event.target;
+    let originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+    btn.disabled = true;
+
+    try {
+        const response = await fetch(MONITORING_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+                action: 'saveMonitoring',
+                data: dataRows
+            })
+        });
+        const result = await response.json();
+        
+        if(result.status === 'success') {
+            alert("✅ Berhasil! Data monitoring telah tersimpan di Spreadsheet (REKAP_HARIAN).");
+            resetMonitoringTable();
+        } else {
+            throw new Error(result.message || 'Unknown error');
+        }
+    } catch (e) {
+        alert("❌ Gagal mengirim data: " + e.message);
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
+// Fungsi Format WA untuk Monitoring
+function kirimMonitoringWA() {
+    if(getVal('pengirim5') === "") {
+        alert("❌ Nama Pengirim wajib diisi!"); switchTab(5);
+        document.getElementById('pengirim5').focus(); return;
+    }
+    let txt = `*MONITORING PASIEN HD*\n`;
+    txt += `*${formatDate(getVal('tanggal5'))}*\n`;
+    txt += `═══════════════════\n\n`;
+    let count = 0;
+    
+    for(let i=1; i<=12; i++) {
+        let nama = getVal(`mon_nama_${i}`);
+        if(nama) {
+            count++;
+            txt += `${count}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`;
+            txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`;
+            txt += `   UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`;
+            txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`;
+            if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`;
+            txt += `\n`;
+        }
+    }
+    
+    if(count === 0) txt += "Tidak ada data monitoring terinput.\n";
+    txt += `═══════════════════\n`;
+    txt += `Dikirim oleh: *${getVal('pengirim5')}*`;
+    
+    const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
+    window.open(waUrl, '_blank');
+}
+
+// Fungsi Reset Tabel Monitoring
+function resetMonitoringTable() {
+    for(let i=1; i<=12; i++) {
+        document.getElementById(`mon_nama_${i}`).value = "";
+        document.getElementById(`mon_jk_${i}`).selectedIndex = 0;
+        document.getElementById(`mon_goldar_${i}`).selectedIndex = 0;
+        document.getElementById(`mon_tb_${i}`).value = "";
+        document.getElementById(`mon_bb_${i}`).value = "";
+        document.getElementById(`mon_td_${i}`).value = "";
+        document.getElementById(`mon_ufg_${i}`).value = "";
+        document.getElementById(`mon_heparin_${i}`).value = "";
+        document.getElementById(`mon_epo_${i}`).value = "";
+        document.getElementById(`mon_ktv_${i}`).value = "";
+        document.getElementById(`mon_transfusi_${i}`).selectedIndex = 0;
+        document.getElementById(`mon_ket_${i}`).value = "";
+    }
+}
+
 
 // Core Functions
 function switchTab(tab) {
