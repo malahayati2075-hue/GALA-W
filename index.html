@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GALA-W++- Generator Laporan HD</title>
+    <title>GALA-W++ - Laporan Harian Hemodialisis</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -96,7 +96,6 @@
         .prayer-times .loc { font-weight: 700; color: #fff; margin-bottom: 2px; display: block; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2px; }
         .prayer-times span { font-weight: 700; color: #ffe53b; }
 
-        /* === STYLE DATA SPREADSHEET HEADER === */
         .sheet-header-data {
             position: relative;
             z-index: 2;
@@ -213,7 +212,6 @@
             letter-spacing: 0.5px;
         }
         
-        /* Animasi Bendera Merah Putih Berkibar */
         .waving-flag {
             position: absolute;
             right: 20px;
@@ -236,7 +234,7 @@
             animation: flagWave 2.5s ease-in-out infinite;
             overflow: hidden;
         }
-        .waving-flag::before { /* Tiang bendera */
+        .waving-flag::before {
             content: '';
             position: absolute;
             left: -6px;
@@ -247,7 +245,7 @@
             border-radius: 2px;
             z-index: 1;
         }
-        .waving-flag::after { /* Efek bayangan melambai */
+        .waving-flag::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -363,7 +361,6 @@
         .rencana-tools { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
         .btn-clear-rencana { background: #fff1f2; color: var(--accent); border: 1px solid #fecdd3; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
 
-        /* CSS UNTUK MONITORING TABLE */
         .table-container {
             overflow-x: auto;
             margin-top: 15px;
@@ -410,6 +407,27 @@
             background: #f0fdfa;
         }
 
+        /* CSS UNTUK STATISTIK */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-value { font-size: 2.5rem; font-weight: 900; margin-bottom: 5px; line-height: 1; }
+        .stat-label { font-size: 0.85rem; font-weight: 600; opacity: 0.9; }
+        .stat-loading { text-align: center; color: var(--text-muted); padding: 40px 0; grid-column: 1/-1; }
+
         .print-area { display: none; padding: 40px; }
         @media print {
             body { background: #fff; }
@@ -434,7 +452,6 @@
             </div>
         </div>
         
-        <!-- BARIS DATA REALTIME DARI SPREADSHEET -->
         <div class="sheet-header-data" id="sheetHeaderData">
             <span>Memuat data spreadsheet...</span>
         </div>
@@ -446,18 +463,16 @@
     </div>
 
     <div class="nav-header">
-        <button class="tab-btn active" onclick="switchTab(1)"><i>📋</i><span>Laporan</span></button>
-        <button class="tab-btn" onclick="switchTab(2)"><i>👥</i><span>Job Desk</span></button>
-        <button class="tab-btn" onclick="switchTab(3)"><i>✅</i><span>Tindakan</span></button>
-        <button class="tab-btn" onclick="switchTab(4)"><i>🛏️</i><span>Bed Kosong</span></button>
-        <button class="tab-btn" onclick="switchTab(5)"><i>📊</i><span>Monitoring</span></button>
+        <button class="tab-btn active" onclick="switchTab(1)"><i>📝</i><span>Laporan Harian</span></button>
+        <button class="tab-btn" onclick="switchTab(2)"><i>📊</i><span>Statistik Pasien</span></button>
     </div>
 
+    <!-- SLIDE 1: LAPORAN HARIAN HEMODIALISIS (GABUNGAN) -->
     <div id="slide1" class="page active">
         <div class="section-title main-title-3d">
             <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">📝</div>
-            <h2>Laporan On Point</h2>
+            <h2>Laporan Harian Hemodialisis</h2>
         </div>
         <div class="grid-3">
             <div><label>Tanggal</label><input type="date" id="tanggal1"></div>
@@ -472,6 +487,22 @@
         <div class="grid-2" id="memberContainer"></div>
 
         <div class="section-title">
+            <div class="icon-box">📌</div>
+            <h2>Job Desk Petugas</h2>
+        </div>
+        <div id="perawatContainer"></div>
+        <div class="job-box" id="padatkaryaBox">
+            <input type="text" id="namaPadatkarya" placeholder="Nama Padatkarya">
+            <div class="checkbox-group">
+                <label class="check-item"><input type="checkbox" value="menyalakan AC 16 derajat"> Menyalakan AC 16 derajat</label>
+                <label class="check-item"><input type="checkbox" value="restock bahan habis pakai"> Restock bahan habis pakai</label>
+                <label class="check-item"><input type="checkbox" value="verbed tim 1&2"> Verbed tim 1&2</label>
+            </div>
+        </div>
+        <label>Rencana Tindakan Umum</label>
+        <textarea id="rencanaTindakan" placeholder="Tulis rencana tindakan global di sini..."></textarea>
+
+        <div class="section-title">
             <div class="icon-box">🩺</div>
             <h2>Daftar Pasien</h2>
         </div>
@@ -483,162 +514,17 @@
         <button class="btn-add" onclick="tambahPasienRuang()"><i class="fa-solid fa-circle-plus"></i> Tambah Pasien Ruangan</button>
 
         <div class="section-title">
-            <div class="icon-box" style="background:#fff1f2; color:var(--accent);">⚠️</div>
-            <h2>Masalah</h2>
-        </div>
-        <div class="grid-2">
-            <div><label>Masalah Pasien</label><textarea id="masalahPasien" style="min-height: 80px;"></textarea></div>
-            <div><label>Masalah Mesin / Alat</label><textarea id="masalahMesin" style="min-height: 80px;"></textarea></div>
-        </div>
-
-        <div class="section-title">
-            <div class="icon-box">💧</div>
-            <h2>Sisa Alat & Inventaris</h2>
-        </div>
-        <div class="grid-2" id="dialyzerContainer"></div>
-        <div class="grid-2">
-            <div><label>Sisa GD Stick</label><input type="text" id="gdStick" placeholder="Contoh: 12 pcs"></div>
-            <div><label>BOR / Sisa Bed Kosong</label><input type="text" id="sisaBed" placeholder="Contoh: 1 bed (44)"></div>
-        </div>
-
-        <div class="section-title">
-            <div class="icon-box">🪪</div>
-            <h2>Identitas Pengirim</h2>
-        </div>
-        <input type="text" id="pengirim1" placeholder="Nama Anda (Wajib diisi)">
-
-        <div class="btn-group">
-            <button class="btn btn-wa" onclick="kirimWA(1)"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
-            <button class="btn btn-pdf" onclick="cetakPDF(1)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
-        </div>
-        <button class="btn-reset" onclick="resetData(1)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
-    </div>
-
-    <div id="slide2" class="page">
-        <div class="section-title main-title-3d">
-            <div class="waving-flag"><span>81</span></div>
-            <div class="icon-box">📌</div>
-            <h2>Job Desk Petugas</h2>
-        </div>
-        <div class="grid-3">
-            <div><label>Tanggal</label><input type="date" id="tanggal2"></div>
-            <div><label>Shift</label><select id="shift2"><option value="1">Shift 1</option><option value="2">Shift 2</option><option value="3">Shift 3</option></select></div>
-            <div><label>Tim</label><select id="tim2"><option value="1">Tim 1</option><option value="2">Tim 2</option></select></div>
-        </div>
-
-        <div class="section-title">
-            <div class="icon-box">🧑‍⚕️</div>
-            <h2>Tugas Perawat & Bed</h2>
-        </div>
-        <div id="perawatContainer"></div>
-
-        <div class="section-title">
-            <div class="icon-box">🧹</div>
-            <h2>Tugas Padatkarya</h2>
-        </div>
-        <div class="job-box" id="padatkaryaBox">
-            <input type="text" id="namaPadatkarya" placeholder="Nama Padatkarya">
-            <div class="checkbox-group">
-                <label class="check-item"><input type="checkbox" value="menyalakan AC 16 derajat"> Menyalakan AC 16 derajat</label>
-                <label class="check-item"><input type="checkbox" value="restock bahan habis pakai"> Restock bahan habis pakai</label>
-                <label class="check-item"><input type="checkbox" value="verbed tim 1&2"> Verbed tim 1&2</label>
-            </div>
-        </div>
-
-        <div class="section-title">
-            <div class="icon-box">💡</div>
-            <h2>Rencana Tindakan Umum</h2>
-        </div>
-        <textarea id="rencanaTindakan" placeholder="Tulis rencana tindakan global di sini..."></textarea>
-
-        <div class="section-title">
-            <div class="icon-box">🪪</div>
-            <h2>Identitas Pengirim</h2>
-        </div>
-        <input type="text" id="pengirim2" placeholder="Nama Anda (Wajib diisi)">
-
-        <div class="btn-group">
-            <button class="btn btn-wa" onclick="kirimWA(2)"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
-            <button class="btn btn-pdf" onclick="cetakPDF(2)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
-        </div>
-        <button class="btn-reset" onclick="resetData(2)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
-    </div>
-
-    <div id="slide3" class="page">
-        <div class="section-title main-title-3d">
-            <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">🗓️</div>
             <h2>Perencanaan Tindakan Pasien</h2>
         </div>
-        <div class="grid-2">
-            <div><label>Tanggal</label><input type="date" id="tanggal3"></div>
-            <div><label>Pengirim</label><input type="text" id="pengirim3" placeholder="Nama Anda"></div>
-        </div>
         <div id="patientPlanContainer" style="margin-top: 20px;"></div>
         <button class="btn-add" onclick="tambahPasien()"><i class="fa-solid fa-circle-plus"></i> Tambah Kartu Pasien</button>
-        <div class="btn-group">
-            <button class="btn btn-wa" onclick="kirimWA(3)"><i class="fa-brands fa-whatsapp"></i> Kirim Rencana WA</button>
-            <button class="btn btn-pdf" onclick="cetakPDF(3)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
-        </div>
-        <button class="btn-reset" onclick="resetData(3)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
-    </div>
 
-    <div id="slide4" class="page">
-        <div class="section-title main-title-3d">
-            <div class="waving-flag"><span>81</span></div>
-            <div class="icon-box">🛏️</div>
-            <h2>Laporan Bed Kosong</h2>
-        </div>
-        <div class="grid-2">
-            <div><label>Tanggal</label><input type="date" id="tanggal4"></div>
-            <div><label>Pengirim</label><input type="text" id="pengirim4" placeholder="Nama Anda (Wajib diisi)"></div>
-        </div>
-        <div class="section-title" style="margin-top: 25px;">
-            <div class="icon-box">1️⃣</div>
-            <h2>Tim 1</h2>
-        </div>
-        <div class="grid-3">
-            <div><label>Bed Kosong Shift 1</label><textarea id="bedKosongT1S1" placeholder="Contoh: Bed 17, 19..."></textarea></div>
-            <div><label>Bed Kosong Shift 2</label><textarea id="bedKosongT1S2" placeholder="Contoh: Bed 20, 22..."></textarea></div>
-            <div><label>Bed Kosong Shift 3</label><textarea id="bedKosongT1S3" placeholder="Contoh: Bed 24, 26..."></textarea></div>
-        </div>
         <div class="section-title">
-            <div class="icon-box">2️⃣</div>
-            <h2>Tim 2</h2>
-        </div>
-        <div class="grid-3">
-            <div><label>Bed Kosong Shift 1</label><textarea id="bedKosongT2S1" placeholder="Contoh: Bed 31, 33..."></textarea></div>
-            <div><label>Bed Kosong Shift 2</label><textarea id="bedKosongT2S2" placeholder="Contoh: Bed 35, 37..."></textarea></div>
-            <div><label>Bed Kosong Shift 3</label><textarea id="bedKosongT2S3" placeholder="Contoh: Bed 39, 41..."></textarea></div>
-        </div>
-        <label>Keterangan</label>
-        <textarea id="keteranganBed" placeholder="Tulis keterangan tambahan di sini..."></textarea>
-        <div class="btn-group">
-            <button class="btn btn-wa" onclick="kirimWA(4)"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
-            <button class="btn btn-pdf" onclick="cetakPDF(4)"><i class="fa-solid fa-print"></i> Cetak PDF</button>
-        </div>
-        <button class="btn-reset" onclick="resetData(4)"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
-    </div>
-
-    <!-- SLIDE 5: MONITORING -->
-    <div id="slide5" class="page">
-        <div class="section-title main-title-3d">
-            <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">📊</div>
             <h2>Monitoring Pasien HD</h2>
         </div>
-        <div class="grid-2">
-            <div><label>Tanggal</label><input type="date" id="tanggal5"></div>
-            <div><label>Pengirim</label><input type="text" id="pengirim5" placeholder="Nama Anda (Wajib diisi)"></div>
-        </div>
-
-        <div class="section-title">
-            <div class="icon-box">📝</div>
-            <h2>Input Tabel Monitoring</h2>
-        </div>
-        
         <button class="btn-add" onclick="addMonitorRow()" style="margin-bottom: 15px;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Pasien</button>
-        
         <div class="table-container">
             <table class="monitoring-table" id="monitoringTable">
                 <thead>
@@ -657,33 +543,69 @@
                         <th>Keterangan</th>
                     </tr>
                 </thead>
-                <tbody id="monitoringBody">
-                    <!-- Baris dibuat otomatis oleh JavaScript -->
-                </tbody>
+                <tbody id="monitoringBody"></tbody>
             </table>
         </div>
-
-        <div class="btn-group">
-            <button class="btn btn-wa" onclick="kirimMonitoringWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
-            <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Sheet</button>
-        </div>
         <div class="btn-group" style="margin-top: 12px;">
-            <button class="btn btn-pdf" onclick="cetakMonitoringPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+            <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan Monitoring ke Sheet</button>
             <a href="https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/edit?gid=652284391#gid=652284391" target="_blank" class="btn btn-pdf" style="text-decoration: none;"><i class="fa-solid fa-table"></i> Buka Spreadsheet</a>
         </div>
-        <button class="btn-reset" onclick="resetMonitoringTable()"><i class="fa-solid fa-eraser"></i> Kosongkan Tabel Input</button>
+
+        <div class="section-title">
+            <div class="icon-box" style="background:#fff1f2; color:var(--accent);">⚠️</div>
+            <h2>Masalah & Inventaris</h2>
+        </div>
+        <div class="grid-2">
+            <div><label>Masalah Pasien</label><textarea id="masalahPasien" style="min-height: 80px;"></textarea></div>
+            <div><label>Masalah Mesin / Alat</label><textarea id="masalahMesin" style="min-height: 80px;"></textarea></div>
+        </div>
+        <div class="grid-2" id="dialyzerContainer"></div>
+        <div class="grid-2">
+            <div><label>Sisa GD Stick</label><input type="text" id="gdStick" placeholder="Contoh: 12 pcs"></div>
+            <div><label>BOR / Sisa Bed Kosong</label><input type="text" id="sisaBed" placeholder="Contoh: 1 bed (44)"></div>
+        </div>
+
+        <div class="section-title">
+            <div class="icon-box">🪪</div>
+            <h2>Identitas Pengirim</h2>
+        </div>
+        <input type="text" id="pengirim1" placeholder="Nama Anda (Wajib diisi)">
+
+        <div class="btn-group">
+            <button class="btn btn-wa" onclick="kirimWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
+            <button class="btn btn-pdf" onclick="cetakPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+        </div>
+        <button class="btn-reset" onclick="resetData()"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
+    </div>
+
+    <!-- SLIDE 2: STATISTIK PASIEN MALAHAYATI -->
+    <div id="slide2" class="page">
+        <div class="section-title main-title-3d">
+            <div class="waving-flag"><span>81</span></div>
+            <div class="icon-box">📊</div>
+            <h2>Statistik Pasien Malahayati</h2>
+        </div>
+        <p style="color: var(--text-muted); text-align: center; margin-top: 20px;">
+            Data ini diambil secara real-time berdasarkan rekap data pasien dari database.
+        </p>
+        <div class="stat-grid" id="statistikContainer">
+            <div class="stat-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data statistik...</div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-pdf" onclick="fetchStatistikPasien()" style="grid-column: 1/-1;"><i class="fa-solid fa-rotate"></i> Refresh Data Statistik</button>
+        </div>
     </div>
 </div>
 
 <div class="print-area" id="printArea">
-    <h1 style="text-align: center;">LAPORAN HEMODIALISA</h1>
+    <h1 style="text-align: center;">LAPORAN HARIAN HEMODIALISIS</h1>
     <pre id="printContent"></pre>
 </div>
 
 <script>
 // === URL WEB APP APPS SCRIPT ===
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw1WEWVI5QfY2j-bk8oxqC2Ysc2oHDVsVQri3I_f_CM5vSrNO3pzGFK2pSXA5fmlaCP/exec"; // URL lama untuk header
-const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwpWv-Wj5Vb5Dn9QiRG3Z14eAaar1uEHEoCcn1dnSp-XXuo8DFPPk4LEBQyfko_wEGrAA/exec"; // URL Khusus Monitoring
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw1WEWVI5QfY2j-bk8oxqC2Ysc2oHDVsVQri3I_f_CM5vSrNO3pzGFK2pSXA5fmlaCP/exec";
+const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwpWv-Wj5Vb5Dn9QiRG3Z14eAaar1uEHEoCcn1dnSp-XXuo8DFPPk4LEBQyfko_wEGrAA/exec";
 
 // === FETCH DATA DARI SPREADSHEET KE HEADER ===
 async function fetchSheetData() {
@@ -760,7 +682,7 @@ for (let i = 1; i <= 5; i++) {
 }
 perawatContainer.innerHTML = perawatHTML;
 
-// Slide 1 Logic: Pasien Ruangan (Rawat Inap)
+// Pasien Ruangan
 let ruanganCount = 0;
 function tambahPasienRuang() {
     ruanganCount++;
@@ -779,7 +701,7 @@ function tambahPasienRuang() {
 function hapusPasienRuang(id) { document.getElementById(`ruanganCard-${id}`).remove(); }
 tambahPasienRuang();
 
-// Slide 3 Logic: Kartu Tindakan
+// Kartu Tindakan Pasien
 let patientCount = 0;
 const tindakanOptions = ["ODC BTKV", "Poli Bedah TKV", "Poli Jantung", "Poli Urologi", "Radiologi", "Poli Saraf", "Transfusi", "Laborat", "Poli Anak", "Poli Kandungan", "Poli Mata"];
 
@@ -811,7 +733,7 @@ function clearRencana(id) { document.getElementById(`rencanaPasien-${id}`).value
 function hapusPasien(id) { document.getElementById(`patientCard-${id}`).remove(); }
 tambahPasien();
 
-// === LOGIKA SLIDE 5: MONITORING ===
+// === LOGIKA MONITORING ===
 let monRowCount = 0;
 
 function addMonitorRow() {
@@ -841,10 +763,8 @@ function removeMonitorRow(id) {
     document.getElementById(`mon_row_${id}`).remove();
 }
 
-// Buat 5 baris awal saat aplikasi dibuka
 for(let i=0; i<5; i++) { addMonitorRow(); }
 
-// === SCRIPT AUTOCOMPLETE NAMA PASIEN ===
 let patientNames = [];
 
 async function fetchPatientNames() {
@@ -916,11 +836,50 @@ function setupAutocomplete(inputId) {
 
 fetchPatientNames();
 
-// Fungsi Kirim ke Spreadsheet Khusus Monitoring
+// === STATISTIK PASIEN MALAHAYATI ===
+async function fetchStatistikPasien() {
+    const container = document.getElementById('statistikContainer');
+    container.innerHTML = '<div class="stat-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data statistik...</div>';
+    try {
+        // Menggunakan URL MONITORING_API_URL dengan parameter action=getStatistik
+        const response = await fetch(MONITORING_API_URL + "?action=getStatistik");
+        const result = await response.json();
+        let html = '';
+        
+        if(result && result.status === 'success' && result.data) {
+            const data = result.data;
+            // Jika berupa array (key-value pair array)
+            if (Array.isArray(data) && data.length > 0) {
+                data.forEach(item => {
+                    if (typeof item === 'object') {
+                        for(let key in item) {
+                            html += `<div class="stat-card"><div class="stat-value">${item[key]}</div><div class="stat-label">${key.replace(/_/g, ' ').toUpperCase()}</div></div>`;
+                        }
+                    }
+                });
+            } else if (typeof data === 'object') {
+                for(let key in data) {
+                    html += `<div class="stat-card"><div class="stat-value">${data[key]}</div><div class="stat-label">${key.replace(/_/g, ' ').toUpperCase()}</div></div>`;
+                }
+            }
+        }
+        
+        if(html === '') {
+            html = '<div class="stat-loading">Data statistik belum tersedia. Pastikan endpoint Apps Script mendukung action=getStatistik.</div>';
+        }
+        
+        container.innerHTML = html;
+    } catch(e) {
+        container.innerHTML = '<div class="stat-loading" style="color: var(--accent);">Gagal memuat data statistik pasien. Periksa URL/Endpoint Apps Script.</div>';
+    }
+}
+fetchStatistikPasien();
+
+// Submit Data Monitoring ke Spreadsheet
 async function submitMonitoringSheet() {
-    if(getVal('pengirim5') === "") {
-        alert("❌ Nama Pengirim wajib diisi!"); switchTab(5);
-        document.getElementById('pengirim5').focus(); return;
+    if(getVal('pengirim1') === "") {
+        alert("❌ Nama Pengirim wajib diisi sebelum menyimpan monitoring!"); switchTab(1);
+        document.getElementById('pengirim1').focus(); return;
     }
 
     let dataRows = [];
@@ -970,7 +929,6 @@ async function submitMonitoringSheet() {
         
         if(result.status === 'success') {
             alert("✅ Berhasil! Data monitoring telah tersimpan di Spreadsheet (REKAP_HARIAN).");
-            resetMonitoringTable();
         } else {
             throw new Error(result.message || 'Unknown error');
         }
@@ -982,95 +940,14 @@ async function submitMonitoringSheet() {
     }
 }
 
-function buildMonitoringReport() {
-    let txt = `*MONITORING PASIEN HD*\n`;
-    txt += `*${formatDate(getVal('tanggal5'))}*\n`;
-    txt += `═══════════════════\n\n`;
-    let count = 0;
-    
-    for(let i=1; i<=monRowCount; i++) {
-        let row = document.getElementById(`mon_row_${i}`);
-        if(row) {
-            let nama = getVal(`mon_nama_${i}`);
-            if(nama) {
-                count++;
-                txt += `${count}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`;
-                txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`;
-                txt += `   UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`;
-                txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`;
-                if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`;
-                txt += `\n`;
-            }
-        }
-    }
-    
-    if(count === 0) txt += "Tidak ada data monitoring terinput.\n";
-    txt += `═══════════════════\n`;
-    txt += `Dikirim oleh: *${getVal('pengirim5')}*`;
-    
-    // Tanda Tangan Pelapor Khusus Untuk PDF
-    txt += `\n\n\nMengetahui,\n\n\n\n( ${getVal('pengirim5')} )\n`;
-    txt += `Pelapor`;
-    return txt;
-}
-
-function cetakMonitoringPDF() {
-    if(getVal('pengirim5') === "") {
-        alert("❌ Nama Pengirim wajib diisi!"); switchTab(5);
-        document.getElementById('pengirim5').focus(); return;
-    }
-    document.getElementById('printContent').innerText = buildMonitoringReport();
-    window.print();
-}
-
-function kirimMonitoringWA() {
-    if(getVal('pengirim5') === "") {
-        alert("❌ Nama Pengirim wajib diisi!"); switchTab(5);
-        document.getElementById('pengirim5').focus(); return;
-    }
-    
-    let txt = `*MONITORING PASIEN HD*\n`;
-    txt += `*${formatDate(getVal('tanggal5'))}*\n`;
-    txt += `═══════════════════\n\n`;
-    let count = 0;
-    
-    for(let i=1; i<=monRowCount; i++) {
-        let row = document.getElementById(`mon_row_${i}`);
-        if(row) {
-            let nama = getVal(`mon_nama_${i}`);
-            if(nama) {
-                count++;
-                txt += `${count}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`;
-                txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`;
-                txt += `   UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`;
-                txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`;
-                if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`;
-                txt += `\n`;
-            }
-        }
-    }
-    
-    if(count === 0) txt += "Tidak ada data monitoring terinput.\n";
-    txt += `═══════════════════\n`;
-    txt += `Dikirim oleh: *${getVal('pengirim5')}*`;
-    
-    const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
-    window.open(waUrl, '_blank');
-}
-
-function resetMonitoringTable() {
-    document.getElementById('monitoringBody').innerHTML = "";
-    monRowCount = 0;
-    for(let i=0; i<5; i++) { addMonitorRow(); }
-}
-
-// Core Functions
+// === FUNGSI UTAMA ===
 function switchTab(tab) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('slide' + tab).classList.add('active');
     document.querySelectorAll('.tab-btn')[tab - 1].classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if(tab === 2) fetchStatistikPasien();
 }
 
 function adjustVal(id, delta) {
@@ -1103,212 +980,169 @@ function formatDate(dateStr) {
     return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
 }
 
-function buildReport(slideNum) {
-    let txt = "";
+function buildReport() {
+    let txt = `*LAPORAN HARIAN HEMODIALISIS*\n`;
+    txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`;
+    txt += `═══════════════════\n\n`;
     
-    if(slideNum === 1) {
-        txt += `*LAPORAN ON POINT HD*\n`;
-        txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`;
-        txt += `═══════════════════\n\n`;
-        
-        txt += `*ANGGOTA TIM ${getVal('tim1')}*\n`;
-        let staffCount = 0;
-        for(let i=1; i<=6; i++) {
-            let nm = getVal('agt'+i);
-            if(nm) { staffCount++; txt += `${staffCount}. ${nm}\n`; }
+    // 1. Anggota Tim
+    txt += `*ANGGOTA TIM ${getVal('tim1')}*\n`;
+    let staffCount = 0;
+    for(let i=1; i<=6; i++) {
+        let nm = getVal('agt'+i);
+        if(nm) { staffCount++; txt += `${staffCount}. ${nm}\n`; }
+    }
+    txt += `└ _Total Anggota: ${staffCount}_\n\n`;
+    txt += `───────────────────\n\n`;
+    
+    // 2. Job Desk
+    txt += `*JOB DESK PETUGAS*\n`;
+    let jobStaffCount = 0;
+    for(let i=1; i<=5; i++) {
+        let nama = getVal('perawat'+i);
+        if(nama) {
+            jobStaffCount++;
+            let bS = getVal('p_bed'+i+'_start'); let bE = getVal('p_bed'+i+'_end');
+            let bedStr = (bS !== "0" && bE !== "0" && bS !== "" && bE !== "") ? ` (Bed ${bS}-${bE})` : "";
+            txt += `${jobStaffCount}. *${nama}${bedStr}* : \n`;
+            let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value);
+            if(jobs.length > 0) jobs.forEach(job => txt += `   - ${job}\n`);
+            else txt += `   - -\n`;
         }
-        txt += `└ _Total Anggota: ${staffCount}_\n\n`;
-        txt += `───────────────────\n\n`;
-        
-        txt += `*DAFTAR PASIEN*\n`;
-        let rjText = formatPatientList(getVal('pasienRJ'));
-        let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0);
-        txt += `*Rawat Jalan:*\n${rjText}\n\n`;
-        
-        let ruangCount = 0;
-        let ruangIdx = 1;
-        let ruangText = "";
-        for(let i=1; i<=ruanganCount; i++) {
-            let card = document.getElementById(`ruanganCard-${i}`);
-            if(card) {
-                let nama = getVal(`namaPasienRuang-${i}`);
-                let detail = getVal(`detailPasienRuang-${i}`);
-                if(nama) {
-                    ruangCount++;
-                    ruangText += `${ruangIdx}. *${nama}*\n`;
-                    if(detail) {
-                        detail.split('\n').filter(l => l.trim().length > 0).forEach(l => {
-                            ruangText += `   > ${l.trim().replace(/^\s*\d+[\.\)\-\,]\s*/, '')}\n`;
-                        });
-                    } else {
-                        ruangText += `   > -\n`;
-                    }
-                    ruangText += `\n`;
-                    ruangIdx++;
-                }
-            }
-        }
-        if(ruangCount === 0) ruangText = "-\n";
-        txt += `*Ruangan:*\n${ruangText}`;
-        txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`;
-        txt += `───────────────────\n\n`;
-        
-        txt += `*MASALAH*\n`;
-        let mPasien = getVal('masalahPasien');
-        txt += `- ${'Pasien'.padEnd(12)} : \n`;
-        if(mPasien) {
-            mPasien.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`);
-        } else { txt += `   > -\n`; }
-        
-        let mMesin = getVal('masalahMesin');
-        txt += `- ${'Mesin/Alat'.padEnd(12)} : \n`;
-        if(mMesin) {
-            mMesin.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`);
-        } else { txt += `   > -\n`; }
-        txt += `\n───────────────────\n\n`;
-        
-        txt += `*SISA ALAT & INVENTARIS*\n`;
-        txt += `*HF/Dialyzer:*\n`;
-        txt += `- ${'HF 70'.padEnd(12)} : ${getVal('hf70') || '0'}\n`;
-        txt += `- ${'HF 90'.padEnd(12)} : ${getVal('hf90') || '0'}\n`;
-        txt += `- ${'HF 110'.padEnd(12)} : ${getVal('hf110') || '0'}\n`;
-        txt += `- ${'HF 130'.padEnd(12)} : ${getVal('hf130') || '0'}\n`;
-        txt += `- ${'HF 150'.padEnd(12)} : ${getVal('hf150') || '0'}\n`;
-        txt += `- ${'HF 170'.padEnd(12)} : ${getVal('hf170') || '0'}\n`;
-        txt += `\n`;
-        txt += `- ${'GD Stick'.padEnd(12)} : ${getVal('gdStick') || '-'}\n`;
-        txt += `- ${'Sisa Bed'.padEnd(12)} : ${getVal('sisaBed') || '-'}\n`;
-        txt += `\n═══════════════════\n`;
-        txt += `Dikirim oleh: *${getVal('pengirim1')}*`;
-    } 
-    else if(slideNum === 2) {
-        txt += `*JOB DESK PETUGAS HD*\n`;
-        txt += `*${formatDate(getVal('tanggal2'))} | Shift ${getVal('shift2')} | Tim ${getVal('tim2')}*\n`;
-        txt += `═══════════════════\n\n`;
-        
-        txt += `*TUGAS PERAWAT & BED*\n`;
-        let staffCount = 0;
-        for(let i=1; i<=5; i++) {
-            let nama = getVal('perawat'+i);
+    }
+    let namaPadat = getVal('namaPadatkarya');
+    if(namaPadat) {
+        jobStaffCount++;
+        txt += `${jobStaffCount}. *${namaPadat}* : \n`;
+        let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value);
+        if(jobsPadat.length > 0) jobsPadat.forEach(job => txt += `   - ${job}\n`);
+        else txt += `   - -\n`;
+    }
+    if(getVal('rencanaTindakan')) {
+        txt += `\n*Rencana Tindakan Umum:*\n${formatPaste(getVal('rencanaTindakan'))}\n`;
+    }
+    txt += `\n───────────────────\n\n`;
+
+    // 3. Daftar Pasien
+    txt += `*DAFTAR PASIEN*\n`;
+    let rjText = formatPatientList(getVal('pasienRJ'));
+    let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0);
+    txt += `*Rawat Jalan:*\n${rjText}\n\n`;
+
+    let ruangCount = 0, ruangIdx = 1, ruangText = "";
+    for(let i=1; i<=ruanganCount; i++) {
+        let card = document.getElementById(`ruanganCard-${i}`);
+        if(card) {
+            let nama = getVal(`namaPasienRuang-${i}`);
+            let detail = getVal(`detailPasienRuang-${i}`);
             if(nama) {
-                staffCount++;
-                let bS = getVal('p_bed'+i+'_start'); let bE = getVal('p_bed'+i+'_end');
-                let bedStr = (bS !== "0" && bE !== "0" && bS !== "" && bE !== "") ? ` (Bed ${bS}-${bE})` : "";
-                
-                txt += `${staffCount}. *${nama}${bedStr}* : \n`;
-                
-                let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value);
-                if(jobs.length > 0) {
-                    jobs.forEach(job => { txt += `   - ${job}\n`; });
-                } else {
-                    txt += `   - -\n`;
-                }
+                ruangCount++;
+                ruangText += `${ruangIdx}. *${nama}*\n`;
+                if(detail) {
+                    detail.split('\n').filter(l => l.trim().length > 0).forEach(l => {
+                        ruangText += `   > ${l.trim().replace(/^\s*\d+[\.\)\-\,]\s*/, '')}\n`;
+                    });
+                } else { ruangText += `   > -\n`; }
+                ruangText += `\n`;
+                ruangIdx++;
             }
         }
-        txt += `\n───────────────────\n\n`;
-        
-        txt += `*TUGAS PADATKARYA*\n`;
-        let namaPadat = getVal('namaPadatkarya');
-        if(namaPadat) {
-            staffCount++;
-            txt += `${staffCount}. *${namaPadat}* : \n`;
-            let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value);
-            if(jobsPadat.length > 0) {
-                jobsPadat.forEach(job => txt += `   - ${job}\n`);
-            } else {
-                txt += `   - -\n`;
-            }
-        } else { 
-            txt += `1. -\n`; 
-        }
-        txt += `└ _Total Petugas: ${staffCount}_\n\n`;
-        txt += `───────────────────\n\n`;
-        
-        if(getVal('rencanaTindakan')) {
-            txt += `*RENCANA TINDAKAN UMUM*\n${formatPaste(getVal('rencanaTindakan'))}\n\n`;
-        }
-        txt += `═══════════════════\n`;
-        txt += `Dikirim oleh: *${getVal('pengirim2')}*`;
-    } 
-    else if(slideNum === 3) {
-        txt += `*PERENCANAAN TINDAKAN PASIEN HD*\n`;
-        txt += `*Tanggal: ${formatDate(getVal('tanggal3'))}*\n`;
-        txt += `═══════════════════\n\n`;
-        
-        let adaPasien = false; let idx = 1;
-        for(let i=1; i<=patientCount; i++) {
-            let card = document.getElementById(`patientCard-${i}`);
-            if(card) {
-                let nama = getVal(`namaPasienPlan-${i}`); let rencana = getVal(`rencanaPasien-${i}`);
-                if(nama) {
-                    adaPasien = true;
-                    txt += `${idx}. *${nama}*\n`;
-                    txt += `   Rencana: \n`;
-                    if(rencana) {
-                        rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => {
-                            txt += `   - ${r}\n`;
-                        });
-                    } else {
-                        txt += `   - -\n`;
-                    }
-                    txt += `\n`;
-                    idx++;
-                }
-            }
-        }
-        if(!adaPasien) txt += "Tidak ada pasien yang diinput.\n";
-        else txt += `└ _Total Pasien: ${idx - 1}_\n\n`;
-        
-        txt += `═══════════════════\n`;
-        txt += `Dikirim oleh: *${getVal('pengirim3')}*`;
     }
-    else if(slideNum === 4) {
-        txt += `*LAPORAN BED KOSONG HD*\n`;
-        txt += `*Tanggal: ${formatDate(getVal('tanggal4'))}*\n`;
-        txt += `═══════════════════\n\n`;
-        
-        txt += `1. *TIM 1 (Shift 1):*\n${formatPaste(getVal('bedKosongT1S1'))}\n\n`;
-        txt += `───────────────────\n\n`;
-        txt += `2. *TIM 1 (Shift 2):*\n${formatPaste(getVal('bedKosongT1S2'))}\n\n`;
-        txt += `───────────────────\n\n`;
-        txt += `3. *TIM 1 (Shift 3):*\n${formatPaste(getVal('bedKosongT1S3'))}\n\n`;
-        txt += `───────────────────\n\n`;
-        txt += `4. *TIM 2 (Shift 1):*\n${formatPaste(getVal('bedKosongT2S1'))}\n\n`;
-        txt += `───────────────────\n\n`;
-        txt += `5. *TIM 2 (Shift 2):*\n${formatPaste(getVal('bedKosongT2S2'))}\n\n`;
-        txt += `───────────────────\n\n`;
-        txt += `6. *TIM 2 (Shift 3):*\n${formatPaste(getVal('bedKosongT2S3'))}\n\n`;
-        
-        if(getVal('keteranganBed')) { 
-            txt += `───────────────────\n\n`;
-            txt += `*Keterangan:*\n${formatPaste(getVal('keteranganBed'))}\n\n`; 
+    if(ruangCount === 0) ruangText = "-\n";
+    txt += `*Ruangan:*\n${ruangText}`;
+    txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`;
+    txt += `───────────────────\n\n`;
+
+    // 4. Perencanaan Tindakan Pasien
+    txt += `*PERENCANAAN TINDAKAN PASIEN*\n`;
+    let adaPasien = false; let pidx = 1;
+    for(let i=1; i<=patientCount; i++) {
+        let card = document.getElementById(`patientCard-${i}`);
+        if(card) {
+            let nama = getVal(`namaPasienPlan-${i}`); let rencana = getVal(`rencanaPasien-${i}`);
+            if(nama) {
+                adaPasien = true;
+                txt += `${pidx}. *${nama}*\n`;
+                txt += `   Rencana: \n`;
+                if(rencana) {
+                    rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => {
+                        txt += `   - ${r}\n`;
+                    });
+                } else { txt += `   - -\n`; }
+                txt += `\n`;
+                pidx++;
+            }
         }
-        txt += `═══════════════════\n`;
-        txt += `Dikirim oleh: *${getVal('pengirim4')}*`;
     }
+    if(!adaPasien) txt += "Tidak ada pasien yang diinput.\n";
+    txt += `\n───────────────────\n\n`;
+
+    // 5. Monitoring Pasien HD
+    txt += `*MONITORING PASIEN HD*\n`;
+    let mCount = 0;
+    for(let i=1; i<=monRowCount; i++) {
+        let row = document.getElementById(`mon_row_${i}`);
+        if(row) {
+            let nama = getVal(`mon_nama_${i}`);
+            if(nama) {
+                mCount++;
+                txt += `${mCount}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`;
+                txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`;
+                txt += `   UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`;
+                txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`;
+                if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`;
+                txt += `\n`;
+            }
+        }
+    }
+    if(mCount === 0) txt += "Tidak ada data monitoring terinput.\n";
+    txt += `\n───────────────────\n\n`;
+
+    // 6. Masalah & Sisa Alat
+    txt += `*MASALAH & INVENTARIS*\n`;
+    let mPasien = getVal('masalahPasien');
+    txt += `- Pasien: \n`;
+    if(mPasien) mPasien.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`);
+    else txt += `   > -\n`;
+    let mMesin = getVal('masalahMesin');
+    txt += `- Mesin/Alat: \n`;
+    if(mMesin) mMesin.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`);
+    else txt += `   > -\n`;
+    txt += `\n`;
+    txt += `*SISA ALAT:*\n`;
+    txt += `- HF 70: ${getVal('hf70') || '0'} | HF 90: ${getVal('hf90') || '0'} | HF 110: ${getVal('hf110') || '0'}\n`;
+    txt += `- HF 130: ${getVal('hf130') || '0'} | HF 150: ${getVal('hf150') || '0'} | HF 170: ${getVal('hf170') || '0'}\n`;
+    txt += `- GD Stick: ${getVal('gdStick') || '-'} | Sisa Bed: ${getVal('sisaBed') || '-'}\n`;
+    txt += `\n═══════════════════\n`;
+    
+    // 7. Pengirim (Tanda Tangan Bawah)
+    txt += `Dikirim oleh: *${getVal('pengirim1')}*\n\n\n`;
+    txt += `Mengetahui,\n\n\n\n( ${getVal('pengirim1')} )\n`;
+    txt += `Pelapor Harian`;
+    
     return txt;
 }
 
-function kirimWA(slideNum) {
-    if(getVal(`pengirim${slideNum}`) === "") {
-        alert("❌ Nama Pengirim wajib diisi!"); switchTab(slideNum);
-        document.getElementById(`pengirim${slideNum}`).focus(); return;
+function kirimWA() {
+    if(getVal('pengirim1') === "") {
+        alert("❌ Nama Pengirim wajib diisi!"); switchTab(1);
+        document.getElementById('pengirim1').focus(); return;
     }
-    const txt = buildReport(slideNum);
+    const txt = buildReport();
     const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
     window.open(waUrl, '_blank');
 }
 
-function cetakPDF(slideNum) {
-    if(getVal(`pengirim${slideNum}`) === "") {
-        alert("❌ Nama Pengirim wajib diisi!"); switchTab(slideNum); return;
+function cetakPDF() {
+    if(getVal('pengirim1') === "") {
+        alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); return;
     }
-    document.getElementById('printContent').innerText = buildReport(slideNum);
+    document.getElementById('printContent').innerText = buildReport();
     window.print();
 }
 
-function resetData(tabNum = 1) {
-    if(confirm("Yakin mereset SEMUA data di semua halaman?")) {
+function resetData() {
+    if(confirm("Yakin mereset SEMUA data di halaman laporan harian?")) {
         document.querySelectorAll('input[type="text"], textarea, input[type="date"], input[type="number"]').forEach(el => {
             el.value = ""; if(el.type === 'number') el.value = 0;
         });
@@ -1321,7 +1155,11 @@ function resetData(tabNum = 1) {
         document.getElementById('patientPlanContainer').innerHTML = "";
         patientCount = 0; tambahPasien();
         
-        switchTab(tabNum);
+        document.getElementById('monitoringBody').innerHTML = "";
+        monRowCount = 0; 
+        for(let i=0; i<5; i++) { addMonitorRow(); }
+        
+        switchTab(1);
     }
 }
 </script>
