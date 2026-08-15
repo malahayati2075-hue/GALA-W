@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GALA-W++ - Laporan Harian Hemodialisis</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <style>
         :root {
             --primary: #0d9488;
@@ -12,7 +15,7 @@
             --secondary: #0284c7;
             --accent: #f43f5e;
             --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #f0fdfa 50%, #fef2f2 100%);
-            --card-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.85);
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
@@ -23,6 +26,8 @@
             --ri-white: #ffffff;
             --arema-blue: #0d47a1;
             --drive-blue: #4285F4;
+            --shadow-dark: rgba(0, 0, 0, 0.08);
+            --shadow-light: rgba(255, 255, 255, 0.95);
         }
 
         * {
@@ -43,13 +48,14 @@
         .container {
             max-width: 750px;
             margin: 20px auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             min-height: 95vh;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.08);
-            border-radius: 24px;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.08), -8px -8px 20px rgba(255,255,255,0.9);
+            border-radius: 32px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.8);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         .app-header {
@@ -63,25 +69,20 @@
             justify-content: space-between;
             color: #fff;
             overflow: hidden;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
         }
         
         .app-header::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(13, 71, 161, 0.95) 100%);
+            background: linear-gradient(to bottom, rgba(13, 71, 161, 0.3) 0%, rgba(0,0,0,0.4) 40%, rgba(13, 71, 161, 0.9) 100%);
             z-index: 1;
         }
 
         .header-top-bar {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(8px);
+            position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: rgba(0,0,0,0.2); backdrop-filter: blur(8px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
@@ -91,49 +92,30 @@
 
         .prayer-times {
             text-align: right; font-size: 0.7rem; line-height: 1.5;
-            background: rgba(255,255,255,0.15); padding: 8px 12px;
-            border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); max-width: 200px;
+            background: rgba(255,255,255,0.15); padding: 8px 12px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2); max-width: 200px;
         }
         .prayer-times .loc { font-weight: 700; color: #fff; margin-bottom: 2px; display: block; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2px; }
         .prayer-times span { font-weight: 700; color: #ffe53b; }
 
         .sheet-header-data {
-            position: relative;
-            z-index: 2;
-            padding: 8px 15px;
-            background: rgba(0,0,0,0.25);
-            backdrop-filter: blur(4px);
-            text-align: center;
-            font-size: 0.7rem;
-            line-height: 1.5;
-            color: #fff;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            overflow-x: auto;
-            white-space: nowrap;
-            margin-bottom: 10px;
+            position: relative; z-index: 2; padding: 8px 15px; background: rgba(0,0,0,0.25); backdrop-filter: blur(4px);
+            text-align: center; font-size: 0.7rem; line-height: 1.5; color: #fff;
+            border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto; white-space: nowrap; margin-bottom: 10px;
         }
-        .sheet-header-data span {
-            display: inline-block;
-            margin: 0 8px;
-            font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-        }
-        .sheet-header-data b {
-            color: #ffe53b;
-            margin-left: 3px;
-        }
+        .sheet-header-data span { display: inline-block; margin: 0 8px; font-weight: 600; }
+        .sheet-header-data b { color: #ffe53b; margin-left: 3px; }
 
         .header-content { position: relative; z-index: 2; text-align: center; padding: 20px; margin-bottom: 10px; }
         
         .app-header h1 {
             margin: 0; font-size: 3rem; font-weight: 900; letter-spacing: 3px; color: #ffffff;
-            display: inline-block;
-            animation: floatGALA-W++ 3s ease-in-out infinite, glowGALA-W++ 4s ease-in-out infinite;
+            display: inline-block; animation: floatGALA 3s ease-in-out infinite, glowGALA 4s ease-in-out infinite;
         }
 
-        @keyframes floatGALA-W+ { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        @keyframes glowGALA-W+ {
+        @keyframes floatGALA { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes glowGALA {
             0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0,0,0,0.5); }
             50% { text-shadow: 0 0 25px rgba(20, 184, 166, 0.9), 0 0 10px rgba(255, 255, 255, 0.8), 0 4px 15px rgba(0,0,0,0.5); }
         }
@@ -141,39 +123,26 @@
         .app-header p { margin: 10px 0 0 0; font-size: 0.9rem; opacity: 0.95; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
 
         .nav-header {
-            display: flex; background: #fff; padding: 12px; gap: 10px;
-            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 10;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            display: flex; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); padding: 12px; gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.4); position: sticky; top: 0; z-index: 10;
         }
         .tab-btn {
-            flex: 1; background: linear-gradient(145deg, #ffffff, #eef2f7);
-            border: 1px solid rgba(0,0,0,0.05); padding: 12px 5px;
-            font-size: 0.75rem; font-weight: 700; color: var(--text-muted); cursor: pointer;
-            border-radius: 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.08), -4px -4px 10px rgba(255,255,255,0.9);
+            flex: 1; background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.6);
+            padding: 12px 5px; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); cursor: pointer;
+            border-radius: 16px; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; gap: 8px;
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -6px -6px 12px rgba(255,255,255,0.9);
         }
         .tab-btn i { 
-            font-size: 1.3rem; font-style: normal; 
-            background: linear-gradient(145deg, #f1f5f9, #ffffff);
-            width: 42px; height: 42px; border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; font-style: normal; background: linear-gradient(145deg, #e2e8f0, #ffffff);
+            width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
             box-shadow: inset 2px 2px 5px #d1d5db, inset -2px -2px 5px #ffffff;
-            transition: all 0.3s ease;
         }
         .tab-btn.active {
             background: linear-gradient(135deg, var(--ri-red) 0%, var(--ri-white) 20%, var(--ri-white) 30%, var(--arema-blue) 35%, #1976d2 100%);
-            color: #fff; 
-            box-shadow: 6px 6px 16px rgba(13, 71, 161, 0.35), -4px -4px 12px rgba(255,255,255,0.9);
-            border: 1px solid rgba(255,255,255,0.4);
-            transform: translateY(-4px);
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            color: #fff; box-shadow: 8px 8px 15px rgba(13, 71, 161, 0.3), -4px -4px 10px rgba(255,255,255,0.9);
+            border: 1px solid rgba(255,255,255,0.4); transform: translateY(-4px);
         }
-        .tab-btn.active i {
-            background: rgba(255,255,255,0.25);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.4);
-            color: #fff;
-        }
+        .tab-btn.active i { background: rgba(255,255,255,0.25); box-shadow: 0 4px 8px rgba(0,0,0,0.2); color: #fff; }
 
         .page { padding: 30px; display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
@@ -181,109 +150,47 @@
 
         .section-title { display: flex; align-items: center; gap: 12px; margin-top: 30px; margin-bottom: 15px; }
         .section-title .icon-box {
-            width: 45px; height: 45px; background: #ccfbf1; color: var(--primary);
-            border-radius: 14px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; box-shadow: 0 4px 8px rgba(13, 148, 136, 0.15);
+            width: 45px; height: 45px; background: #fff; color: var(--primary); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+            box-shadow: 6px 6px 12px rgba(13, 148, 136, 0.15), -4px -4px 10px rgba(255,255,255,0.8);
         }
         .section-title h2 { font-size: 1.1rem; margin: 0; color: var(--text-main); font-weight: 800; }
 
         .main-title-3d {
             background: linear-gradient(135deg, var(--ri-red) 0%, #e53935 15%, var(--ri-white) 25%, var(--ri-white) 30%, var(--arema-blue) 35%, #1976d2 100%);
-            border-radius: 18px;
-            padding: 22px 20px;
-            box-shadow: 0 12px 28px rgba(13, 71, 161, 0.25), inset 0 2px 5px rgba(255,255,255,0.6), inset 0 -4px 10px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.4);
-            position: relative;
-            overflow: hidden;
-            margin-top: 10px;
+            border-radius: 18px; padding: 22px 20px;
+            box-shadow: 12px 12px 24px rgba(13, 71, 161, 0.25), -4px -4px 10px rgba(255,255,255,0.8), inset 0 2px 5px rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.4); position: relative; overflow: hidden; margin-top: 10px;
         }
-        .main-title-3d .icon-box {
-            background: rgba(255,255,255,0.25);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.4);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .main-title-3d h2 {
-            color: #ffffff;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
-            font-size: 1.3rem;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-        }
+        .main-title-3d .icon-box { background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2); box-shadow: none; }
+        .main-title-3d h2 { color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
         
         .waving-flag {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            font-size: 3rem;
-            font-weight: 900;
-            font-style: italic;
-            color: #ffffff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 85px;
-            height: 60px;
-            background: linear-gradient(to bottom, #c62828 50%, #ffffff 50%);
-            border-radius: 2px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-            z-index: 0;
-            transform-origin: left center;
-            animation: flagWave 2.5s ease-in-out infinite;
-            overflow: hidden;
+            position: absolute; right: 20px; top: 50%; font-size: 3rem; font-weight: 900; font-style: italic;
+            color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
+            width: 85px; height: 60px; background: linear-gradient(to bottom, #c62828 50%, #ffffff 50%); border-radius: 2px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4); z-index: 0; transform-origin: left center; animation: flagWave 2.5s ease-in-out infinite; overflow: hidden;
         }
-        .waving-flag::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: -10px;
-            bottom: -10px;
-            width: 5px;
-            background: linear-gradient(to right, #555, #999, #555);
-            border-radius: 2px;
-            z-index: 1;
-        }
-        .waving-flag::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%, rgba(0,0,0,0.2) 40%, transparent 60%, rgba(0,0,0,0.2) 80%, transparent 100%);
-            background-size: 60px 100%;
-            animation: flagShade 2.5s linear infinite;
-            z-index: 1;
-        }
+        .waving-flag::before { content: ''; position: absolute; left: -6px; top: -10px; bottom: -10px; width: 5px; background: linear-gradient(to right, #555, #999, #555); border-radius: 2px; z-index: 1; }
+        .waving-flag::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%, rgba(0,0,0,0.2) 40%, transparent 60%, rgba(0,0,0,0.2) 80%, transparent 100%); background-size: 60px 100%; animation: flagShade 2.5s linear infinite; z-index: 1; }
         .waving-flag span { position: relative; z-index: 2; }
 
-        @keyframes flagWave {
-            0%, 100% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); }
-            25% { transform: translateY(-50%) skewY(6deg) perspective(100px) rotateY(-10deg); }
-            50% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); }
-            75% { transform: translateY(-50%) skewY(-6deg) perspective(100px) rotateY(10deg); }
-        }
-        @keyframes flagShade {
-            0% { background-position: 0 0; }
-            100% { background-position: 60px 0; }
-        }
-
-        @media (max-width: 480px) {
-            .waving-flag { width: 65px; height: 45px; font-size: 2rem; }
-        }
+        @keyframes flagWave { 0%, 100% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); } 25% { transform: translateY(-50%) skewY(6deg) perspective(100px) rotateY(-10deg); } 50% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); } 75% { transform: translateY(-50%) skewY(-6deg) perspective(100px) rotateY(10deg); } }
+        @keyframes flagShade { 0% { background-position: 0 0; } 100% { background-position: 60px 0; } }
+        @media (max-width: 480px) { .waving-flag { width: 65px; height: 45px; font-size: 2rem; } }
 
         .main-title-3d > .icon-box, .main-title-3d > h2 { position: relative; z-index: 3; }
 
         label { display: block; font-weight: 600; margin-top: 12px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
 
         input[type="text"], input[type="date"], textarea, select {
-            width: 100%; padding: 14px; border: 1.5px solid var(--border-color);
-            border-radius: 12px; font-size: 0.95rem; background: var(--input-bg);
-            transition: all 0.2s ease-in-out; font-family: inherit; color: var(--text-main);
+            width: 100%; padding: 14px; border: 1.5px solid rgba(226, 232, 240, 0.8); border-radius: 14px; font-size: 0.95rem;
+            background: rgba(248, 250, 252, 0.8); transition: all 0.2s ease-in-out; font-family: inherit; color: var(--text-main);
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
         }
         input:focus, textarea:focus, select:focus {
             border-color: var(--primary-light); background: #fff; outline: none;
-            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1), inset 2px 2px 5px rgba(0,0,0,0.02);
         }
         textarea { min-height: 100px; resize: vertical; line-height: 1.5; }
 
@@ -291,77 +198,85 @@
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
         
         .member-card, .job-box, .patient-card {
-            border: 1.5px solid var(--border-color); border-radius: 16px; padding: 15px;
-            background: #fff; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            border: 1px solid rgba(255,255,255,0.6); border-radius: 16px; padding: 15px;
+            background: rgba(255, 255, 255, 0.6); margin-bottom: 12px;
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.04), -4px -4px 10px rgba(255,255,255,0.8);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .member-card:hover, .job-box:hover, .patient-card:hover {
-            transform: translateY(-2px); border-color: var(--primary-light); box-shadow: 0 8px 16px rgba(13, 148, 136, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 16px rgba(13, 148, 136, 0.1), -4px -4px 10px rgba(255,255,255,0.9);
         }
-        .member-card { background: var(--input-bg); }
-        .member-card:hover { background: #fff; }
         
         .bed-range { display: flex; justify-content: space-between; gap: 15px; margin-top: 10px; }
         .small-stepper {
-            flex: 1; display: flex; flex-direction: column; align-items: center;
-            background: #fff; border: 1px solid #e2e8f0; padding: 8px; border-radius: 12px;
+            flex: 1; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.7); 
+            border: 1px solid #e2e8f0; padding: 8px; border-radius: 12px;
         }
         .small-stepper .stepper-label { font-size: 0.75rem; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
         .small-stepper .stepper-controls { display: flex; align-items: center; gap: 8px; }
         .stepper-btn {
-            width: 30px; height: 30px; border: none; background: var(--primary); color: #fff;
-            border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.1s;
+            width: 30px; height: 30px; border: none; background: var(--primary); color: #fff; border-radius: 8px; 
+            font-size: 0.9rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; 
+            transition: background 0.2s, transform 0.1s; box-shadow: 0 3px 0 #0f766e;
         }
         .stepper-btn:hover { background: var(--primary-light); }
-        .stepper-btn:active { transform: scale(0.9); }
+        .stepper-btn:active { transform: translateY(3px); box-shadow: 0 0 0 #0f766e; }
         .stepper-input { width: 45px; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 0; font-size: 0.95rem; font-weight: 600; background: #fff; }
 
         .stepper-item {
-            display: flex; flex-direction: column; align-items: center;
-            background: #fff; border: 1px solid var(--border-color); padding: 12px; border-radius: 14px; transition: all 0.2s;
+            display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(226, 232, 240, 0.5); padding: 12px; border-radius: 14px; transition: all 0.2s;
         }
-        .stepper-item:hover { border-color: var(--secondary); }
-        .stepper-item .stepper-btn { background: var(--secondary); width: 32px; height: 32px; font-size: 1rem; }
+        .stepper-item:hover { border-color: var(--secondary); box-shadow: 0 5px 15px rgba(2, 132, 199, 0.1); }
+        .stepper-item .stepper-btn { background: var(--secondary); width: 32px; height: 32px; font-size: 1rem; box-shadow: 0 3px 0 #075985; }
         .stepper-item .stepper-btn:hover { background: #0284c7; }
 
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .check-item {
-            display: flex; align-items: center; background: var(--input-bg); border: 1px solid var(--border-color);
+            display: flex; align-items: center; background: rgba(248, 250, 252, 0.8); border: 1px solid var(--border-color);
             padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: 500; transition: all 0.2s;
         }
         .check-item:hover { background: #e0f2fe; border-color: var(--secondary); color: var(--secondary); }
         .check-item input { width: auto; margin-right: 6px; accent-color: var(--primary); }
 
         .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 35px; }
-        /* CSS Tambahan Untuk 3 Tombol */
         .btn-group-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 35px; }
-        @media (max-width: 480px) {
-            .btn-group-3 { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 480px) { .btn-group-3 { grid-template-columns: 1fr; } }
 
         .btn {
-            border: none; padding: 16px; border-radius: 14px; font-size: 1rem; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none; padding: 16px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; gap: 10px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 0 rgba(0,0,0,0.15), 0 8px 15px rgba(0,0,0,0.1);
         }
-        .btn:active { transform: scale(0.98); }
-        .btn-wa { background: var(--primary); color: #fff; box-shadow: 0 6px 18px rgba(13, 148, 136, 0.3); }
-        .btn-wa:hover { background: var(--primary-light); box-shadow: 0 8px 22px rgba(13, 148, 136, 0.4); transform: translateY(-2px); }
-        .btn-pdf { background: #fff; color: var(--secondary); border: 1.5px solid var(--secondary); }
-        .btn-pdf:hover { background: #f0f9ff; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15); }
-        /* Tombol Drive Baru */
-        .btn-drive { background: var(--drive-blue); color: #fff; box-shadow: 0 6px 18px rgba(66, 133, 244, 0.3); }
-        .btn-drive:hover { background: #3367D6; box-shadow: 0 8px 22px rgba(66, 133, 244, 0.4); transform: translateY(-2px); }
+        .btn:active { transform: translateY(5px); box-shadow: 0 0 0 rgba(0,0,0,0.15), 0 2px 5px rgba(0,0,0,0.1); }
         
-        .btn-add { background: #f0f9ff; color: var(--secondary); border: 1.5px dashed var(--secondary); margin-bottom: 15px; width: 100%; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;}
-        .btn-add:hover { background: #e0f2fe; }
+        .btn-wa { background: var(--primary); color: #fff; box-shadow: 0 5px 0 #0f766e, 0 8px 15px rgba(13, 148, 136, 0.3); }
+        .btn-wa:hover { background: var(--primary-light); }
         
-        .btn-reset { background: #fff1f2; color: var(--accent); margin-top: 15px; width: 100%; padding: 12px; border: 1px solid #fecdd3; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-pdf { background: #fff; color: var(--secondary); border: 1.5px solid var(--secondary); box-shadow: 0 5px 0 #0284c7; }
+        .btn-pdf:hover { background: #f0f9ff; }
+        
+        .btn-drive { background: var(--drive-blue); color: #fff; box-shadow: 0 5px 0 #3367D6, 0 8px 15px rgba(66, 133, 244, 0.3); }
+        .btn-drive:hover { background: #3367D6; }
+        
+        .btn-add { 
+            background: rgba(240, 249, 255, 0.8); color: var(--secondary); border: 1.5px dashed var(--secondary); 
+            margin-bottom: 15px; width: 100%; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
+        }
+        .btn-add:hover { background: #e0f2fe; border-style: solid; }
+        
+        .btn-reset { 
+            background: rgba(255, 241, 242, 0.8); color: var(--accent); margin-top: 15px; width: 100%; padding: 12px; 
+            border: 1px solid #fecdd3; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; 
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
+        }
         .btn-reset:hover { background: #ffe4e6; }
 
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
         .action-btn {
-            background: #f8fafc; border: 1px solid var(--border-color); color: var(--text-main);
+            background: rgba(248, 250, 252, 0.8); border: 1px solid rgba(226, 232, 240, 0.8); color: var(--text-main);
             padding: 10px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; text-align: center; font-weight: 600; transition: all 0.2s;
         }
         .action-btn:hover { background: #e0f2fe; border-color: var(--secondary); color: var(--secondary); transform: scale(1.02); }
@@ -373,66 +288,19 @@
         .btn-clear-rencana { background: #fff1f2; color: var(--accent); border: 1px solid #fecdd3; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
 
         .table-container {
-            overflow-x: auto;
-            margin-top: 15px;
-            margin-bottom: 20px;
-            border: 1.5px solid var(--border-color);
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            background: #fff;
+            overflow-x: auto; margin-top: 15px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.6); border-radius: 14px;
+            background: rgba(255,255,255,0.6); box-shadow: 6px 6px 12px rgba(0,0,0,0.04), -4px -4px 10px rgba(255,255,255,0.8);
         }
-        .monitoring-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            min-width: 1000px; 
-        }
-        .monitoring-table th {
-            background: var(--primary);
-            color: #fff;
-            padding: 10px 5px;
-            font-weight: 700;
-            border: 1px solid #0f766e;
-            text-align: center;
-            white-space: nowrap;
-            position: sticky;
-            top: 0;
-        }
-        .monitoring-table td {
-            border: 1px solid var(--border-color);
-            padding: 0;
-        }
-        .monitoring-table input, .monitoring-table select {
-            width: 100%;
-            border: none;
-            background: transparent;
-            padding: 8px 5px;
-            font-size: 0.8rem;
-            text-align: center;
-            font-family: inherit;
-            color: var(--text-main);
-            border-radius: 0;
-        }
-        .monitoring-table input:focus, .monitoring-table select:focus {
-            outline: 2px solid var(--primary-light);
-            background: #f0fdfa;
-        }
+        .monitoring-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 1000px; }
+        .monitoring-table th { background: var(--primary); color: #fff; padding: 10px 5px; font-weight: 700; border: 1px solid #0f766e; text-align: center; white-space: nowrap; position: sticky; top: 0; }
+        .monitoring-table td { border: 1px solid var(--border-color); padding: 0; background: rgba(255,255,255,0.5); }
+        .monitoring-table input, .monitoring-table select { width: 100%; border: none; background: transparent; padding: 8px 5px; font-size: 0.8rem; text-align: center; font-family: inherit; color: var(--text-main); }
+        .monitoring-table input:focus, .monitoring-table select:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
 
-        /* CSS UNTUK STATISTIK */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
         .stat-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: #fff;
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
-            transition: transform 0.2s;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: #fff; padding: 20px; border-radius: 16px;
+            text-align: center; box-shadow: 8px 8px 15px rgba(13, 148, 136, 0.2), -4px -4px 10px rgba(255,255,255,0.8); transition: transform 0.2s;
         }
         .stat-card:hover { transform: translateY(-3px); }
         .stat-value { font-size: 2.5rem; font-weight: 900; margin-bottom: 5px; line-height: 1; }
@@ -440,12 +308,7 @@
         .stat-loading { text-align: center; color: var(--text-muted); padding: 40px 0; grid-column: 1/-1; }
 
         .print-area { display: none; padding: 40px; }
-        @media print {
-            body { background: #fff; }
-            .container { display: none; }
-            .print-area { display: block; }
-            .print-area pre { white-space: pre-wrap; font-family: monospace; }
-        }
+        @media print { body { background: #fff; } .container { display: none; } .print-area { display: block; } .print-area pre { white-space: pre-wrap; font-family: monospace; } }
     </style>
 </head>
 <body>
@@ -478,7 +341,6 @@
         <button class="tab-btn" onclick="switchTab(2)"><i>📊</i><span>Statistik Pasien</span></button>
     </div>
 
-    <!-- SLIDE 1: LAPORAN HARIAN HEMODIALISIS (GABUNGAN) -->
     <div id="slide1" class="page active">
         <div class="section-title main-title-3d">
             <div class="waving-flag"><span>81</span></div>
@@ -543,18 +405,8 @@
             <table class="monitoring-table" id="monitoringTable">
                 <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Gol Darah</th>
-                        <th>TB</th>
-                        <th>BB</th>
-                        <th>Tekanan Darah</th>
-                        <th>UFG</th>
-                        <th>Heparin</th>
-                        <th>EPO/FE</th>
-                        <th>Kt/V</th>
-                        <th>Transfusi</th>
-                        <th>Keterangan</th>
+                        <th>Nama</th><th>Jenis Kelamin</th><th>Gol Darah</th><th>TB</th><th>BB</th><th>Tekanan Darah</th>
+                        <th>UFG</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>Transfusi</th><th>Keterangan</th>
                     </tr>
                 </thead>
                 <tbody id="monitoringBody"></tbody>
@@ -566,7 +418,7 @@
         </div>
 
         <div class="section-title">
-            <div class="icon-box" style="background:#fff1f2; color:var(--accent);">⚠️</div>
+            <div class="icon-box" style="color:var(--accent);">⚠️</div>
             <h2>Masalah & Inventaris</h2>
         </div>
         <div class="grid-2">
@@ -593,7 +445,6 @@
         <button class="btn-reset" onclick="resetData()"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
     </div>
 
-    <!-- SLIDE 2: STATISTIK PASIEN MALAHAYATI -->
     <div id="slide2" class="page">
         <div class="section-title main-title-3d">
             <div class="waving-flag"><span>81</span></div>
@@ -618,41 +469,26 @@
 </div>
 
 <script>
-// === URL WEB APP APPS SCRIPT ===
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxnf5jfPvczM52a6nNSG4yeczJjWPT0Gqb3UGCzUFBMKvryr5grlEoMOJGPhDIVziWX/exec";
-const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwpWv-Wj5Vb5Dn9QiRG3Z14eAaar1uEHEoCcn1dnSp-XXuo8DFPPk4LEBQyfko_wEGrAA/exec";
-const DRIVE_LINK = "https://drive.google.com/drive/folders/1MxucPivE-fLBoq7NgwdmLIMpsTd1ajxn?usp=sharing";
-const DRIVE_PASS = "HDmalahayat!2075";
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzcANOCVxHhn2FtHMS_3GrJM1HbWF1461bLxWGbIj7J-uPUgtE9murlM54MHsmwRURF/exec";
+const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwpWv-Wj5Vb5Dn9QiRG3Z14eAaar1uEHEoCcn1dnSp-XXuo8DFPPk4LEBQyfko_wEGrAA.exec";
 
-// === FETCH DATA DARI SPREADSHEET KE HEADER ===
 async function fetchSheetData() {
     try {
         const response = await fetch(SHEET_API_URL);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
         const result = await response.json();
         if(result.data && result.data.length > 0) {
             let html = '';
             result.data.forEach(item => {
                 let parts = item.split(": ");
-                if(parts.length === 2) {
-                    html += `<span>${parts[0]}: <b>${parts[1]}</b></span>`;
-                } else {
-                    html += `<span>${item}</span>`;
-                }
+                if(parts.length === 2) html += `<span>${parts[0]}: <b>${parts[1]}</b></span>`;
+                else html += `<span>${item}</span>`;
             });
             document.getElementById('sheetHeaderData').innerHTML = html;
-        } else {
-            document.getElementById('sheetHeaderData').innerHTML = 'Belum ada data tersimpan di baris Spreadsheet';
         }
-    } catch (e) {
-        document.getElementById('sheetHeaderData').innerHTML = `<span style="color:#ffcccc;">Gagal memuat: ${e.message}</span>`;
-    }
+    } catch (e) { document.getElementById('sheetHeaderData').innerHTML = `<span>Gagal memuat</span>`; }
 }
 fetchSheetData();
 
-// === JAM REALTIME ===
 function updateClock() {
     const now = new Date();
     const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -664,20 +500,16 @@ function updateClock() {
 }
 setInterval(updateClock, 1000); updateClock();
 
-// === JADWAL SHOLAT ===
 async function fetchPrayerTimes() {
     try {
         const response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Malang&country=Indonesia&method=20');
         const data = await response.json();
         const timings = data.data.timings; const fmt = (t) => t.substring(0, 5);
-        document.getElementById('prayerTimes').innerHTML = `<span class="loc">📍 Malang, Jawa Timur</span>Subuh: <span>${fmt(timings.Fajr)}</span> | Dzuhur: <span>${fmt(timings.Dhuhr)}</span><br>Ashar: <span>${fmt(timings.Asr)}</span> | Magrib: <span>${fmt(timings.Maghrib)}</span> | Isya: <span>${fmt(timings.Isha)}</span>`;
-    } catch (e) {
-        document.getElementById('prayerTimes').innerHTML = `<span class="loc">📍 Malang, Jawa Timur</span><span style="color:#ffcccc;">Gagal memuat jadwal</span>`;
-    }
+        document.getElementById('prayerTimes').innerHTML = `<span class="loc">📍 Malang</span>Subuh: <span>${fmt(timings.Fajr)}</span> | Dzuhur: <span>${fmt(timings.Dhuhr)}</span><br>Ashar: <span>${fmt(timings.Asr)}</span> | Magrib: <span>${fmt(timings.Maghrib)}</span> | Isya: <span>${fmt(timings.Isha)}</span>`;
+    } catch (e) {}
 }
 fetchPrayerTimes();
 
-// Generate Anggota Tim Dinamis (Fitur Enter)
 let memberCount = 0;
 function tambahAnggota(focusNew = true) {
     memberCount++;
@@ -685,28 +517,15 @@ function tambahAnggota(focusNew = true) {
     const card = document.createElement('div');
     card.className = 'member-card'; 
     card.id = `memberBox-${memberCount}`;
-    card.style.display = 'flex';
-    card.style.alignItems = 'center';
-    card.style.gap = '10px';
-    card.style.padding = '10px 15px';
-    
-    card.innerHTML = `
-        <input type="text" id="agt${memberCount}" placeholder="Nama Anggota Tim ${memberCount}" style="flex:1; margin:0;" onkeydown="handleEnterMember(event)">
-        <button class="delete-pasien" onclick="hapusAnggota(${memberCount})" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>
-    `;
+    card.style.display = 'flex'; card.style.alignItems = 'center'; card.style.gap = '10px'; card.style.padding = '10px 15px';
+    card.innerHTML = `<input type="text" id="agt${memberCount}" placeholder="Nama Anggota Tim ${memberCount}" style="flex:1; margin:0;" onkeydown="handleEnterMember(event)"><button class="delete-pasien" onclick="hapusAnggota(${memberCount})" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>`;
     container.appendChild(card);
     if(focusNew) document.getElementById(`agt${memberCount}`).focus();
 }
 function hapusAnggota(id) { document.getElementById(`memberBox-${id}`).remove(); }
-function handleEnterMember(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        tambahAnggota(true);
-    }
-}
-tambahAnggota(false); // Auto add 1 row
+function handleEnterMember(event) { if (event.key === "Enter") { event.preventDefault(); tambahAnggota(true); } }
+tambahAnggota(false); 
 
-// Generate Dialyzer
 const dialyzerContainer = document.getElementById('dialyzerContainer');
 let dialyzerHTML = '';
 [70, 90, 110, 130, 150, 170].forEach(size => {
@@ -714,76 +533,42 @@ let dialyzerHTML = '';
 });
 dialyzerContainer.innerHTML = dialyzerHTML;
 
-// Generate Job Desk Perawat Dinamis (Add Row)
 const jobList = ["kendali DL", "spreadsheet", "Laporan", "simrs", "verif box", "perawatan mesin", "DL lock", "persiapan priming", "scan upload", "kendali obat", "verif monitoring", "cek stok Order", "HF"];
 let perawatCount = 0;
-
 function tambahPerawat() {
     perawatCount++;
     const container = document.getElementById('perawatContainer');
     const card = document.createElement('div');
     card.className = 'job-box'; 
     card.id = `perawatBox-${perawatCount}`;
-    card.style.marginBottom = '12px';
-    
     let checkboxHTML = '';
-    jobList.forEach(job => {
-        checkboxHTML += `<label class="check-item"><input type="checkbox" value="${job}" class="job-perawat-${perawatCount}"> ${job}</label>`;
-    });
-
+    jobList.forEach(job => { checkboxHTML += `<label class="check-item"><input type="checkbox" value="${job}" class="job-perawat-${perawatCount}"> ${job}</label>`; });
     card.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <input type="text" id="perawat${perawatCount}" placeholder="Nama Perawat ${perawatCount}" style="flex:1; margin:0; margin-right:10px;">
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+            <input type="text" id="perawat${perawatCount}" placeholder="Nama Perawat ${perawatCount}" style="flex:1; margin:0;">
             <button class="delete-pasien" onclick="hapusPerawat(${perawatCount})" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>
         </div>
-        <div class="bed-range">
-            <div class="small-stepper">
-                <span class="stepper-label">Bed Dari</span>
-                <div class="stepper-controls">
-                    <button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_start', -1)">-</button>
-                    <input type="number" id="p_bed${perawatCount}_start" value="0" class="stepper-input">
-                    <button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_start', 1)">+</button>
-                </div>
-            </div>
-            <div class="small-stepper">
-                <span class="stepper-label">Bed Sampai</span>
-                <div class="stepper-controls">
-                    <button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_end', -1)">-</button>
-                    <input type="number" id="p_bed${perawatCount}_end" value="0" class="stepper-input">
-                    <button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_end', 1)">+</button>
-                </div>
-            </div>
-        </div>
-        <div class="checkbox-group" style="margin-top:10px;">${checkboxHTML}</div>
-    `;
+        <div class="bed-range"><div class="small-stepper"><span class="stepper-label">Bed Dari</span><div class="stepper-controls"><button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_start', -1)">-</button><input type="number" id="p_bed${perawatCount}_start" value="0" class="stepper-input"><button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_start', 1)">+</button></div></div><div class="small-stepper"><span class="stepper-label">Bed Sampai</span><div class="stepper-controls"><button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_end', -1)">-</button><input type="number" id="p_bed${perawatCount}_end" value="0" class="stepper-input"><button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_end', 1)">+</button></div></div></div>
+        <div class="checkbox-group" style="margin-top:10px;">${checkboxHTML}</div>`;
     container.appendChild(card);
 }
 function hapusPerawat(id) { document.getElementById(`perawatBox-${id}`).remove(); }
-tambahPerawat(); // Auto add 1 row on load
+tambahPerawat(); 
 
-// Pasien Ruangan
 let ruanganCount = 0;
 function tambahPasienRuang() {
     ruanganCount++;
     const container = document.getElementById('ruanganContainer');
     const card = document.createElement('div');
     card.className = 'patient-card'; card.id = `ruanganCard-${ruanganCount}`;
-    card.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <input type="text" id="namaPasienRuang-${ruanganCount}" placeholder="Nama / No RM / Ruangan" style="flex:1; margin-right:10px;">
-            <button class="delete-pasien" onclick="hapusPasienRuang(${ruanganCount})"><i class="fa-solid fa-circle-xmark"></i></button>
-        </div>
-        <textarea id="detailPasienRuang-${ruanganCount}" placeholder="Masukkan data kondisi pasien di sini (KU, TD, UF, QD, QB, Heparin, Lab, dll)..." style="min-height: 120px;"></textarea>
-    `;
+    card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><input type="text" id="namaPasienRuang-${ruanganCount}" placeholder="Nama / No RM / Ruangan" style="flex:1; margin-right:10px;"><button class="delete-pasien" onclick="hapusPasienRuang(${ruanganCount})"><i class="fa-solid fa-circle-xmark"></i></button></div><textarea id="detailPasienRuang-${ruanganCount}" placeholder="Masukkan data kondisi pasien di sini (KU, TD, UF, QD, QB, Heparin, Lab, dll)..." style="min-height: 120px;"></textarea>`;
     container.appendChild(card);
 }
 function hapusPasienRuang(id) { document.getElementById(`ruanganCard-${id}`).remove(); }
 tambahPasienRuang();
 
-// Kartu Tindakan Pasien
 let patientCount = 0;
 const tindakanOptions = ["ODC BTKV", "Poli Bedah TKV", "Poli Jantung", "Poli Urologi", "Radiologi", "Poli Saraf", "Transfusi", "Laborat", "Poli Anak", "Poli Kandungan", "Poli Mata"];
-
 function tambahPasien() {
     patientCount++;
     const container = document.getElementById('patientPlanContainer');
@@ -791,97 +576,37 @@ function tambahPasien() {
     card.className = 'patient-card'; card.id = `patientCard-${patientCount}`;
     let optionsHTML = '';
     tindakanOptions.forEach((opt, index) => { optionsHTML += `<div class="action-btn" onclick="addTindakan(${patientCount}, '${opt}')">${index+1}. ${opt}</div>`; });
-    card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><input type="text" id="namaPasienPlan-${patientCount}" placeholder="Nama Pasien" style="flex:1; margin-right:10px;"><button class="delete-pasien" onclick="hapusPasien(${patientCount})"><i class="fa-solid fa-circle-xmark"></i></button></div><div class="action-grid">${optionsHTML}</div><div class="rencana-tools"><label class="check-item" style="margin-top:0; background:#fff; border:none; padding-left:0;"><input type="checkbox" id="manualToggle-${patientCount}" onchange="toggleManual(${patientCount}, this.checked)"> Aktifkan Isi Manual</label><button class="btn-clear-rencana" onclick="clearRencana(${patientCount})"><i class="fa-solid fa-eraser"></i> Hapus Rencana</button></div><textarea id="rencanaPasien-${patientCount}" placeholder="Klik pilihan di atas, atau aktifkan isi manual untuk mengetik bebas..." style="margin-top:10px; background:#f8fafc;" readonly></textarea>`;
+    card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><input type="text" id="namaPasienPlan-${patientCount}" placeholder="Nama Pasien" style="flex:1; margin-right:10px;"><button class="delete-pasien" onclick="hapusPasien(${patientCount})"><i class="fa-solid fa-circle-xmark"></i></button></div><div class="action-grid">${optionsHTML}</div><div class="rencana-tools"><label class="check-item" style="margin-top:0; background:#fff; border:none; padding-left:0;"><input type="checkbox" id="manualToggle-${patientCount}" onchange="toggleManual(${patientCount}, this.checked)"> Aktifkan Isi Manual</label><button class="btn-clear-rencana" onclick="clearRencana(${patientCount})"><i class="fa-solid fa-eraser"></i> Hapus Rencana</button></div><textarea id="rencanaPasien-${patientCount}" placeholder="Klik pilihan di atas, atau aktifkan isi manual..." style="margin-top:10px; background:#f8fafc;" readonly></textarea>`;
     container.appendChild(card);
 }
-
-function addTindakan(id, text) {
-    let el = document.getElementById(`rencanaPasien-${id}`);
-    if(!el.readOnly) return; if(el.value.includes(text)) return;
-    el.value += (el.value ? ", " : "") + text;
-}
-
-function toggleManual(id, isChecked) {
-    let el = document.getElementById(`rencanaPasien-${id}`);
-    el.readOnly = !isChecked;
-    if(isChecked) { el.style.background = "#fff"; el.style.borderColor = "var(--secondary)"; el.focus(); el.placeholder = "Mode manual aktif. Silakan ketik bebas di sini..."; } 
-    else { el.style.background = "#f8fafc"; el.style.borderColor = "var(--border-color)"; el.placeholder = "Klik pilihan di atas, atau aktifkan isi manual untuk mengetik bebas..."; }
-}
-
+function addTindakan(id, text) { let el = document.getElementById(`rencanaPasien-${id}`); if(!el.readOnly) return; if(el.value.includes(text)) return; el.value += (el.value ? ", " : "") + text; }
+function toggleManual(id, isChecked) { let el = document.getElementById(`rencanaPasien-${id}`); el.readOnly = !isChecked; if(isChecked) { el.style.background = "#fff"; el.focus(); } else { el.style.background = "#f8fafc"; } }
 function clearRencana(id) { document.getElementById(`rencanaPasien-${id}`).value = ""; }
 function hapusPasien(id) { document.getElementById(`patientCard-${id}`).remove(); }
 tambahPasien();
 
-// === LOGIKA MONITORING ===
 let monRowCount = 0;
-
 function addMonitorRow() {
     monRowCount++;
     const monitorBody = document.getElementById('monitoringBody');
     const tr = document.createElement('tr');
     tr.id = `mon_row_${monRowCount}`;
-    tr.innerHTML = `
-        <td><div style="position: relative;"><input type="text" id="mon_nama_${monRowCount}" placeholder="Nama Pasien" autocomplete="off"></div></td>
-        <td><select id="mon_jk_${monRowCount}"><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td>
-        <td><select id="mon_goldar_${monRowCount}"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td>
-        <td><input type="text" id="mon_tb_${monRowCount}" placeholder="cm"></td>
-        <td><input type="text" id="mon_bb_${monRowCount}" placeholder="kg"></td>
-        <td><input type="text" id="mon_td_${monRowCount}" placeholder="120/80"></td>
-        <td><input type="text" id="mon_ufg_${monRowCount}" placeholder="cc"></td>
-        <td><input type="text" id="mon_heparin_${monRowCount}" placeholder="iu"></td>
-        <td><input type="text" id="mon_epo_${monRowCount}" placeholder="-"></td>
-        <td><input type="text" id="mon_ktv_${monRowCount}" placeholder="-"></td>
-        <td><select id="mon_transfusi_${monRowCount}"><option value="Tidak">Tidak</option><option value="Ada">Ada</option></select></td>
-        <td style="display: flex; align-items: center; justify-content: center; gap: 5px;"><input type="text" id="mon_ket_${monRowCount}" placeholder="Ket" style="flex:1;"><button class="delete-pasien" onclick="removeMonitorRow(${monRowCount})" style="border:none; background:transparent; cursor:pointer;"><i class="fa-solid fa-circle-xmark"></i></button></td>
-    `;
+    tr.innerHTML = `<td><div style="position: relative;"><input type="text" id="mon_nama_${monRowCount}" placeholder="Nama Pasien" autocomplete="off"></div></td><td><select id="mon_jk_${monRowCount}"><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td><td><select id="mon_goldar_${monRowCount}"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td><td><input type="text" id="mon_tb_${monRowCount}" placeholder="cm"></td><td><input type="text" id="mon_bb_${monRowCount}" placeholder="kg"></td><td><input type="text" id="mon_td_${monRowCount}" placeholder="120/80"></td><td><input type="text" id="mon_ufg_${monRowCount}" placeholder="cc"></td><td><input type="text" id="mon_heparin_${monRowCount}" placeholder="iu"></td><td><input type="text" id="mon_epo_${monRowCount}" placeholder="-"></td><td><input type="text" id="mon_ktv_${monRowCount}" placeholder="-"></td><td><select id="mon_transfusi_${monRowCount}"><option value="Tidak">Tidak</option><option value="Ada">Ada</option></select></td><td style="display: flex; align-items: center; justify-content: center; gap: 5px;"><input type="text" id="mon_ket_${monRowCount}" placeholder="Ket" style="flex:1;"><button class="delete-pasien" onclick="removeMonitorRow(${monRowCount})" style="border:none; background:transparent; cursor:pointer;"><i class="fa-solid fa-circle-xmark"></i></button></td>`;
     monitorBody.appendChild(tr);
     setupAutocomplete(`mon_nama_${monRowCount}`);
 }
-
-function removeMonitorRow(id) {
-    document.getElementById(`mon_row_${id}`).remove();
-}
-
+function removeMonitorRow(id) { document.getElementById(`mon_row_${id}`).remove(); }
 for(let i=0; i<5; i++) { addMonitorRow(); }
 
 let patientNames = [];
-
-async function fetchPatientNames() {
-    try {
-        const response = await fetch(MONITORING_API_URL);
-        const result = await response.json();
-        if(result.status === 'success' && result.data) {
-            patientNames = result.data;
-        }
-    } catch(e) {
-        console.error("Gagal memuat daftar pasien", e);
-    }
-}
-
+async function fetchPatientNames() { try { const response = await fetch(MONITORING_API_URL); const result = await response.json(); if(result.status === 'success' && result.data) patientNames = result.data; } catch(e) {} }
 function setupAutocomplete(inputId) {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-
+    const input = document.getElementById(inputId); if (!input) return;
     const list = document.createElement('div');
-    list.style.position = 'absolute';
-    list.style.left = '0';
-    list.style.top = '100%';
-    list.style.width = '100%';
-    list.style.maxHeight = '150px';
-    list.style.overflowY = 'auto';
-    list.style.backgroundColor = '#fff';
-    list.style.border = '1px solid var(--border-color)';
-    list.style.borderRadius = '8px';
-    list.style.boxShadow = '0 8px 16px rgba(0,0,0,0.15)';
-    list.style.zIndex = '1000';
-    list.style.display = 'none';
+    list.style.cssText = 'position:absolute;left:0;top:100%;width:100%;maxHeight:150px;overflowY:auto;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 8px 16px rgba(0,0,0,0.15);z-index:1000;display:none;';
     input.parentNode.appendChild(list);
-
     input.addEventListener('input', function() {
-        let val = this.value;
-        list.innerHTML = '';
-        if (!val) { list.style.display = 'none'; return; }
-        
+        let val = this.value; list.innerHTML = ''; if (!val) { list.style.display = 'none'; return; }
         let count = 0;
         for (let i = 0; i < patientNames.length; i++) {
             if (patientNames[i] && patientNames[i].toUpperCase().includes(val.toUpperCase())) {
@@ -889,135 +614,48 @@ function setupAutocomplete(inputId) {
                 let nameStr = patientNames[i];
                 let matchStart = nameStr.toUpperCase().indexOf(val.toUpperCase());
                 item.innerHTML = nameStr.substring(0, matchStart) + "<strong style='color:var(--primary);'>" + nameStr.substring(matchStart, matchStart + val.length) + "</strong>" + nameStr.substring(matchStart + val.length);
-                item.style.padding = '10px 12px';
-                item.style.cursor = 'pointer';
-                item.style.fontSize = '0.8rem';
-                item.style.borderBottom = '1px solid #f1f5f9';
-                
-                item.addEventListener('mousedown', function(e) {
-                    e.preventDefault();
-                    input.value = nameStr;
-                    list.style.display = 'none';
-                });
-                
-                list.appendChild(item);
-                count++;
-                if (count >= 10) break;
+                item.style.cssText = 'padding:10px 12px;cursor:pointer;font-size:0.8rem;border-bottom:1px solid #f1f5f9;';
+                item.addEventListener('mousedown', function(e) { e.preventDefault(); input.value = nameStr; list.style.display = 'none'; });
+                list.appendChild(item); count++; if (count >= 10) break;
             }
         }
         list.style.display = count > 0 ? 'block' : 'none';
     });
-
-    input.addEventListener('blur', function() {
-        setTimeout(() => { list.style.display = 'none'; }, 150);
-    });
+    input.addEventListener('blur', function() { setTimeout(() => { list.style.display = 'none'; }, 150); });
 }
-
 fetchPatientNames();
 
-// === STATISTIK PASIEN MALAHAYATI ===
 async function fetchStatistikPasien() {
     const container = document.getElementById('statistikContainer');
     container.innerHTML = '<div class="stat-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data statistik...</div>';
     try {
         const response = await fetch(MONITORING_API_URL + "?action=getStatistik");
-        const result = await response.json();
-        let html = '';
-        
+        const result = await response.json(); let html = '';
         if(result && result.status === 'success' && result.data) {
             const data = result.data;
-            if (Array.isArray(data) && data.length > 0) {
-                data.forEach(item => {
-                    if (typeof item === 'object') {
-                        for(let key in item) {
-                            html += `<div class="stat-card"><div class="stat-value">${item[key]}</div><div class="stat-label">${key.replace(/_/g, ' ').toUpperCase()}</div></div>`;
-                        }
-                    }
-                });
-            } else if (typeof data === 'object') {
-                for(let key in data) {
-                    html += `<div class="stat-card"><div class="stat-value">${data[key]}</div><div class="stat-label">${key.replace(/_/g, ' ').toUpperCase()}</div></div>`;
-                }
-            }
+            if (Array.isArray(data) && data.length > 0) { data.forEach(item => { if (typeof item === 'object') { for(let key in item) { html += `<div class="stat-card"><div class="stat-value">${item[key]}</div><div class="stat-label">${key.replace(/_/g, ' ').toUpperCase()}</div></div>`; } } }); } 
+            else if (typeof data === 'object') { for(let key in data) { html += `<div class="stat-card"><div class="stat-value">${data[key]}</div><div class="stat-label">${key.replace(/_/g, ' ').toUpperCase()}</div></div>`; } }
         }
-        
-        if(html === '') {
-            html = '<div class="stat-loading">Data statistik belum tersedia. Pastikan endpoint Apps Script mendukung action=getStatistik.</div>';
-        }
-        
+        if(html === '') html = '<div class="stat-loading">Data statistik belum tersedia.</div>';
         container.innerHTML = html;
-    } catch(e) {
-        container.innerHTML = '<div class="stat-loading" style="color: var(--accent);">Gagal memuat data statistik pasien. Periksa URL/Endpoint Apps Script.</div>';
-    }
+    } catch(e) { container.innerHTML = '<div class="stat-loading" style="color: var(--accent);">Gagal memuat data statistik pasien.</div>'; }
 }
 fetchStatistikPasien();
 
-// Submit Data Monitoring ke Spreadsheet
 async function submitMonitoringSheet() {
-    if(getVal('pengirim1') === "") {
-        alert("❌ Nama Pengirim wajib diisi sebelum menyimpan monitoring!"); switchTab(1);
-        document.getElementById('pengirim1').focus(); return;
-    }
-
+    if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi sebelum menyimpan monitoring!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
     let dataRows = [];
-    for(let i=1; i<=monRowCount; i++) {
-        let row = document.getElementById(`mon_row_${i}`);
-        if(row) {
-            let nama = getVal(`mon_nama_${i}`);
-            if(nama) {
-                dataRows.push([
-                    nama,
-                    getVal(`mon_jk_${i}`),
-                    getVal(`mon_goldar_${i}`),
-                    getVal(`mon_tb_${i}`),
-                    getVal(`mon_bb_${i}`),
-                    getVal(`mon_td_${i}`),
-                    getVal(`mon_ufg_${i}`),
-                    getVal(`mon_heparin_${i}`),
-                    getVal(`mon_epo_${i}`),
-                    getVal(`mon_ktv_${i}`),
-                    getVal(`mon_transfusi_${i}`),
-                    getVal(`mon_ket_${i}`)
-                ]);
-            }
-        }
-    }
-
-    if(dataRows.length === 0) {
-        alert("❌ Tidak ada data monitoring terisi! Silakan isi minimal 1 nama pasien.");
-        return;
-    }
-
-    let btn = event.target;
-    let originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-    btn.disabled = true;
-
+    for(let i=1; i<=monRowCount; i++) { let row = document.getElementById(`mon_row_${i}`); if(row) { let nama = getVal(`mon_nama_${i}`); if(nama) { dataRows.push([nama, getVal(`mon_jk_${i}`), getVal(`mon_goldar_${i}`), getVal(`mon_tb_${i}`), getVal(`mon_bb_${i}`), getVal(`mon_td_${i}`), getVal(`mon_ufg_${i}`), getVal(`mon_heparin_${i}`), getVal(`mon_epo_${i}`), getVal(`mon_ktv_${i}`), getVal(`mon_transfusi_${i}`), getVal(`mon_ket_${i}`)]); } } }
+    if(dataRows.length === 0) { alert("❌ Tidak ada data monitoring terisi!"); return; }
+    let btn = event.target; let originalText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
     try {
-        const response = await fetch(MONITORING_API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-                action: 'saveMonitoring',
-                data: dataRows
-            })
-        });
+        const response = await fetch(MONITORING_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'saveMonitoring', data: dataRows }) });
         const result = await response.json();
-        
-        if(result.status === 'success') {
-            alert("✅ Berhasil! Data monitoring telah tersimpan di Spreadsheet (REKAP_HARIAN).");
-        } else {
-            throw new Error(result.message || 'Unknown error');
-        }
-    } catch (e) {
-        alert("❌ Gagal mengirim data: " + e.message);
-    } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }
+        if(result.status === 'success') alert("✅ Berhasil! Data monitoring telah tersimpan di Spreadsheet.");
+        else throw new Error(result.message || 'Unknown error');
+    } catch (e) { alert("❌ Gagal mengirim data: " + e.message); } finally { btn.innerHTML = originalText; btn.disabled = false; }
 }
 
-// === FUNGSI UTAMA ===
 function switchTab(tab) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1027,276 +665,68 @@ function switchTab(tab) {
     if(tab === 2) fetchStatistikPasien();
 }
 
-function adjustVal(id, delta) {
-    let el = document.getElementById(id); let newVal = (parseInt(el.value) || 0) + delta;
-    if (newVal < 0) newVal = 0; el.value = newVal;
-}
-
-function formatPaste(text) {
-    if (!text) return "-";
-    return text.split('\n').map(line => `- ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n');
-}
-
-function formatPatientList(text) {
-    if (!text) return "-";
-    let lines = text.split('\n')
-                    .map(line => line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' '))
-                    .filter(line => line.length > 0);
-    if (lines.length === 0) return "-";
-    return lines.map((line, index) => {
-        let cleanedLine = line.replace(/^\s*\d+[\.\)\-\,]\s*/, '');
-        return `${index + 1}. ${cleanedLine}`;
-    }).join('\n');
-}
-
+function adjustVal(id, delta) { let el = document.getElementById(id); let newVal = (parseInt(el.value) || 0) + delta; if (newVal < 0) newVal = 0; el.value = newVal; }
+function formatPaste(text) { if (!text) return "-"; return text.split('\n').map(line => `- ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n'); }
+function formatPatientList(text) { if (!text) return "-"; let lines = text.split('\n').map(line => line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')).filter(line => line.length > 0); if (lines.length === 0) return "-"; return lines.map((line, index) => { let cleanedLine = line.replace(/^\s*\d+[\.\)\-\,]\s*/, ''); return `${index + 1}. ${cleanedLine}`; }).join('\n'); }
 function getVal(id) { let el = document.getElementById(id); return el ? el.value.trim() : ""; }
-
-function formatDate(dateStr) {
-    if (!dateStr) return "-";
-    const date = new Date(dateStr);
-    return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
-}
+function formatDate(dateStr) { if (!dateStr) return "-"; const date = new Date(dateStr); return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`; }
 
 function buildReport() {
-    let txt = `*LAPORAN HARIAN HEMODIALISIS*\n`;
-    txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`;
-    txt += `═══════════════════\n\n`;
-    
-    // 1. Anggota Tim (Dinamis)
-    txt += `*ANGGOTA TIM ${getVal('tim1')}*\n`;
-    let staffCount = 0;
-    for(let i=1; i<=memberCount; i++) {
-        let box = document.getElementById(`memberBox-${i}`);
-        if(box) {
-            let nm = getVal(`agt${i}`);
-            if(nm) { staffCount++; txt += `${staffCount}. ${nm}\n`; }
-        }
-    }
-    txt += `└ _Total Anggota: ${staffCount}_\n\n`;
-    txt += `───────────────────\n\n`;
-    
-    // 2. Job Desk (Dinamis)
-    txt += `*JOB DESK PETUGAS*\n`;
-    let jobStaffCount = 0;
-    for(let i=1; i<=perawatCount; i++) {
-        let box = document.getElementById(`perawatBox-${i}`);
-        if(box) {
-            let nama = getVal(`perawat${i}`);
-            if(nama) {
-                jobStaffCount++;
-                let bS = getVal(`p_bed${i}_start`); let bE = getVal(`p_bed${i}_end`);
-                let bedStr = (bS !== "0" && bE !== "0" && bS !== "" && bE !== "") ? ` (Bed ${bS}-${bE})` : "";
-                txt += `${jobStaffCount}. *${nama}${bedStr}* : \n`;
-                let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value);
-                if(jobs.length > 0) jobs.forEach(job => txt += `   - ${job}\n`);
-                else txt += `   - -\n`;
-            }
-        }
-    }
+    let txt = `*LAPORAN HARIAN HEMODIALISIS*\n`; txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`; txt += `═══════════════════\n\n`;
+    txt += `*ANGGOTA TIM ${getVal('tim1')}*\n`; let staffCount = 0;
+    for(let i=1; i<=memberCount; i++) { let box = document.getElementById(`memberBox-${i}`); if(box) { let nm = getVal(`agt${i}`); if(nm) { staffCount++; txt += `${staffCount}. ${nm}\n`; } } }
+    txt += `└ _Total Anggota: ${staffCount}_\n\n`; txt += `───────────────────\n\n`;
+    txt += `*JOB DESK PETUGAS*\n`; let jobStaffCount = 0;
+    for(let i=1; i<=perawatCount; i++) { let box = document.getElementById(`perawatBox-${i}`); if(box) { let nama = getVal(`perawat${i}`); if(nama) { jobStaffCount++; let bS = getVal(`p_bed${i}_start`); let bE = getVal(`p_bed${i}_end`); let bedStr = (bS !== "0" && bE !== "0" && bS !== "" && bE !== "") ? ` (Bed ${bS}-${bE})` : ""; txt += `${jobStaffCount}. *${nama}${bedStr}* : \n`; let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value); if(jobs.length > 0) jobs.forEach(job => txt += `   - ${job}\n`); else txt += `   - -\n`; } } }
     let namaPadat = getVal('namaPadatkarya');
-    if(namaPadat) {
-        jobStaffCount++;
-        txt += `${jobStaffCount}. *${namaPadat}* : \n`;
-        let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value);
-        if(jobsPadat.length > 0) jobsPadat.forEach(job => txt += `   - ${job}\n`);
-        else txt += `   - -\n`;
-    }
-    if(getVal('rencanaTindakan')) {
-        txt += `\n*Rencana Tindakan Umum:*\n${formatPaste(getVal('rencanaTindakan'))}\n`;
-    }
-    txt += `\n───────────────────\n\n`;
-
-    // 3. Daftar Pasien
-    txt += `*DAFTAR PASIEN*\n`;
-    let rjText = formatPatientList(getVal('pasienRJ'));
-    let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0);
-    txt += `*Rawat Jalan:*\n${rjText}\n\n`;
-
+    if(namaPadat) { jobStaffCount++; txt += `${jobStaffCount}. *${namaPadat}* : \n`; let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value); if(jobsPadat.length > 0) jobsPadat.forEach(job => txt += `   - ${job}\n`); else txt += `   - -\n`; }
+    if(getVal('rencanaTindakan')) { txt += `\n*Rencana Tindakan Umum:*\n${formatPaste(getVal('rencanaTindakan'))}\n`; }
+    txt += `\n───────────────────\n\n`; txt += `*DAFTAR PASIEN*\n`; let rjText = formatPatientList(getVal('pasienRJ')); let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0); txt += `*Rawat Jalan:*\n${rjText}\n\n`;
     let ruangCount = 0, ruangIdx = 1, ruangText = "";
-    for(let i=1; i<=ruanganCount; i++) {
-        let card = document.getElementById(`ruanganCard-${i}`);
-        if(card) {
-            let nama = getVal(`namaPasienRuang-${i}`);
-            let detail = getVal(`detailPasienRuang-${i}`);
-            if(nama) {
-                ruangCount++;
-                ruangText += `${ruangIdx}. *${nama}*\n`;
-                if(detail) {
-                    detail.split('\n').filter(l => l.trim().length > 0).forEach(l => {
-                        ruangText += `   > ${l.trim().replace(/^\s*\d+[\.\)\-\,]\s*/, '')}\n`;
-                    });
-                } else { ruangText += `   > -\n`; }
-                ruangText += `\n`;
-                ruangIdx++;
-            }
-        }
-    }
-    if(ruangCount === 0) ruangText = "-\n";
-    txt += `*Ruangan:*\n${ruangText}`;
-    txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`;
-    txt += `───────────────────\n\n`;
-
-    // 4. Perencanaan Tindakan Pasien
-    txt += `*PERENCANAAN TINDAKAN PASIEN*\n`;
-    let adaPasien = false; let pidx = 1;
-    for(let i=1; i<=patientCount; i++) {
-        let card = document.getElementById(`patientCard-${i}`);
-        if(card) {
-            let nama = getVal(`namaPasienPlan-${i}`); let rencana = getVal(`rencanaPasien-${i}`);
-            if(nama) {
-                adaPasien = true;
-                txt += `${pidx}. *${nama}*\n`;
-                txt += `   Rencana: \n`;
-                if(rencana) {
-                    rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => {
-                        txt += `   - ${r}\n`;
-                    });
-                } else { txt += `   - -\n`; }
-                txt += `\n`;
-                pidx++;
-            }
-        }
-    }
-    if(!adaPasien) txt += "Tidak ada pasien yang diinput.\n";
-    txt += `\n───────────────────\n\n`;
-
-    // 5. Monitoring Pasien HD
-    txt += `*MONITORING PASIEN HD*\n`;
-    let mCount = 0;
-    for(let i=1; i<=monRowCount; i++) {
-        let row = document.getElementById(`mon_row_${i}`);
-        if(row) {
-            let nama = getVal(`mon_nama_${i}`);
-            if(nama) {
-                mCount++;
-                txt += `${mCount}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`;
-                txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`;
-                txt += `   UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`;
-                txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`;
-                if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`;
-                txt += `\n`;
-            }
-        }
-    }
-    if(mCount === 0) txt += "Tidak ada data monitoring terinput.\n";
-    txt += `\n───────────────────\n\n`;
-
-    // 6. Masalah & Sisa Alat
-    txt += `*MASALAH & INVENTARIS*\n`;
-    let mPasien = getVal('masalahPasien');
-    txt += `- Pasien: \n`;
-    if(mPasien) mPasien.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`);
-    else txt += `   > -\n`;
-    let mMesin = getVal('masalahMesin');
-    txt += `- Mesin/Alat: \n`;
-    if(mMesin) mMesin.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`);
-    else txt += `   > -\n`;
-    txt += `\n`;
-    txt += `*SISA ALAT:*\n`;
-    txt += `- HF 70: ${getVal('hf70') || '0'} | HF 90: ${getVal('hf90') || '0'} | HF 110: ${getVal('hf110') || '0'}\n`;
-    txt += `- HF 130: ${getVal('hf130') || '0'} | HF 150: ${getVal('hf150') || '0'} | HF 170: ${getVal('hf170') || '0'}\n`;
-    txt += `- GD Stick: ${getVal('gdStick') || '-'} | Sisa Bed: ${getVal('sisaBed') || '-'}\n`;
-    txt += `\n═══════════════════\n`;
-    
-    // 7. Pengirim (Tanda Tangan Bawah)
-    txt += `Dikirim oleh: *${getVal('pengirim1')}*\n\n\n`;
-    txt += `Mengetahui,\n\n\n\n( ${getVal('pengirim1')} )\n`;
-    txt += `Pelapor Harian`;
-    
-    return txt;
+    for(let i=1; i<=ruanganCount; i++) { let card = document.getElementById(`ruanganCard-${i}`); if(card) { let nama = getVal(`namaPasienRuang-${i}`); let detail = getVal(`detailPasienRuang-${i}`); if(nama) { ruangCount++; ruangText += `${ruangIdx}. *${nama}*\n`; if(detail) { detail.split('\n').filter(l => l.trim().length > 0).forEach(l => { ruangText += `   > ${l.trim().replace(/^\s*\d+[\.\)\-\,]\s*/, '')}\n`; }); } else { ruangText += `   > -\n`; } ruangText += `\n`; ruangIdx++; } } }
+    if(ruangCount === 0) ruangText = "-\n"; txt += `*Ruangan:*\n${ruangText}`; txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`; txt += `───────────────────\n\n`;
+    txt += `*PERENCANAAN TINDAKAN PASIEN*\n`; let adaPasien = false; let pidx = 1;
+    for(let i=1; i<=patientCount; i++) { let card = document.getElementById(`patientCard-${i}`); if(card) { let nama = getVal(`namaPasienPlan-${i}`); let rencana = getVal(`rencanaPasien-${i}`); if(nama) { adaPasien = true; txt += `${pidx}. *${nama}*\n`; txt += `   Rencana: \n`; if(rencana) { rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => { txt += `   - ${r}\n`; }); } else { txt += `   - -\n`; } txt += `\n`; pidx++; } } }
+    if(!adaPasien) txt += "Tidak ada pasien yang diinput.\n"; txt += `\n───────────────────\n\n`;
+    txt += `*MONITORING PASIEN HD*\n`; let mCount = 0;
+    for(let i=1; i<=monRowCount; i++) { let row = document.getElementById(`mon_row_${i}`); if(row) { let nama = getVal(`mon_nama_${i}`); if(nama) { mCount++; txt += `${mCount}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`; txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`; txt += `   UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`; txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`; if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`; txt += `\n`; } } }
+    if(mCount === 0) txt += "Tidak ada data monitoring terinput.\n"; txt += `\n───────────────────\n\n`;
+    txt += `*MASALAH & INVENTARIS*\n`; let mPasien = getVal('masalahPasien'); txt += `- Pasien: \n`; if(mPasien) mPasien.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`); else txt += `   > -\n`; let mMesin = getVal('masalahMesin'); txt += `- Mesin/Alat: \n`; if(mMesin) mMesin.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`); else txt += `   > -\n`; txt += `\n`;
+    txt += `*SISA ALAT:*\n`; txt += `- HF 70: ${getVal('hf70') || '0'} | HF 90: ${getVal('hf90') || '0'} | HF 110: ${getVal('hf110') || '0'}\n`; txt += `- HF 130: ${getVal('hf130') || '0'} | HF 150: ${getVal('hf150') || '0'} | HF 170: ${getVal('hf170') || '0'}\n`; txt += `- GD Stick: ${getVal('gdStick') || '-'} | Sisa Bed: ${getVal('sisaBed') || '-'}\n`; txt += `\n═══════════════════\n`;
+    txt += `Dikirim oleh: *${getVal('pengirim1')}*\n\n\n`; txt += `Mengetahui,\n\n\n\n( ${getVal('pengirim1')} )\n`; txt += `Pelapor Harian`; return txt;
 }
 
 function kirimWA() {
-    if(getVal('pengirim1') === "") {
-        alert("❌ Nama Pengirim wajib diisi!"); switchTab(1);
-        document.getElementById('pengirim1').focus(); return;
-    }
-    const txt = buildReport();
-    const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
-    window.open(waUrl, '_blank');
+    if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
+    const txt = buildReport(); const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt); window.open(waUrl, '_blank');
 }
 
-// Fungsi Upload ke Drive (Terhubung langsung ke Google Apps Script Backend)
 function uploadToDrive() {
-    if(getVal('pengirim1') === "") {
-        alert("❌ Nama Pengirim wajib diisi!"); switchTab(1);
-        document.getElementById('pengirim1').focus(); return;
-    }
-    
-    const pass = prompt("Masukkan Password Drive:");
-    if(pass !== DRIVE_PASS) {
-        alert("❌ Password salah! Akses ditolak.");
-        return;
-    }
-    
-    const txt = buildReport();
-    const fileName = `Laporan_HD_${formatDate(getVal('tanggal1'))}_Shift${getVal('shift1')}`;
-    
-    let btn = event.target;
-    let originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-    btn.disabled = true;
-    
-    // Mengirim Data ke Google Apps Script (Kode.gs savePDFToDrive)
-    fetch(SHEET_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-            action: 'savePDFToDrive',
-            filename: fileName,
-            content: txt
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.status === 'success') {
-            alert("✅ Berhasil! File PDF telah dibuat & disimpan ke Google Drive.");
-            window.open(data.url, '_blank'); // Buka file PDF yang baru dibuat
-        } else {
-            throw new Error(data.message || 'Gagal menyimpan ke Drive');
-        }
-    })
-    .catch(err => {
-        alert("❌ Error: " + err.message);
-    })
-    .finally(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    });
+    if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
+    const txt = buildReport(); const fileName = `Laporan_HD_${formatDate(getVal('tanggal1'))}_Shift${getVal('shift1')}.pdf`;
+    const tempDiv = document.createElement('div');
+    tempDiv.style.cssText = 'position:absolute;left:-9999px;top:0;width:800px;padding:40px;font-family:monospace;white-space:pre-wrap;font-size:14px;';
+    tempDiv.innerText = txt; document.body.appendChild(tempDiv);
+    let btn = event.target; let originalText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Membuat PDF...'; btn.disabled = true;
+    const opt = { margin: 10, filename: fileName, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+    html2pdf().set(opt).from(tempDiv).save().then(() => { document.body.removeChild(tempDiv); alert("✅ File PDF telah dibuat dan terunduh ke perangkat Anda. Silakan bagikan file tersebut."); btn.innerHTML = originalText; btn.disabled = false; });
 }
 
 function cetakPDF() {
-    if(getVal('pengirim1') === "") {
-        alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); return;
-    }
-    document.getElementById('printContent').innerText = buildReport();
-    window.print();
+    if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); return; }
+    document.getElementById('printContent').innerText = buildReport(); window.print();
 }
 
 function resetData() {
     if(confirm("Yakin mereset SEMUA data di halaman laporan harian?")) {
-        document.querySelectorAll('input[type="text"], textarea, input[type="date"], input[type="number"]').forEach(el => {
-            el.value = ""; if(el.type === 'number') el.value = 0;
-        });
+        document.querySelectorAll('input[type="text"], textarea, input[type="date"], input[type="number"]').forEach(el => { el.value = ""; if(el.type === 'number') el.value = 0; });
         document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
         document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
-        
-        document.getElementById('memberContainer').innerHTML = "";
-        memberCount = 0; tambahAnggota(false);
-
-        document.getElementById('perawatContainer').innerHTML = "";
-        perawatCount = 0; tambahPerawat();
-
-        document.getElementById('ruanganContainer').innerHTML = "";
-        ruanganCount = 0; tambahPasienRuang();
-
-        document.getElementById('patientPlanContainer').innerHTML = "";
-        patientCount = 0; tambahPasien();
-        
-        document.getElementById('monitoringBody').innerHTML = "";
-        monRowCount = 0; 
-        for(let i=0; i<5; i++) { addMonitorRow(); }
-        
+        document.getElementById('memberContainer').innerHTML = ""; memberCount = 0; tambahAnggota(false);
+        document.getElementById('perawatContainer').innerHTML = ""; perawatCount = 0; tambahPerawat();
+        document.getElementById('ruanganContainer').innerHTML = ""; ruanganCount = 0; tambahPasienRuang();
+        document.getElementById('patientPlanContainer').innerHTML = ""; patientCount = 0; tambahPasien();
+        document.getElementById('monitoringBody').innerHTML = ""; monRowCount = 0; for(let i=0; i<5; i++) { addMonitorRow(); }
         switchTab(1);
     }
 }
