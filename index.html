@@ -22,6 +22,7 @@
             --ri-red: #c62828;
             --ri-white: #ffffff;
             --arema-blue: #0d47a1;
+            --drive-blue: #4285F4;
         }
 
         * {
@@ -333,6 +334,12 @@
         .check-item input { width: auto; margin-right: 6px; accent-color: var(--primary); }
 
         .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 35px; }
+        /* CSS Tambahan Untuk 3 Tombol */
+        .btn-group-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 35px; }
+        @media (max-width: 480px) {
+            .btn-group-3 { grid-template-columns: 1fr; }
+        }
+
         .btn {
             border: none; padding: 16px; border-radius: 14px; font-size: 1rem; font-weight: 700;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -342,6 +349,10 @@
         .btn-wa:hover { background: var(--primary-light); box-shadow: 0 8px 22px rgba(13, 148, 136, 0.4); transform: translateY(-2px); }
         .btn-pdf { background: #fff; color: var(--secondary); border: 1.5px solid var(--secondary); }
         .btn-pdf:hover { background: #f0f9ff; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15); }
+        /* Tombol Drive Baru */
+        .btn-drive { background: var(--drive-blue); color: #fff; box-shadow: 0 6px 18px rgba(66, 133, 244, 0.3); }
+        .btn-drive:hover { background: #3367D6; box-shadow: 0 8px 22px rgba(66, 133, 244, 0.4); transform: translateY(-2px); }
+        
         .btn-add { background: #f0f9ff; color: var(--secondary); border: 1.5px dashed var(--secondary); margin-bottom: 15px; width: 100%; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;}
         .btn-add:hover { background: #e0f2fe; }
         
@@ -484,14 +495,17 @@
             <div class="icon-box">🧑‍🤝‍🧑</div>
             <h2>Anggota Tim</h2>
         </div>
-        <div class="grid-2" id="memberContainer"></div>
+        <div id="memberContainer"></div>
+        <button class="btn-add" onclick="tambahAnggota(true)"><i class="fa-solid fa-circle-plus"></i> Tambah Anggota (Tekan Enter)</button>
 
         <div class="section-title">
             <div class="icon-box">📌</div>
             <h2>Job Desk Petugas</h2>
         </div>
         <div id="perawatContainer"></div>
-        <div class="job-box" id="padatkaryaBox">
+        <button class="btn-add" onclick="tambahPerawat()"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Job Desk</button>
+
+        <div class="job-box" id="padatkaryaBox" style="margin-top: 15px;">
             <input type="text" id="namaPadatkarya" placeholder="Nama Padatkarya">
             <div class="checkbox-group">
                 <label class="check-item"><input type="checkbox" value="menyalakan AC 16 derajat"> Menyalakan AC 16 derajat</label>
@@ -571,8 +585,9 @@
         </div>
         <input type="text" id="pengirim1" placeholder="Nama Anda (Wajib diisi)">
 
-        <div class="btn-group">
+        <div class="btn-group-3">
             <button class="btn btn-wa" onclick="kirimWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
+            <button class="btn btn-drive" onclick="uploadToDrive()"><i class="fa-brands fa-google-drive"></i> Upload Drive</button>
             <button class="btn btn-pdf" onclick="cetakPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
         </div>
         <button class="btn-reset" onclick="resetData()"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
@@ -606,6 +621,8 @@
 // === URL WEB APP APPS SCRIPT ===
 const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzcANOCVxHhn2FtHMS_3GrJM1HbWF1461bLxWGbIj7J-uPUgtE9murlM54MHsmwRURF/exec";
 const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwpWv-Wj5Vb5Dn9QiRG3Z14eAaar1uEHEoCcn1dnSp-XXuo8DFPPk4LEBQyfko_wEGrAA/exec";
+const DRIVE_LINK = "https://drive.google.com/drive/folders/1MxucPivE-fLBoq7NgwdmLIMpsTd1ajxn?usp=sharing";
+const DRIVE_PASS = "HDmalahayat!2075";
 
 // === FETCH DATA DARI SPREADSHEET KE HEADER ===
 async function fetchSheetData() {
@@ -630,7 +647,6 @@ async function fetchSheetData() {
             document.getElementById('sheetHeaderData').innerHTML = 'Belum ada data tersimpan di baris Spreadsheet';
         }
     } catch (e) {
-        // Menampilkan pesan error sebenarnya untuk debugging
         document.getElementById('sheetHeaderData').innerHTML = `<span style="color:#ffcccc;">Gagal memuat: ${e.message}</span>`;
     }
 }
@@ -661,11 +677,34 @@ async function fetchPrayerTimes() {
 }
 fetchPrayerTimes();
 
-// Generate Anggota Tim
-const memberContainer = document.getElementById('memberContainer');
-let memberHTML = '';
-for(let i=1; i<=6; i++) { memberHTML += `<div class="member-card"><input type="text" id="agt${i}" placeholder="Anggota Tim ${i}"></div>`; }
-memberContainer.innerHTML = memberHTML;
+// Generate Anggota Tim Dinamis (Fitur Enter)
+let memberCount = 0;
+function tambahAnggota(focusNew = true) {
+    memberCount++;
+    const container = document.getElementById('memberContainer');
+    const card = document.createElement('div');
+    card.className = 'member-card'; 
+    card.id = `memberBox-${memberCount}`;
+    card.style.display = 'flex';
+    card.style.alignItems = 'center';
+    card.style.gap = '10px';
+    card.style.padding = '10px 15px';
+    
+    card.innerHTML = `
+        <input type="text" id="agt${memberCount}" placeholder="Nama Anggota Tim ${memberCount}" style="flex:1; margin:0;" onkeydown="handleEnterMember(event)">
+        <button class="delete-pasien" onclick="hapusAnggota(${memberCount})" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>
+    `;
+    container.appendChild(card);
+    if(focusNew) document.getElementById(`agt${memberCount}`).focus();
+}
+function hapusAnggota(id) { document.getElementById(`memberBox-${id}`).remove(); }
+function handleEnterMember(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        tambahAnggota(true);
+    }
+}
+tambahAnggota(false); // Auto add 1 row
 
 // Generate Dialyzer
 const dialyzerContainer = document.getElementById('dialyzerContainer');
@@ -675,16 +714,52 @@ let dialyzerHTML = '';
 });
 dialyzerContainer.innerHTML = dialyzerHTML;
 
-// Generate Job Desk Perawat
+// Generate Job Desk Perawat Dinamis (Add Row)
 const jobList = ["kendali DL", "spreadsheet", "Laporan", "simrs", "verif box", "perawatan mesin", "DL lock", "persiapan priming", "scan upload", "kendali obat", "verif monitoring", "cek stok Order", "HF"];
-const perawatContainer = document.getElementById('perawatContainer');
-let perawatHTML = '';
-for (let i = 1; i <= 5; i++) {
-    perawatHTML += `<div class="job-box" id="perawatBox-${i}"><input type="text" id="perawat${i}" placeholder="Nama Perawat ${i}"><div class="bed-range"><div class="small-stepper"><span class="stepper-label">Bed Dari</span><div class="stepper-controls"><button class="stepper-btn" onclick="adjustVal('p_bed${i}_start', -1)">-</button><input type="number" id="p_bed${i}_start" value="0" class="stepper-input"><button class="stepper-btn" onclick="adjustVal('p_bed${i}_start', 1)">+</button></div></div><div class="small-stepper"><span class="stepper-label">Bed Sampai</span><div class="stepper-controls"><button class="stepper-btn" onclick="adjustVal('p_bed${i}_end', -1)">-</button><input type="number" id="p_bed${i}_end" value="0" class="stepper-input"><button class="stepper-btn" onclick="adjustVal('p_bed${i}_end', 1)">+</button></div></div></div><div class="checkbox-group">`;
-    jobList.forEach(job => { perawatHTML += `<label class="check-item"><input type="checkbox" value="${job}" class="job-perawat-${i}"> ${job}</label>`; });
-    perawatHTML += `</div></div>`;
+let perawatCount = 0;
+
+function tambahPerawat() {
+    perawatCount++;
+    const container = document.getElementById('perawatContainer');
+    const card = document.createElement('div');
+    card.className = 'job-box'; 
+    card.id = `perawatBox-${perawatCount}`;
+    card.style.marginBottom = '12px';
+    
+    let checkboxHTML = '';
+    jobList.forEach(job => {
+        checkboxHTML += `<label class="check-item"><input type="checkbox" value="${job}" class="job-perawat-${perawatCount}"> ${job}</label>`;
+    });
+
+    card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <input type="text" id="perawat${perawatCount}" placeholder="Nama Perawat ${perawatCount}" style="flex:1; margin:0; margin-right:10px;">
+            <button class="delete-pasien" onclick="hapusPerawat(${perawatCount})" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>
+        </div>
+        <div class="bed-range">
+            <div class="small-stepper">
+                <span class="stepper-label">Bed Dari</span>
+                <div class="stepper-controls">
+                    <button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_start', -1)">-</button>
+                    <input type="number" id="p_bed${perawatCount}_start" value="0" class="stepper-input">
+                    <button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_start', 1)">+</button>
+                </div>
+            </div>
+            <div class="small-stepper">
+                <span class="stepper-label">Bed Sampai</span>
+                <div class="stepper-controls">
+                    <button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_end', -1)">-</button>
+                    <input type="number" id="p_bed${perawatCount}_end" value="0" class="stepper-input">
+                    <button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_end', 1)">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="checkbox-group" style="margin-top:10px;">${checkboxHTML}</div>
+    `;
+    container.appendChild(card);
 }
-perawatContainer.innerHTML = perawatHTML;
+function hapusPerawat(id) { document.getElementById(`perawatBox-${id}`).remove(); }
+tambahPerawat(); // Auto add 1 row on load
 
 // Pasien Ruangan
 let ruanganCount = 0;
@@ -845,14 +920,12 @@ async function fetchStatistikPasien() {
     const container = document.getElementById('statistikContainer');
     container.innerHTML = '<div class="stat-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data statistik...</div>';
     try {
-        // Menggunakan URL MONITORING_API_URL dengan parameter action=getStatistik
         const response = await fetch(MONITORING_API_URL + "?action=getStatistik");
         const result = await response.json();
         let html = '';
         
         if(result && result.status === 'success' && result.data) {
             const data = result.data;
-            // Jika berupa array (key-value pair array)
             if (Array.isArray(data) && data.length > 0) {
                 data.forEach(item => {
                     if (typeof item === 'object') {
@@ -989,29 +1062,35 @@ function buildReport() {
     txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`;
     txt += `═══════════════════\n\n`;
     
-    // 1. Anggota Tim
+    // 1. Anggota Tim (Dinamis)
     txt += `*ANGGOTA TIM ${getVal('tim1')}*\n`;
     let staffCount = 0;
-    for(let i=1; i<=6; i++) {
-        let nm = getVal('agt'+i);
-        if(nm) { staffCount++; txt += `${staffCount}. ${nm}\n`; }
+    for(let i=1; i<=memberCount; i++) {
+        let box = document.getElementById(`memberBox-${i}`);
+        if(box) {
+            let nm = getVal(`agt${i}`);
+            if(nm) { staffCount++; txt += `${staffCount}. ${nm}\n`; }
+        }
     }
     txt += `└ _Total Anggota: ${staffCount}_\n\n`;
     txt += `───────────────────\n\n`;
     
-    // 2. Job Desk
+    // 2. Job Desk (Dinamis)
     txt += `*JOB DESK PETUGAS*\n`;
     let jobStaffCount = 0;
-    for(let i=1; i<=5; i++) {
-        let nama = getVal('perawat'+i);
-        if(nama) {
-            jobStaffCount++;
-            let bS = getVal('p_bed'+i+'_start'); let bE = getVal('p_bed'+i+'_end');
-            let bedStr = (bS !== "0" && bE !== "0" && bS !== "" && bE !== "") ? ` (Bed ${bS}-${bE})` : "";
-            txt += `${jobStaffCount}. *${nama}${bedStr}* : \n`;
-            let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value);
-            if(jobs.length > 0) jobs.forEach(job => txt += `   - ${job}\n`);
-            else txt += `   - -\n`;
+    for(let i=1; i<=perawatCount; i++) {
+        let box = document.getElementById(`perawatBox-${i}`);
+        if(box) {
+            let nama = getVal(`perawat${i}`);
+            if(nama) {
+                jobStaffCount++;
+                let bS = getVal(`p_bed${i}_start`); let bE = getVal(`p_bed${i}_end`);
+                let bedStr = (bS !== "0" && bE !== "0" && bS !== "" && bE !== "") ? ` (Bed ${bS}-${bE})` : "";
+                txt += `${jobStaffCount}. *${nama}${bedStr}* : \n`;
+                let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value);
+                if(jobs.length > 0) jobs.forEach(job => txt += `   - ${job}\n`);
+                else txt += `   - -\n`;
+            }
         }
     }
     let namaPadat = getVal('namaPadatkarya');
@@ -1137,6 +1216,55 @@ function kirimWA() {
     window.open(waUrl, '_blank');
 }
 
+// Fungsi Upload ke Drive (Terhubung langsung ke Google Apps Script Backend)
+function uploadToDrive() {
+    if(getVal('pengirim1') === "") {
+        alert("❌ Nama Pengirim wajib diisi!"); switchTab(1);
+        document.getElementById('pengirim1').focus(); return;
+    }
+    
+    const pass = prompt("Masukkan Password Drive:");
+    if(pass !== DRIVE_PASS) {
+        alert("❌ Password salah! Akses ditolak.");
+        return;
+    }
+    
+    const txt = buildReport();
+    const fileName = `Laporan_HD_${formatDate(getVal('tanggal1'))}_Shift${getVal('shift1')}`;
+    
+    let btn = event.target;
+    let originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+    btn.disabled = true;
+    
+    // Mengirim Data ke Google Apps Script (Kode.gs savePDFToDrive)
+    fetch(SHEET_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+            action: 'savePDFToDrive',
+            filename: fileName,
+            content: txt
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === 'success') {
+            alert("✅ Berhasil! File PDF telah dibuat & disimpan ke Google Drive.");
+            window.open(data.url, '_blank'); // Buka file PDF yang baru dibuat
+        } else {
+            throw new Error(data.message || 'Gagal menyimpan ke Drive');
+        }
+    })
+    .catch(err => {
+        alert("❌ Error: " + err.message);
+    })
+    .finally(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+}
+
 function cetakPDF() {
     if(getVal('pengirim1') === "") {
         alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); return;
@@ -1153,6 +1281,12 @@ function resetData() {
         document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
         document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
         
+        document.getElementById('memberContainer').innerHTML = "";
+        memberCount = 0; tambahAnggota(false);
+
+        document.getElementById('perawatContainer').innerHTML = "";
+        perawatCount = 0; tambahPerawat();
+
         document.getElementById('ruanganContainer').innerHTML = "";
         ruanganCount = 0; tambahPasienRuang();
 
