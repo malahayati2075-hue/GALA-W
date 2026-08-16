@@ -314,6 +314,7 @@
 <body>
 
 <div class="container">
+    <datalist id="patientList"></datalist>
     <div class="app-header">
         <div class="header-top-bar">
             <div class="realtime-clock">
@@ -327,7 +328,7 @@
         </div>
         
         <div class="sheet-header-data" id="sheetHeaderData">
-            <span>Memuat data spreadsheet...</span>
+            <span>Sistem siap digunakan</span>
         </div>
 
         <div class="header-content">
@@ -338,7 +339,8 @@
 
     <div class="nav-header">
         <button class="tab-btn active" onclick="switchTab(1)"><i>📝</i><span>Laporan Harian</span></button>
-        <button class="tab-btn" onclick="switchTab(2)"><i>📊</i><span>Statistik Pasien</span></button>
+        <button class="tab-btn" onclick="switchTab(2)"><i>📊</i><span>ANALITIK</span></button>
+        <button class="tab-btn" onclick="switchTab(3)"><i>🔍</i><span>Pencarian Pasien</span></button>
     </div>
 
     <div id="slide1" class="page active">
@@ -449,16 +451,50 @@
         <div class="section-title main-title-3d">
             <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">📊</div>
-            <h2>Statistik Pasien Malahayati</h2>
+            <h2>ANALITIK Data Pasien</h2>
         </div>
         <p style="color: var(--text-muted); text-align: center; margin-top: 20px;">
-            Data ini diambil secara real-time berdasarkan rekap data pasien dari database.
+            Analisis seluruh data pasien dari sheet REKAP_HARIAN berdasarkan rentang waktu (Tanggal Awal & Akhir).
         </p>
-        <div class="stat-grid" id="statistikContainer">
-            <div class="stat-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data statistik...</div>
+        
+        <div class="grid-2" style="margin-top: 20px;">
+            <div>
+                <label>Tanggal Awal</label>
+                <input type="date" id="ft_start_date">
+            </div>
+            <div>
+                <label>Tanggal Akhir</label>
+                <input type="date" id="ft_end_date">
+            </div>
         </div>
-        <div class="btn-group">
-            <button class="btn btn-pdf" onclick="fetchStatistikPasien()" style="grid-column: 1/-1;"><i class="fa-solid fa-rotate"></i> Refresh Data Statistik</button>
+        <button class="btn btn-wa" onclick="searchFastTrack()" style="width: 100%; margin-top: 15px;">
+            <i class="fa-solid fa-search"></i> Cari & Analisis Data
+        </button>
+        
+        <div id="fastTrackResult" style="margin-top: 25px;">
+            <div class="stat-loading">Hasil pencarian akan muncul di sini.</div>
+        </div>
+
+        <div class="btn-group-3" style="margin-top: 25px; display: none;" id="analitikActions">
+            <button class="btn btn-wa" onclick="shareAnalitikWA()"><i class="fa-brands fa-whatsapp"></i> Share WA</button>
+            <button class="btn btn-drive" onclick="saveAnalitikPDF()"><i class="fa-solid fa-file-pdf"></i> Simpan PDF</button>
+            <button class="btn btn-pdf" onclick="printAnalitik()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+        </div>
+    </div>
+
+    <div id="slide3" class="page">
+        <div class="section-title main-title-3d">
+            <div class="waving-flag"><span>81</span></div>
+            <div class="icon-box">🔍</div>
+            <h2>Pencarian Pasien</h2>
+        </div>
+        <div style="text-align: center; margin-top: 50px;">
+            <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1rem;">
+                Klik tombol di bawah untuk membuka halaman pencarian pasien Hemodialisa.
+            </p>
+            <a href="https://bumimadinahdb26-cloud.github.io/pencarianHD/" target="_blank" class="btn btn-wa" style="display: inline-flex; text-decoration: none; padding: 15px 35px; font-size: 1.1rem;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Halaman Pencarian
+            </a>
         </div>
     </div>
 </div>
@@ -469,25 +505,8 @@
 </div>
 
 <script>
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzcANOCVxHhn2FtHMS_3GrJM1HbWF1461bLxWGbIj7J-uPUgtE9murlM54MHsmwRURF/exec";
-const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwpWv-Wj5Vb5Dn9QiRG3Z14eAaar1uEHEoCcn1dnSp-XXuo8DFPPk4LEBQyfko_wEGrAA.exec";
-
-async function fetchSheetData() {
-    try {
-        const response = await fetch(SHEET_API_URL);
-        const result = await response.json();
-        if(result.data && result.data.length > 0) {
-            let html = '';
-            result.data.forEach(item => {
-                let parts = item.split(": ");
-                if(parts.length === 2) html += `<span>${parts[0]}: <b>${parts[1]}</b></span>`;
-                else html += `<span>${item}</span>`;
-            });
-            document.getElementById('sheetHeaderData').innerHTML = html;
-        }
-    } catch (e) { document.getElementById('sheetHeaderData').innerHTML = `<span>Gagal memuat</span>`; }
-}
-fetchSheetData();
+// GANTI URL INI JIKA MEMBUAT DEPLOYMENT BARU
+const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwWCP7nMRpslFuxeV8bkYFDmI5OK-fIR4yhvBJp45kRq9Om9RFMMJUHdB35PbDn8z9Fyw/exec";
 
 function updateClock() {
     const now = new Date();
@@ -509,6 +528,20 @@ async function fetchPrayerTimes() {
     } catch (e) {}
 }
 fetchPrayerTimes();
+
+// Fungsi Fetch Header (Pembaruan info Header)
+async function fetchHeaderData() {
+    try {
+        const response = await fetch(MONITORING_API_URL);
+        const result = await response.json();
+        if(result.status === 'success') {
+            document.getElementById('sheetHeaderData').innerHTML = `<span>Server Terhubung <b>✓</b></span><span>Status: <b>Online</b></span>`;
+        }
+    } catch(e) {
+        document.getElementById('sheetHeaderData').innerHTML = `<span>Gagal terhubung ke server <b>✗</b></span>`;
+    }
+}
+fetchHeaderData();
 
 let memberCount = 0;
 function tambahAnggota(focusNew = true) {
@@ -591,56 +624,199 @@ function addMonitorRow() {
     const monitorBody = document.getElementById('monitoringBody');
     const tr = document.createElement('tr');
     tr.id = `mon_row_${monRowCount}`;
-    tr.innerHTML = `<td><div style="position: relative;"><input type="text" id="mon_nama_${monRowCount}" placeholder="Nama Pasien" autocomplete="off"></div></td><td><select id="mon_jk_${monRowCount}"><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td><td><select id="mon_goldar_${monRowCount}"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td><td><input type="text" id="mon_tb_${monRowCount}" placeholder="cm"></td><td><input type="text" id="mon_bb_${monRowCount}" placeholder="kg"></td><td><input type="text" id="mon_td_${monRowCount}" placeholder="120/80"></td><td><input type="text" id="mon_ufg_${monRowCount}" placeholder="cc"></td><td><input type="text" id="mon_heparin_${monRowCount}" placeholder="iu"></td><td><input type="text" id="mon_epo_${monRowCount}" placeholder="-"></td><td><input type="text" id="mon_ktv_${monRowCount}" placeholder="-"></td><td><select id="mon_transfusi_${monRowCount}"><option value="Tidak">Tidak</option><option value="Ada">Ada</option></select></td><td style="display: flex; align-items: center; justify-content: center; gap: 5px;"><input type="text" id="mon_ket_${monRowCount}" placeholder="Ket" style="flex:1;"><button class="delete-pasien" onclick="removeMonitorRow(${monRowCount})" style="border:none; background:transparent; cursor:pointer;"><i class="fa-solid fa-circle-xmark"></i></button></td>`;
+    // Tambahan list="patientList" pada input Nama Pasien
+    tr.innerHTML = `<td><div style="position: relative;"><input type="text" id="mon_nama_${monRowCount}" placeholder="Ketik Nama" list="patientList" autocomplete="off"></div></td><td><select id="mon_jk_${monRowCount}"><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td><td><select id="mon_goldar_${monRowCount}"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td><td><input type="text" id="mon_tb_${monRowCount}" placeholder="cm"></td><td><input type="text" id="mon_bb_${monRowCount}" placeholder="kg"></td><td><input type="text" id="mon_td_${monRowCount}" placeholder="120/80"></td><td><input type="text" id="mon_ufg_${monRowCount}" placeholder="cc"></td><td><input type="text" id="mon_heparin_${monRowCount}" placeholder="iu"></td><td><input type="text" id="mon_epo_${monRowCount}" placeholder="-"></td><td><input type="text" id="mon_ktv_${monRowCount}" placeholder="-" value="1,5"></td><td><select id="mon_transfusi_${monRowCount}"><option value="Tidak">Tidak</option><option value="Ada">Ada</option></select></td><td style="display: flex; align-items: center; justify-content: center; gap: 5px;"><input type="text" id="mon_ket_${monRowCount}" placeholder="Ket" style="flex:1;"><button class="delete-pasien" onclick="removeMonitorRow(${monRowCount})" style="border:none; background:transparent; cursor:pointer;"><i class="fa-solid fa-circle-xmark"></i></button></td>`;
     monitorBody.appendChild(tr);
     setupAutocomplete(`mon_nama_${monRowCount}`);
 }
 function removeMonitorRow(id) { document.getElementById(`mon_row_${id}`).remove(); }
 for(let i=0; i<5; i++) { addMonitorRow(); }
 
-let patientNames = [];
-async function fetchPatientNames() { try { const response = await fetch(MONITORING_API_URL); const result = await response.json(); if(result.status === 'success' && result.data) patientNames = result.data; } catch(e) {} }
-function setupAutocomplete(inputId) {
-    const input = document.getElementById(inputId); if (!input) return;
-    const list = document.createElement('div');
-    list.style.cssText = 'position:absolute;left:0;top:100%;width:100%;maxHeight:150px;overflowY:auto;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 8px 16px rgba(0,0,0,0.15);z-index:1000;display:none;';
-    input.parentNode.appendChild(list);
-    input.addEventListener('input', function() {
-        let val = this.value; list.innerHTML = ''; if (!val) { list.style.display = 'none'; return; }
-        let count = 0;
-        for (let i = 0; i < patientNames.length; i++) {
-            if (patientNames[i] && patientNames[i].toUpperCase().includes(val.toUpperCase())) {
-                let item = document.createElement('div');
-                let nameStr = patientNames[i];
-                let matchStart = nameStr.toUpperCase().indexOf(val.toUpperCase());
-                item.innerHTML = nameStr.substring(0, matchStart) + "<strong style='color:var(--primary);'>" + nameStr.substring(matchStart, matchStart + val.length) + "</strong>" + nameStr.substring(matchStart + val.length);
-                item.style.cssText = 'padding:10px 12px;cursor:pointer;font-size:0.8rem;border-bottom:1px solid #f1f5f9;';
-                item.addEventListener('mousedown', function(e) { e.preventDefault(); input.value = nameStr; list.style.display = 'none'; });
-                list.appendChild(item); count++; if (count >= 10) break;
+let patientData = [];
+async function fetchPatientNames() { 
+    try { 
+        const response = await fetch(MONITORING_API_URL + "?action=getPatients"); 
+        const result = await response.json(); 
+        if(result.status === 'success' && result.data) {
+            patientData = result.data;
+            // Isi datalist bawaan HTML5 agar bisa muncul sugesti tanpa terpotong CSS tabel
+            const datalist = document.getElementById('patientList');
+            if(datalist) {
+                let opts = '';
+                patientData.forEach(p => {
+                    opts += `<option value="${p.nama}">`;
+                });
+                datalist.innerHTML = opts;
             }
         }
-        list.style.display = count > 0 ? 'block' : 'none';
-    });
-    input.addEventListener('blur', function() { setTimeout(() => { list.style.display = 'none'; }, 150); });
+    } catch(e) {} 
 }
 fetchPatientNames();
 
-async function fetchStatistikPasien() {
-    const container = document.getElementById('statistikContainer');
-    container.innerHTML = '<div class="stat-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data statistik...</div>';
-    try {
-        const response = await fetch(MONITORING_API_URL + "?action=getStatistik");
-        const result = await response.json(); let html = '';
-        if(result && result.status === 'success' && result.data) {
-            const data = result.data;
-            if (Array.isArray(data) && data.length > 0) { data.forEach(item => { if (typeof item === 'object') { for(let key in item) { html += `<div class="stat-card"><div class="stat-value">${item[key]}</div><div class="stat-label">${key.replace(/_/g, ' ').toUpperCase()}</div></div>`; } } }); } 
-            else if (typeof data === 'object') { for(let key in data) { html += `<div class="stat-card"><div class="stat-value">${data[key]}</div><div class="stat-label">${key.replace(/_/g, ' ').toUpperCase()}</div></div>`; } }
+function setupAutocomplete(inputId) {
+    const input = document.getElementById(inputId); 
+    if (!input) return;
+    
+    // Saat user mengetik atau memilih dari sugesti, cek apakah namanya ada di database
+    function checkAndFill() {
+        let val = input.value.trim();
+        if (!val) return;
+        let rowId = inputId.split('_')[2]; 
+        
+        // Cari pasien yang namanya persis sama (case-insensitive)
+        let found = null;
+        for (let i = 0; i < patientData.length; i++) {
+            if (patientData[i].nama && patientData[i].nama.toUpperCase() === val.toUpperCase()) {
+                found = patientData[i];
+                break;
+            }
         }
-        if(html === '') html = '<div class="stat-loading">Data statistik belum tersedia.</div>';
-        container.innerHTML = html;
-    } catch(e) { container.innerHTML = '<div class="stat-loading" style="color: var(--accent);">Gagal memuat data statistik pasien.</div>'; }
+        
+               // Jika ketemu, otomatis isi Jenis Kelamin, Golongan Darah, dan TB
+        if (found) {
+            let jkInput = document.getElementById(`mon_jk_${rowId}`);
+            let goldarInput = document.getElementById(`mon_goldar_${rowId}`);
+            let tbInput = document.getElementById(`mon_tb_${rowId}`);
+            if (jkInput) jkInput.value = found.jk;
+            if (goldarInput) goldarInput.value = found.goldar;
+            if (tbInput) tbInput.value = found.tb; // Mengisi TB secara otomatis
+        }
+    }
+    
+    input.addEventListener('input', checkAndFill);
+    input.addEventListener('change', checkAndFill); 
+    input.addEventListener('blur', checkAndFill); // Tambahan event blur untuk mobile device
 }
-fetchStatistikPasien();
+
+let analitikData = null;
+async function searchFastTrack() {
+    const startDate = document.getElementById('ft_start_date').value;
+    const endDate = document.getElementById('ft_end_date').value;
+    const resultDiv = document.getElementById('fastTrackResult');
+    const actionsDiv = document.getElementById('analitikActions');
+
+    if (!startDate && !endDate) {
+        alert("Mohon isi Tanggal Awal dan/atau Tanggal Akhir untuk mencari!");
+        return;
+    }
+
+    resultDiv.innerHTML = '<div class="stat-loading"><i class="fa-solid fa-spinner fa-spin"></i> Menghitung data dari Spreadsheet...</div>';
+    actionsDiv.style.display = 'none';
+
+    try {
+        let url = MONITORING_API_URL + "?action=searchFastTrack";
+        if (startDate) url += "&startDate=" + encodeURIComponent(startDate);
+        if (endDate) url += "&endDate=" + encodeURIComponent(endDate);
+
+        const response = await fetch(url);
+        const result = await response.json();
+        
+        if (result.status === 'success' && result.data) {
+            const d = result.data;
+            analitikData = d;
+            
+            if (d.totalPasien === 0) {
+                resultDiv.innerHTML = '<div class="stat-loading">Data tidak ditemukan. Coba ubah rentang tanggal pencarian.</div>';
+                return;
+            }
+            
+            let html = `<p style="color: var(--primary); font-weight: 700; margin-bottom: 15px;">Total Data Ditemukan: ${d.totalPasien} pasien</p>`;
+            
+            html += '<div class="stat-grid">';
+            html += `<div class="stat-card"><div class="stat-value">${d.jk_L}</div><div class="stat-label">LAKI-LAKI</div></div>`;
+            html += `<div class="stat-card"><div class="stat-value">${d.jk_P}</div><div class="stat-label">PEREMPUAN</div></div>`;
+            html += `<div class="stat-card"><div class="stat-value">${d.goldar_A}</div><div class="stat-label">GOL. A</div></div>`;
+            html += `<div class="stat-card"><div class="stat-value">${d.goldar_B}</div><div class="stat-label">GOL. B</div></div>`;
+            html += `<div class="stat-card"><div class="stat-value">${d.goldar_AB}</div><div class="stat-label">GOL. AB</div></div>`;
+            html += `<div class="stat-card"><div class="stat-value">${d.goldar_O}</div><div class="stat-label">GOL. O</div></div>`;
+            html += `<div class="stat-card"><div class="stat-value">${d.transfusi_Ada}</div><div class="stat-label">TRANSFUSI ADA</div></div>`;
+            html += `<div class="stat-card"><div class="stat-value">${d.transfusi_Tidak}</div><div class="stat-label">TRANSFUSI TIDAK</div></div>`;
+            html += '</div>';
+
+            // Tabel Kategori Kt/V dan UFG
+            html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table"><thead><tr><th>Kategori Kt/V</th><th>Jumlah Pasien</th></tr></thead><tbody>';
+            html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V &lt; 1,4</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_lt_1_4}</td></tr>`;
+            html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V 1,4 - 1,5</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_1_4_1_5}</td></tr>`;
+            html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V &gt; 1,5</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_gt_1_5}</td></tr>`;
+            html += '</tbody></table></div>';
+
+            html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table"><thead><tr><th>Kategori UFG (cc)</th><th>Jumlah Pasien</th></tr></thead><tbody>';
+            html += `<tr><td style="text-align:left; padding-left:10px;">UFG &le; 500 cc</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_lt_500}</td></tr>`;
+            html += `<tr><td style="text-align:left; padding-left:10px;">UFG 501 - 1000 cc</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_500_1000}</td></tr>`;
+            html += `<tr><td style="text-align:left; padding-left:10px;">UFG 1001 - 2000 cc</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_1001_2000}</td></tr>`;
+            html += `<tr><td style="text-align:left; padding-left:10px;">UFG 2001 - 3000 cc</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_2001_3000}</td></tr>`;
+            html += `<tr><td style="text-align:left; padding-left:10px;">UFG &gt; 3000 cc</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_gt_3000}</td></tr>`;
+            html += '</tbody></table></div>';
+            
+            html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table"><thead><tr><th>Total Heparin (iu)</th></tr></thead><tbody>';
+            html += `<tr><td style="text-align:center; background:#fff; font-weight:bold;">${d.sum_Heparin}</td></tr>`;
+            html += '</tbody></table></div>';
+            
+            resultDiv.innerHTML = html;
+            actionsDiv.style.display = 'grid'; 
+        } else {
+            resultDiv.innerHTML = `<div class="stat-loading" style="color:var(--accent);">Error: ${result.message || 'Data tidak ditemukan.'}</div>`;
+        }
+    } catch (e) {
+        console.error(e);
+        resultDiv.innerHTML = '<div class="stat-loading" style="color: var(--accent);">Gagal mengambil data. Periksa koneksi atau URL Macro.</div>';
+    }
+}
+
+function buildAnalitikText() {
+    if (!analitikData || analitikData.totalPasien === 0) return "Tidak ada data.";
+    const d = analitikData;
+    let txt = `*ANALITIK DATA PASIEN HD*\n`; 
+    txt += `Rentang: ${document.getElementById('ft_start_date').value || 'Awal'} s/d ${document.getElementById('ft_end_date').value || 'Akhir'}\n`; 
+    txt += `═══════════════════\n\n`;
+    txt += `*Total Pasien Dianalisis:* ${d.totalPasien}\n\n`;
+    txt += `*DISTRIBUSI PASIEN:*\n`;
+    txt += `- Laki-laki: ${d.jk_L} | Perempuan: ${d.jk_P}\n`;
+    txt += `- Gol. A: ${d.goldar_A} | Gol. B: ${d.goldar_B}\n`;
+    txt += `- Gol. AB: ${d.goldar_AB} | Gol. O: ${d.goldar_O}\n`;
+    txt += `- Transfusi Ada: ${d.transfusi_Ada} | Tidak: ${d.transfusi_Tidak}\n\n`;
+    
+    txt += `*KATEGORI Kt/V:*\n`;
+    txt += `- Kt/V < 1,4 : ${d.ktv_lt_1_4} pasien\n`;
+    txt += `- Kt/V 1,4 - 1,5 : ${d.ktv_1_4_1_5} pasien\n`;
+    txt += `- Kt/V > 1,5 : ${d.ktv_gt_1_5} pasien\n\n`;
+    
+    txt += `*KATEGORI UFG:*\n`;
+    txt += `- <= 500 cc : ${d.ufg_lt_500} pasien\n`;
+    txt += `- 501 - 1000 cc : ${d.ufg_500_1000} pasien\n`;
+    txt += `- 1001 - 2000 cc : ${d.ufg_1001_2000} pasien\n`;
+    txt += `- 2001 - 3000 cc : ${d.ufg_2001_3000} pasien\n`;
+    txt += `- > 3000 cc : ${d.ufg_gt_3000} pasien\n\n`;
+    
+    txt += `*TOTAL AGREGAT:*\n`;
+    txt += `- Total Heparin: ${d.sum_Heparin} iu\n`;
+    txt += `═══════════════════\n`;
+    return txt;
+}
+
+function shareAnalitikWA() {
+    if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
+    const txt = buildAnalitikText();
+    const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
+    window.open(waUrl, '_blank');
+}
+
+function saveAnalitikPDF() {
+    if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
+    const txt = buildAnalitikText();
+    const fileName = `Analitik_HD_${document.getElementById('ft_start_date').value || 'awal'}_sd_${document.getElementById('ft_end_date').value || 'akhir'}.pdf`;
+    const tempDiv = document.createElement('div');
+    tempDiv.style.cssText = 'position:absolute;left:-9999px;top:0;width:800px;padding:40px;font-family:monospace;white-space:pre-wrap;font-size:14px;';
+    tempDiv.innerText = txt; document.body.appendChild(tempDiv);
+    const opt = { margin: 10, filename: fileName, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+    html2pdf().set(opt).from(tempDiv).save().then(() => { document.body.removeChild(tempDiv); alert("✅ File PDF Analitik telah dibuat dan terunduh."); });
+}
+
+function printAnalitik() {
+    if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
+    document.getElementById('printContent').innerText = buildAnalitikText(); 
+    window.print();
+}
 
 async function submitMonitoringSheet() {
     if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi sebelum menyimpan monitoring!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
@@ -657,12 +833,19 @@ async function submitMonitoringSheet() {
 }
 
 function switchTab(tab) {
+    if (tab === 2) {
+        let pwd = prompt("Masukkan password untuk mengakses menu ANALITIK:");
+        if (pwd !== "HDmalahayat!2075") {
+            if (pwd !== null) alert("❌ Password salah! Akses ditolak.");
+            return; 
+        }
+    }
+    
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('slide' + tab).classList.add('active');
     document.querySelectorAll('.tab-btn')[tab - 1].classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    if(tab === 2) fetchStatistikPasien();
 }
 
 function adjustVal(id, delta) { let el = document.getElementById(id); let newVal = (parseInt(el.value) || 0) + delta; if (newVal < 0) newVal = 0; el.value = newVal; }
