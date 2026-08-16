@@ -328,7 +328,7 @@
         </div>
         
         <div class="sheet-header-data" id="sheetHeaderData">
-            <span>Sistem siap digunakan</span>
+            <span>Memuat data sheet...</span>
         </div>
 
         <div class="header-content">
@@ -467,6 +467,12 @@
                 <input type="date" id="ft_end_date">
             </div>
         </div>
+
+        <div style="margin-top: 15px;">
+            <label>Nama Pengirim (Wajib diisi untuk Share/PDF)</label>
+            <input type="text" id="pengirim2" placeholder="Nama Anda">
+        </div>
+
         <button class="btn btn-wa" onclick="searchFastTrack()" style="width: 100%; margin-top: 15px;">
             <i class="fa-solid fa-search"></i> Cari & Analisis Data
         </button>
@@ -529,13 +535,66 @@ async function fetchPrayerTimes() {
 }
 fetchPrayerTimes();
 
-// Fungsi Fetch Header (Pembaruan info Header)
+// Helper untuk parse CSV
+function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let inQuotes = false;
+    let cell = '';
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (char === '"') {
+            if (inQuotes && text[i+1] === '"') {
+                cell += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
+            row.push(cell);
+            cell = '';
+        } else if ((char === '\n' || char === '\r') && !inQuotes) {
+            if (cell !== '' || row.length > 0) {
+                row.push(cell);
+                rows.push(row);
+                row = [];
+                cell = '';
+            }
+            if (char === '\r' && text[i+1] === '\n') i++;
+        } else {
+            cell += char;
+        }
+    }
+    if (cell !== '' || row.length > 0) {
+        row.push(cell);
+        rows.push(row);
+    }
+    return rows;
+}
+
+// Fungsi Fetch Header dari Google Sheet yang ditentukan
 async function fetchHeaderData() {
     try {
-        const response = await fetch(MONITORING_API_URL);
-        const result = await response.json();
-        if(result.status === 'success') {
-            document.getElementById('sheetHeaderData').innerHTML = `<span>Server Terhubung <b>✓</b></span><span>Status: <b>Online</b></span>`;
+        const csvUrl = "https://docs.google.com/spreadsheets/d/1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0/export?format=csv&gid=432993966";
+        const response = await fetch(csvUrl);
+        const csvText = await response.text();
+        
+        const rows = parseCSV(csvText);
+        
+        if (rows.length >= 2) {
+            // Kolom F (index 5) sampai V (index 21)
+            const headers = rows[0].slice(5, 22); 
+            const values = rows[1].slice(5, 22);  
+            
+            let html = '';
+            headers.forEach((h, i) => {
+                if (h && values[i] !== undefined) {
+                    html += `<span>${h.trim()}: <b>${values[i].trim()}</b></span>`;
+                }
+            });
+            document.getElementById('sheetHeaderData').innerHTML = html || `<span>Server Terhubung <b>✓</b></span>`;
+        } else {
+            document.getElementById('sheetHeaderData').innerHTML = `<span>Server Terhubung <b>✓</b></span>`;
         }
     } catch(e) {
         document.getElementById('sheetHeaderData').innerHTML = `<span>Gagal terhubung ke server <b>✗</b></span>`;
@@ -791,11 +850,17 @@ function buildAnalitikText() {
     txt += `*TOTAL AGREGAT:*\n`;
     txt += `- Total Heparin: ${d.sum_Heparin} iu\n`;
     txt += `═══════════════════\n`;
+    
+    let pengirim = getVal('pengirim1') || getVal('pengirim2');
+    if (!pengirim) pengirim = "Tidak Diketahui";
+    txt += `\nDikirim oleh: *${pengirim}*\n`; 
     return txt;
 }
 
 function shareAnalitikWA() {
     if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
+    let pengirim = getVal('pengirim1') || getVal('pengirim2');
+    if(!pengirim) { alert("❌ Nama Pengirim wajib diisi!"); document.getElementById('pengirim2').focus(); return; }
     const txt = buildAnalitikText();
     const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
     window.open(waUrl, '_blank');
@@ -803,6 +868,8 @@ function shareAnalitikWA() {
 
 function saveAnalitikPDF() {
     if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
+    let pengirim = getVal('pengirim1') || getVal('pengirim2');
+    if(!pengirim) { alert("❌ Nama Pengirim wajib diisi!"); document.getElementById('pengirim2').focus(); return; }
     const txt = buildAnalitikText();
     const fileName = `Analitik_HD_${document.getElementById('ft_start_date').value || 'awal'}_sd_${document.getElementById('ft_end_date').value || 'akhir'}.pdf`;
     const tempDiv = document.createElement('div');
@@ -814,6 +881,8 @@ function saveAnalitikPDF() {
 
 function printAnalitik() {
     if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
+    let pengirim = getVal('pengirim1') || getVal('pengirim2');
+    if(!pengirim) { alert("❌ Nama Pengirim wajib diisi!"); document.getElementById('pengirim2').focus(); return; }
     document.getElementById('printContent').innerText = buildAnalitikText(); 
     window.print();
 }
