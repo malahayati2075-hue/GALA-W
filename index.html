@@ -1060,10 +1060,8 @@ function kirimWA() {
     const txt = buildReport(); const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt); window.open(waUrl, '_blank');
 }
 
-// Fungsi Share WA Khusus Monitoring
+// Fungsi Share WA Khusus Monitoring (Tanpa wajib Identitas Pengirim)
 function shareMonitoringWA() {
-    if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
-    
     let txt = `*DATA MONITORING PASIEN HD*\n`; 
     txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`; 
     txt += `═══════════════════\n\n`;
@@ -1084,14 +1082,19 @@ function shareMonitoringWA() {
             } 
         } 
     }
+    
     if(mCount === 0) txt += "Tidak ada data monitoring terinput.\n"; 
+    
     txt += `\n═══════════════════\n`;
-    txt += `Dikirim oleh: *${getVal('pengirim1')}*\n`; 
+    
+    let pengirim = getVal('pengirim1');
+    if (pengirim) {
+        txt += `Dikirim oleh: *${pengirim}*\n`; 
+    }
     
     const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt); 
     window.open(waUrl, '_blank');
 }
-
 function uploadToDrive() {
     if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
     const txt = buildReport(); const fileName = `Laporan_HD_${formatDate(getVal('tanggal1'))}_Shift${getVal('shift1')}.pdf`;
