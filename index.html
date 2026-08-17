@@ -208,7 +208,6 @@
             box-shadow: 8px 8px 16px rgba(13, 148, 136, 0.1), -4px -4px 10px rgba(255,255,255,0.9);
         }
         
-        /* Wrapper Job Desk */
         .job-desk-wrapper {
             position: relative;
             border-radius: 24px;
@@ -260,16 +259,18 @@
         .job-desk-overlay .small-stepper {
             background: rgba(248, 250, 252, 0.9);
             border: 1px solid #e2e8f0;
+            min-width: 130px; /* Beri lebar minimal agar tidak terlalu sempit */
         }
 
         .job-desk-overlay .check-item {
             background: rgba(248, 250, 252, 0.95);
             border: 1px solid #e2e8f0;
             font-weight: 600;
-            flex: 1 1 auto; /* Agar checkbox menyesuaikan dan tidak terpotong */
-            min-width: max-content;
-            text-align: center;
-            justify-content: center;
+            /* Solusi Anti Terpotong: */
+            flex: 0 1 auto; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .job-desk-overlay .btn-add {
@@ -283,7 +284,7 @@
             border-style: solid;
         }
 
-        .bed-range { display: flex; justify-content: space-between; gap: 15px; margin-top: 10px; }
+        .bed-range { display: flex; justify-content: space-between; gap: 15px; margin-top: 10px; flex-wrap: wrap; }
         .small-stepper {
             flex: 1; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.7); 
             border: 1px solid #e2e8f0; padding: 8px; border-radius: 12px;
@@ -443,7 +444,6 @@
         <div id="memberContainer"></div>
         <button class="btn-add" onclick="tambahAnggota(true)"><i class="fa-solid fa-circle-plus"></i> Tambah Anggota (Tekan Enter)</button>
 
-        <!-- Wrapper Job Desk dengan Mode Sembunyi -->
         <div class="job-desk-wrapper" id="jobDeskWrapper">
             <button class="toggle-btn" onclick="toggleJobDesk()"><i class="fa-solid fa-chevron-up"></i> Sembunyi Job Desk</button>
             <div class="job-desk-overlay" id="jobDeskOverlay">
@@ -473,11 +473,9 @@
             <h2>Daftar Pasien</h2>
         </div>
         
-        <!-- 1. Pasien Rawat Jalan -->
         <label>Pasien Rawat Jalan (Bisa Paste dari Excel)</label>
         <textarea id="pasienRJ" placeholder="Nama Pasien 1&#10;Nama Pasien 2"></textarea>
 
-        <!-- 2. Monitoring Pasien (Dipindah ke sini) -->
         <div class="section-title">
             <div class="icon-box">📊</div>
             <h2>Monitoring Pasien HD</h2>
@@ -500,7 +498,6 @@
             <a href="https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/edit?gid=652284391#gid=652284391" target="_blank" class="btn btn-pdf" style="text-decoration: none;"><i class="fa-solid fa-table"></i> Buka Spreadsheet</a>
         </div>
 
-        <!-- 3. Pasien Ruangan -->
         <label style="margin-top: 20px;">Pasien Ruangan (Rawat Inap)</label>
         <div id="ruanganContainer" style="margin-top: 15px;"></div>
         <button class="btn-add" onclick="tambahPasienRuang()"><i class="fa-solid fa-circle-plus"></i> Tambah Pasien Ruangan</button>
@@ -733,7 +730,6 @@ function tambahPerawat() {
 function hapusPerawat(id) { document.getElementById(`perawatBox-${id}`).remove(); }
 tambahPerawat(); 
 
-// Fungsi Toggle Job Desk
 function toggleJobDesk() {
     const wrapper = document.getElementById('jobDeskWrapper');
     const btn = wrapper.querySelector('.toggle-btn');
@@ -1060,7 +1056,6 @@ function kirimWA() {
     const txt = buildReport(); const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt); window.open(waUrl, '_blank');
 }
 
-// Fungsi Share WA Khusus Monitoring (Tanpa wajib Identitas Pengirim)
 function shareMonitoringWA() {
     let txt = `*DATA MONITORING PASIEN HD*\n`; 
     txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`; 
@@ -1095,6 +1090,7 @@ function shareMonitoringWA() {
     const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt); 
     window.open(waUrl, '_blank');
 }
+
 function uploadToDrive() {
     if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
     const txt = buildReport(); const fileName = `Laporan_HD_${formatDate(getVal('tanggal1'))}_Shift${getVal('shift1')}.pdf`;
