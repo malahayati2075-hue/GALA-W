@@ -208,6 +208,7 @@
             box-shadow: 8px 8px 16px rgba(13, 148, 136, 0.1), -4px -4px 10px rgba(255,255,255,0.9);
         }
         
+        /* Wrapper Job Desk */
         .job-desk-wrapper {
             position: relative;
             border-radius: 24px;
@@ -222,14 +223,21 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
+        .toggle-btn {
+            width: 100%; padding: 12px; border: none; background: rgba(2, 132, 199, 0.9); color: #fff; 
+            font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;
+            font-size: 0.9rem; transition: background 0.2s;
+        }
+        .toggle-btn:hover { background: rgba(2, 132, 199, 1); }
+
         .job-desk-overlay {
             position: relative;
             padding: 30px 25px;
             background: rgba(255, 255, 255, 0.82);
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
-            border-radius: 24px;
         }
+        .job-desk-wrapper.collapsed .job-desk-overlay { display: none; }
 
         .job-desk-overlay .section-title { margin-top: 0; margin-bottom: 20px; }
         .job-desk-overlay .section-title h2 { color: #0f172a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
@@ -258,6 +266,10 @@
             background: rgba(248, 250, 252, 0.95);
             border: 1px solid #e2e8f0;
             font-weight: 600;
+            flex: 1 1 auto; /* Agar checkbox menyesuaikan dan tidak terpotong */
+            min-width: max-content;
+            text-align: center;
+            justify-content: center;
         }
 
         .job-desk-overlay .btn-add {
@@ -431,8 +443,10 @@
         <div id="memberContainer"></div>
         <button class="btn-add" onclick="tambahAnggota(true)"><i class="fa-solid fa-circle-plus"></i> Tambah Anggota (Tekan Enter)</button>
 
-        <div class="job-desk-wrapper">
-            <div class="job-desk-overlay">
+        <!-- Wrapper Job Desk dengan Mode Sembunyi -->
+        <div class="job-desk-wrapper" id="jobDeskWrapper">
+            <button class="toggle-btn" onclick="toggleJobDesk()"><i class="fa-solid fa-chevron-up"></i> Sembunyi Job Desk</button>
+            <div class="job-desk-overlay" id="jobDeskOverlay">
                 <div class="section-title">
                     <div class="icon-box">📌</div>
                     <h2>Job Desk Petugas</h2>
@@ -458,20 +472,12 @@
             <div class="icon-box">🩺</div>
             <h2>Daftar Pasien</h2>
         </div>
+        
+        <!-- 1. Pasien Rawat Jalan -->
         <label>Pasien Rawat Jalan (Bisa Paste dari Excel)</label>
         <textarea id="pasienRJ" placeholder="Nama Pasien 1&#10;Nama Pasien 2"></textarea>
-        
-        <label>Pasien Ruangan (Rawat Inap)</label>
-        <div id="ruanganContainer" style="margin-top: 15px;"></div>
-        <button class="btn-add" onclick="tambahPasienRuang()"><i class="fa-solid fa-circle-plus"></i> Tambah Pasien Ruangan</button>
 
-        <div class="section-title">
-            <div class="icon-box">🗓️</div>
-            <h2>Perencanaan Tindakan Pasien</h2>
-        </div>
-        <div id="patientPlanContainer" style="margin-top: 20px;"></div>
-        <button class="btn-add" onclick="tambahPasien()"><i class="fa-solid fa-circle-plus"></i> Tambah Kartu Pasien</button>
-
+        <!-- 2. Monitoring Pasien (Dipindah ke sini) -->
         <div class="section-title">
             <div class="icon-box">📊</div>
             <h2>Monitoring Pasien HD</h2>
@@ -488,10 +494,23 @@
                 <tbody id="monitoringBody"></tbody>
             </table>
         </div>
-        <div class="btn-group" style="margin-top: 12px;">
-            <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan Monitoring ke Sheet</button>
+        <div class="btn-group-3" style="margin-top: 12px; display: grid;">
+            <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Sheet</button>
+            <button class="btn btn-wa" onclick="shareMonitoringWA()"><i class="fa-brands fa-whatsapp"></i> Share WA</button>
             <a href="https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/edit?gid=652284391#gid=652284391" target="_blank" class="btn btn-pdf" style="text-decoration: none;"><i class="fa-solid fa-table"></i> Buka Spreadsheet</a>
         </div>
+
+        <!-- 3. Pasien Ruangan -->
+        <label style="margin-top: 20px;">Pasien Ruangan (Rawat Inap)</label>
+        <div id="ruanganContainer" style="margin-top: 15px;"></div>
+        <button class="btn-add" onclick="tambahPasienRuang()"><i class="fa-solid fa-circle-plus"></i> Tambah Pasien Ruangan</button>
+
+        <div class="section-title">
+            <div class="icon-box">🗓️</div>
+            <h2>Perencanaan Tindakan Pasien</h2>
+        </div>
+        <div id="patientPlanContainer" style="margin-top: 20px;"></div>
+        <button class="btn-add" onclick="tambahPasien()"><i class="fa-solid fa-circle-plus"></i> Tambah Kartu Pasien</button>
 
         <div class="section-title">
             <div class="icon-box" style="color:var(--accent);">⚠️</div>
@@ -649,13 +668,10 @@ async function fetchHeaderData() {
         const csvUrl = "https://docs.google.com/spreadsheets/d/1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0/export?format=csv&gid=432993966";
         const response = await fetch(csvUrl);
         const csvText = await response.text();
-        
         const rows = parseCSV(csvText);
-        
         if (rows.length >= 2) {
             const headers = rows[0].slice(5, 22); 
             const values = rows[1].slice(5, 22);  
-            
             let html = '';
             headers.forEach((h, i) => {
                 if (h && values[i] !== undefined) {
@@ -717,6 +733,18 @@ function tambahPerawat() {
 function hapusPerawat(id) { document.getElementById(`perawatBox-${id}`).remove(); }
 tambahPerawat(); 
 
+// Fungsi Toggle Job Desk
+function toggleJobDesk() {
+    const wrapper = document.getElementById('jobDeskWrapper');
+    const btn = wrapper.querySelector('.toggle-btn');
+    wrapper.classList.toggle('collapsed');
+    if (wrapper.classList.contains('collapsed')) {
+        btn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Tampilkan Job Desk';
+    } else {
+        btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Sembunyi Job Desk';
+    }
+}
+
 let ruanganCount = 0;
 function tambahPasienRuang() {
     ruanganCount++;
@@ -753,7 +781,6 @@ function addMonitorRow() {
     const monitorBody = document.getElementById('monitoringBody');
     const tr = document.createElement('tr');
     tr.id = `mon_row_${monRowCount}`;
-    // Susunan kolom: Nama | JK | Goldar | TB | BB | TD | Akses | UFG | Heparin | EPO/FE | Kt/V | Transfusi | Keterangan
     tr.innerHTML = `<td><div style="position: relative;"><input type="text" id="mon_nama_${monRowCount}" placeholder="Ketik Nama" list="patientList" autocomplete="off"></div></td><td><select id="mon_jk_${monRowCount}"><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td><td><select id="mon_goldar_${monRowCount}"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td><td><input type="text" id="mon_tb_${monRowCount}" placeholder="cm"></td><td><input type="text" id="mon_bb_${monRowCount}" placeholder="kg"></td><td><input type="text" id="mon_td_${monRowCount}" placeholder="120/80"></td><td><input type="text" id="mon_akses_${monRowCount}" placeholder="-" list="aksesList" autocomplete="off"></td><td><input type="text" id="mon_ufg_${monRowCount}" placeholder="cc"></td><td><input type="text" id="mon_heparin_${monRowCount}" placeholder="iu"></td><td><input type="text" id="mon_epo_${monRowCount}" placeholder="-"></td><td><input type="text" id="mon_ktv_${monRowCount}" placeholder="-" value="1,5"></td><td><select id="mon_transfusi_${monRowCount}"><option value="Tidak">Tidak</option><option value="Ada">Ada</option></select></td><td style="display: flex; align-items: center; justify-content: center; gap: 5px;"><input type="text" id="mon_ket_${monRowCount}" placeholder="Ket" style="flex:1;"><button class="delete-pasien" onclick="removeMonitorRow(${monRowCount})" style="border:none; background:transparent; cursor:pointer;"><i class="fa-solid fa-circle-xmark"></i></button></td>`;
     monitorBody.appendChild(tr);
     setupAutocomplete(`mon_nama_${monRowCount}`);
@@ -860,7 +887,6 @@ async function searchFastTrack() {
             html += `<div class="stat-card"><div class="stat-value">${d.transfusi_Tidak}</div><div class="stat-label">TRANSFUSI TIDAK</div></div>`;
             html += '</div>';
 
-            // Tabel Akses Vaskuler
             html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table"><thead><tr><th>Akses Vaskuler</th><th>Jumlah Pasien</th></tr></thead><tbody>';
             html += `<tr><td style="text-align:left; padding-left:10px;">AV-SHUNT</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.akses_av_shunt}</td></tr>`;
             html += `<tr><td style="text-align:left; padding-left:10px;">MANUAL</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.akses_manual}</td></tr>`;
@@ -868,14 +894,12 @@ async function searchFastTrack() {
             html += `<tr><td style="text-align:left; padding-left:10px;">CVC TUNNEL/SEMIPERMANEN</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.akses_cvc_tunnel}</td></tr>`;
             html += '</tbody></table></div>';
 
-            // Tabel Kategori Kt/V
             html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table"><thead><tr><th>Kategori Kt/V</th><th>Jumlah Pasien</th></tr></thead><tbody>';
             html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V &lt; 1,4</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_lt_1_4}</td></tr>`;
             html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V 1,4 - 1,5</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_1_4_1_5}</td></tr>`;
             html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V &gt; 1,5</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_gt_1_5}</td></tr>`;
             html += '</tbody></table></div>';
 
-            // Tabel Kategori UFG
             html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table"><thead><tr><th>Kategori UFG (cc)</th><th>Jumlah Pasien</th></tr></thead><tbody>';
             html += `<tr><td style="text-align:left; padding-left:10px;">UFG &le; 500 cc</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_lt_500}</td></tr>`;
             html += `<tr><td style="text-align:left; padding-left:10px;">UFG 501 - 1000 cc</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_500_1000}</td></tr>`;
@@ -884,7 +908,6 @@ async function searchFastTrack() {
             html += `<tr><td style="text-align:left; padding-left:10px;">UFG &gt; 3000 cc</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_gt_3000}</td></tr>`;
             html += '</tbody></table></div>';
             
-            // Total Heparin
             html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table"><thead><tr><th>Total Heparin (iu)</th></tr></thead><tbody>';
             html += `<tr><td style="text-align:center; background:#fff; font-weight:bold;">${d.sum_Heparin}</td></tr>`;
             html += '</tbody></table></div>';
@@ -974,7 +997,6 @@ function printAnalitik() {
 async function submitMonitoringSheet() {
     if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi sebelum menyimpan monitoring!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
     let dataRows = [];
-    // Susunan data: Nama, JK, Goldar, TB, BB, TD, Akses, UFG, Heparin, EPO/FE, Kt/V, Transfusi, Keterangan
     for(let i=1; i<=monRowCount; i++) { let row = document.getElementById(`mon_row_${i}`); if(row) { let nama = getVal(`mon_nama_${i}`); if(nama) { dataRows.push([nama, getVal(`mon_jk_${i}`), getVal(`mon_goldar_${i}`), getVal(`mon_tb_${i}`), getVal(`mon_bb_${i}`), getVal(`mon_td_${i}`), getVal(`mon_akses_${i}`), getVal(`mon_ufg_${i}`), getVal(`mon_heparin_${i}`), getVal(`mon_epo_${i}`), getVal(`mon_ktv_${i}`), getVal(`mon_transfusi_${i}`), getVal(`mon_ket_${i}`)]); } } }
     if(dataRows.length === 0) { alert("❌ Tidak ada data monitoring terisi!"); return; }
     let btn = event.target; let originalText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
@@ -1025,7 +1047,6 @@ function buildReport() {
     txt += `*PERENCANAAN TINDAKAN PASIEN*\n`; let adaPasien = false; let pidx = 1;
     for(let i=1; i<=patientCount; i++) { let card = document.getElementById(`patientCard-${i}`); if(card) { let nama = getVal(`namaPasienPlan-${i}`); let rencana = getVal(`rencanaPasien-${i}`); if(nama) { adaPasien = true; txt += `${pidx}. *${nama}*\n`; txt += `   Rencana: \n`; if(rencana) { rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => { txt += `   - ${r}\n`; }); } else { txt += `   - -\n`; } txt += `\n`; pidx++; } } }
     if(!adaPasien) txt += "Tidak ada pasien yang diinput.\n"; txt += `\n───────────────────\n\n`;
-    // Monitoring section dengan Akses
     txt += `*MONITORING PASIEN HD*\n`; let mCount = 0;
     for(let i=1; i<=monRowCount; i++) { let row = document.getElementById(`mon_row_${i}`); if(row) { let nama = getVal(`mon_nama_${i}`); if(nama) { mCount++; txt += `${mCount}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`; txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`; txt += `   Akses: ${getVal(`mon_akses_${i}`)} | UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`; txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`; if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`; txt += `\n`; } } }
     if(mCount === 0) txt += "Tidak ada data monitoring terinput.\n"; txt += `\n───────────────────\n\n`;
@@ -1039,6 +1060,41 @@ function kirimWA() {
     const txt = buildReport(); const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt); window.open(waUrl, '_blank');
 }
 
+// Fungsi Share WA Khusus Monitoring (Tanpa wajib Identitas Pengirim)
+function shareMonitoringWA() {
+    let txt = `*DATA MONITORING PASIEN HD*\n`; 
+    txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`; 
+    txt += `═══════════════════\n\n`;
+    
+    let mCount = 0;
+    for(let i=1; i<=monRowCount; i++) { 
+        let row = document.getElementById(`mon_row_${i}`); 
+        if(row) { 
+            let nama = getVal(`mon_nama_${i}`); 
+            if(nama) { 
+                mCount++; 
+                txt += `${mCount}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`; 
+                txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`; 
+                txt += `   Akses: ${getVal(`mon_akses_${i}`)} | UFG: ${getVal(`mon_ufg_${i}`)} | Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)}\n`; 
+                txt += `   EPO/FE: ${getVal(`mon_epo_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`; 
+                if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`; 
+                txt += `\n`; 
+            } 
+        } 
+    }
+    
+    if(mCount === 0) txt += "Tidak ada data monitoring terinput.\n"; 
+    
+    txt += `\n═══════════════════\n`;
+    
+    let pengirim = getVal('pengirim1');
+    if (pengirim) {
+        txt += `Dikirim oleh: *${pengirim}*\n`; 
+    }
+    
+    const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt); 
+    window.open(waUrl, '_blank');
+}
 function uploadToDrive() {
     if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
     const txt = buildReport(); const fileName = `Laporan_HD_${formatDate(getVal('tanggal1'))}_Shift${getVal('shift1')}.pdf`;
