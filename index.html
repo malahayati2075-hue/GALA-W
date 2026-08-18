@@ -208,39 +208,100 @@
             transform: translateY(-2px);
             box-shadow: 8px 8px 16px rgba(13, 148, 136, 0.1), -4px -4px 10px rgba(255,255,255,0.9);
         }
-        
+
+        /* ===== SECTION CARDS - Glassmorphism Warna ===== */
+        .section-card {
+            border-radius: 18px;
+            padding: 18px 16px;
+            margin-top: 22px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 6px 6px 14px rgba(0,0,0,0.06), -4px -4px 10px rgba(255,255,255,0.85);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 18px rgba(0,0,0,0.08), -4px -4px 12px rgba(255,255,255,0.95);
+        }
+        .section-card .section-title { margin-top: 0; margin-bottom: 12px; }
+
+        /* HIJAU */
+        .section-card-green {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.20) 0%, rgba(240, 253, 244, 0.70) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.40);
+        }
+        .section-card-green .icon-box { color: #059669 !important; background: rgba(255,255,255,0.95) !important; }
+        .section-card-green .section-title h2 { color: #065f46; }
+
+        /* BIRU */
+        .section-card-blue {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.40);
+        }
+        .section-card-blue .icon-box { color: #2563eb !important; background: rgba(255,255,255,0.95) !important; }
+        .section-card-blue .section-title h2 { color: #1e3a8a; }
+
+        /* UNGU */
+        .section-card-purple {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.20) 0%, rgba(245, 243, 255, 0.70) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.40);
+        }
+        .section-card-purple .icon-box { color: #9333ea !important; background: rgba(255,255,255,0.95) !important; }
+        .section-card-purple .section-title h2 { color: #581c87; }
+
+        /* JINGGA */
+        .section-card-orange {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.20) 0%, rgba(255, 247, 237, 0.70) 100%);
+            border: 1px solid rgba(249, 115, 22, 0.40);
+        }
+        .section-card-orange .icon-box { color: #ea580c !important; background: rgba(255,255,255,0.95) !important; }
+        .section-card-orange .section-title h2 { color: #7c2d12; }
+
+        /* ===== JOB DESK COMPACT (sekarang jadi kartu biru glass) ===== */
         .job-desk-wrapper {
             position: relative;
-            border-radius: 24px;
+            border-radius: 18px;
             overflow: hidden;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            background-image: url('jobdesk.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            box-shadow: 8px 8px 16px rgba(0,0,0,0.1), -4px -4px 10px rgba(255,255,255,0.8);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            margin-top: 22px;
+            margin-bottom: 12px;
+            padding: 18px 16px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 6px 6px 14px rgba(0,0,0,0.06), -4px -4px 10px rgba(255,255,255,0.85);
+            border: 1px solid rgba(59, 130, 246, 0.40);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .job-desk-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 18px rgba(0,0,0,0.08), -4px -4px 12px rgba(255,255,255,0.95);
         }
 
         .job-desk-overlay {
             position: relative;
-            padding: 25px 20px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border-radius: 24px;
+            padding: 0;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-radius: 0;
         }
 
-        .job-desk-overlay .section-title { margin-top: 0; margin-bottom: 20px; }
-        .job-desk-overlay .section-title h2 { color: #0f172a; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
-        
+        .job-desk-overlay .section-title { margin-top: 0; margin-bottom: 12px; }
+        .job-desk-overlay .section-title h2 { color: #1e3a8a; text-shadow: none; }
+        .job-desk-overlay .section-title .icon-box {
+            color: #2563eb !important;
+            background: rgba(255,255,255,0.95) !important;
+        }
+
         .job-desk-overlay .job-box,
         .job-desk-overlay #padatkaryaBox {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -4px -4px 10px rgba(255,255,255,0.6);
-            padding: 15px;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.6);
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: 12px;
         }
 
         .job-desk-overlay .job-box input[type="text"],
@@ -248,34 +309,50 @@
             background: rgba(255, 255, 255, 0.95);
             font-weight: 600;
             color: #0f172a;
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
+            padding: 10px 12px;
+            font-size: 0.9rem;
         }
-        
-        .job-desk-overlay #padatkaryaBox input[type="text"] {
-            margin-bottom: 10px;
+
+        .job-desk-overlay .check-item {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(59, 130, 246, 0.20);
+            font-weight: 600;
+            font-size: 0.72rem;
+            padding: 4px 9px;
+            color: #1e3a8a;
+        }
+        .job-desk-overlay .check-item:hover {
+            background: rgba(219, 234, 254, 0.95);
+            border-color: rgba(59, 130, 246, 0.5);
         }
 
         .job-desk-overlay .small-stepper {
             background: rgba(248, 250, 252, 0.9);
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(59, 130, 246, 0.20);
+            padding: 6px;
         }
-
-        .job-desk-overlay .check-item {
-            background: rgba(248, 250, 252, 0.95);
-            border: 1px solid #e2e8f0;
-            font-weight: 600;
-        }
+        .job-desk-overlay .small-stepper .stepper-label { font-size: 0.7rem; color: #1e3a8a; }
+        .job-desk-overlay .stepper-btn { background: #2563eb; box-shadow: 0 3px 0 #1e40af; }
+        .job-desk-overlay .stepper-btn:hover { background: #3b82f6; }
 
         .job-desk-overlay .btn-add {
-            background: rgba(240, 249, 255, 0.95);
-            border: 1.5px dashed var(--secondary);
-            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1.5px dashed #2563eb;
+            color: #2563eb;
             box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
+            margin-top: 4px;
+            margin-bottom: 8px;
+            padding: 8px;
+            font-size: 0.82rem;
         }
         .job-desk-overlay .btn-add:hover {
-            background: #e0f2fe;
+            background: rgba(219, 234, 254, 0.95);
             border-style: solid;
         }
+
+        .job-desk-overlay .job-box .checkbox-group { margin-top: 8px; gap: 5px; }
+        .job-desk-overlay .job-box .bed-range { margin-top: 8px; gap: 10px; }
+        .job-desk-overlay #padatkaryaBox input[type="text"] { margin-bottom: 8px; }
 
         .bed-range { display: flex; justify-content: space-between; gap: 15px; margin-top: 10px; }
         .small-stepper {
@@ -478,13 +555,20 @@
             <div><label>Tim</label><select id="tim1"><option value="1">Tim 1</option><option value="2">Tim 2</option></select></div>
         </div>
 
-        <div class="section-title">
-            <div class="icon-box">🧑‍🤝‍🧑</div>
-            <h2>Anggota Tim</h2>
-        </div>
-        <div id="memberContainer"></div>
-        <button class="btn-add" onclick="tambahAnggota(true)"><i class="fa-solid fa-circle-plus"></i> Tambah Anggota (Tekan Enter)</button>
+        <!-- 🟢 KARTU HIJAU: Anggota Tim -->
+        <div class="section-card section-card-green">
+            <div class="section-title">
+                <div class="icon-box">🧑‍🤝‍🧑</div>
+                <h2>Anggota Tim</h2>
+            </div>
+            <div id="memberContainer"></div>
+            <button class="btn-add" onclick="tambahAnggota(true)"><i class="fa-solid fa-circle-plus"></i> Tambah Anggota (Tekan Enter)</button>
 
+            <label>Rencana Tindakan Umum</label>
+            <textarea id="rencanaTindakan" placeholder="Tulis rencana tindakan global di sini..."></textarea>
+        </div>
+
+        <!-- 🔵 KARTU BIRU: Job Desk (kompak) -->
         <div class="job-desk-wrapper">
             <div class="job-desk-overlay">
                 <div class="section-title">
@@ -494,8 +578,8 @@
                 <div id="perawatContainer"></div>
                 <button class="btn-add" onclick="tambahPerawat()"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Job Desk</button>
 
-                <div class="job-box" id="padatkaryaBox" style="margin-top: 15px;">
-                    <label style="margin-top: 0; margin-bottom: 8px; font-size: 0.85rem;">Nama Padatkarya</label>
+                <div class="job-box" id="padatkaryaBox" style="margin-top: 10px;">
+                    <label style="margin-top: 0; margin-bottom: 6px; font-size: 0.82rem;">Nama Padatkarya</label>
                     <input type="text" id="namaPadatkarya" placeholder="Nama Padatkarya">
                     <div class="checkbox-group">
                         <label class="check-item"><input type="checkbox" value="menyalakan AC 16 derajat"> Menyalakan AC 16 derajat</label>
@@ -506,77 +590,86 @@
             </div>
         </div>
 
-        <label>Rencana Tindakan Umum</label>
-        <textarea id="rencanaTindakan" placeholder="Tulis rencana tindakan global di sini..."></textarea>
+        <!-- 🟣 KARTU UNGU: Daftar Pasien -->
+        <div class="section-card section-card-purple">
+            <div class="section-title">
+                <div class="icon-box">🩺</div>
+                <h2>Daftar Pasien</h2>
+            </div>
+            <label>Pasien Rawat Jalan (Bisa Paste dari Excel)</label>
+            <textarea id="pasienRJ" placeholder="Nama Pasien 1&#10;Nama Pasien 2"></textarea>
+            
+            <div class="section-title no-icon">
+                <h2>Monitoring Pasien HD</h2>
+            </div>
+            <button class="btn-add" onclick="addMonitorRow()" style="margin-bottom: 12px;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Pasien</button>
+            <div class="table-container">
+                <table class="monitoring-table" id="monitoringTable">
+                    <thead>
+                        <tr>
+                            <th>Nama</th><th>Jenis Kelamin</th><th>Gol Darah</th><th>TB</th><th>BB</th><th>Tekanan Darah</th>
+                            <th>Akses</th><th>UFG</th><th>QB (ml/jam)</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>Transfusi</th><th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monitoringBody"></tbody>
+                </table>
+            </div>
+            <div class="btn-group" style="margin-top: 12px; margin-bottom: 15px;">
+                <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Sheet</button>
+                <button class="btn btn-wa" onclick="shareMonitoringWA()"><i class="fa-brands fa-whatsapp"></i> Share WA Monitoring</button>
+            </div>
+            <a href="https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/edit?gid=652284391#gid=652284391" target="_blank" class="btn btn-pdf" style="display:block; text-decoration: none; margin-bottom: 15px;"><i class="fa-solid fa-table"></i> Buka Spreadsheet</a>
 
-        <div class="section-title">
-            <div class="icon-box">🩺</div>
-            <h2>Daftar Pasien</h2>
-        </div>
-        <label>Pasien Rawat Jalan (Bisa Paste dari Excel)</label>
-        <textarea id="pasienRJ" placeholder="Nama Pasien 1&#10;Nama Pasien 2"></textarea>
-        
-        <div class="section-title no-icon">
-            <h2>Monitoring Pasien HD</h2>
-        </div>
-        <button class="btn-add" onclick="addMonitorRow()" style="margin-bottom: 15px;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Pasien</button>
-        <div class="table-container">
-            <table class="monitoring-table" id="monitoringTable">
-                <thead>
-                    <tr>
-                        <th>Nama</th><th>Jenis Kelamin</th><th>Gol Darah</th><th>TB</th><th>BB</th><th>Tekanan Darah</th>
-                        <th>Akses</th><th>UFG</th><th>QB (ml/jam)</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>Transfusi</th><th>Keterangan</th>
-                    </tr>
-                </thead>
-                <tbody id="monitoringBody"></tbody>
-            </table>
-        </div>
-        <div class="btn-group" style="margin-top: 12px; margin-bottom: 20px;">
-            <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Sheet</button>
-            <button class="btn btn-wa" onclick="shareMonitoringWA()"><i class="fa-brands fa-whatsapp"></i> Share WA Monitoring</button>
-        </div>
-        <a href="https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/edit?gid=652284391#gid=652284391" target="_blank" class="btn btn-pdf" style="display:block; text-decoration: none; margin-bottom: 20px;"><i class="fa-solid fa-table"></i> Buka Spreadsheet</a>
-
-        <label>Pasien Ruangan (Rawat Inap)</label>
-        <div id="ruanganContainer" style="margin-top: 15px;"></div>
-        <button class="btn-add" onclick="tambahPasienRuang()"><i class="fa-solid fa-circle-plus"></i> Tambah Pasien Ruangan</button>
-
-        <div class="section-title">
-            <div class="icon-box">🗓️</div>
-            <h2>Perencanaan Tindakan Pasien</h2>
-        </div>
-        <div id="patientPlanContainer" style="margin-top: 20px;"></div>
-        <button class="btn-add" onclick="tambahPasien()"><i class="fa-solid fa-circle-plus"></i> Tambah Kartu Pasien</button>
-
-        <div class="section-title">
-            <div class="icon-box" style="color:var(--accent);">⚠️</div>
-            <h2>Masalah & Inventaris</h2>
-        </div>
-        <div class="grid-2">
-            <div><label>Masalah Pasien</label><textarea id="masalahPasien" style="min-height: 80px;"></textarea></div>
-            <div><label>Masalah Mesin / Alat</label><textarea id="masalahMesin" style="min-height: 80px;"></textarea></div>
-        </div>
-        
-        <label>Sisa Dialyzer (HF)</label>
-        <div class="dialyzer-grid" id="dialyzerContainer"></div>
-        
-        <div class="grid-2" style="margin-top: 15px;">
-            <div><label>Sisa GD Stick</label><input type="text" id="gdStick" placeholder="Contoh: 12 pcs"></div>
-            <div><label>BOR / Sisa Bed Kosong</label><input type="text" id="sisaBed" placeholder="Contoh: 1 bed (44)"></div>
+            <label>Pasien Ruangan (Rawat Inap)</label>
+            <div id="ruanganContainer" style="margin-top: 12px;"></div>
+            <button class="btn-add" onclick="tambahPasienRuang()"><i class="fa-solid fa-circle-plus"></i> Tambah Pasien Ruangan</button>
         </div>
 
-        <div class="section-title">
-            <div class="icon-box">🪪</div>
-            <h2>Identitas Pengirim</h2>
+        <!-- 🟠 KARTU JINGGA: Perencanaan Tindakan Pasien -->
+        <div class="section-card section-card-orange">
+            <div class="section-title">
+                <div class="icon-box">🗓️</div>
+                <h2>Perencanaan Tindakan Pasien</h2>
+            </div>
+            <div id="patientPlanContainer" style="margin-top: 12px;"></div>
+            <button class="btn-add" onclick="tambahPasien()"><i class="fa-solid fa-circle-plus"></i> Tambah Kartu Pasien</button>
         </div>
-        <input type="text" id="pengirim1" placeholder="Nama Anda (Wajib diisi untuk Laporan)">
 
-        <div class="btn-group-3">
-            <button class="btn btn-wa" onclick="kirimWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
-            <button class="btn btn-drive" onclick="uploadToDrive()"><i class="fa-brands fa-google-drive"></i> Upload Drive</button>
-            <button class="btn btn-pdf" onclick="cetakPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+        <!-- 🟢 KARTU HIJAU: Masalah & Inventaris -->
+        <div class="section-card section-card-green">
+            <div class="section-title">
+                <div class="icon-box">⚠️</div>
+                <h2>Masalah & Inventaris</h2>
+            </div>
+            <div class="grid-2">
+                <div><label>Masalah Pasien</label><textarea id="masalahPasien" style="min-height: 80px;"></textarea></div>
+                <div><label>Masalah Mesin / Alat</label><textarea id="masalahMesin" style="min-height: 80px;"></textarea></div>
+            </div>
+            
+            <label>Sisa Dialyzer (HF)</label>
+            <div class="dialyzer-grid" id="dialyzerContainer"></div>
+            
+            <div class="grid-2" style="margin-top: 12px;">
+                <div><label>Sisa GD Stick</label><input type="text" id="gdStick" placeholder="Contoh: 12 pcs"></div>
+                <div><label>BOR / Sisa Bed Kosong</label><input type="text" id="sisaBed" placeholder="Contoh: 1 bed (44)"></div>
+            </div>
         </div>
-        <button class="btn-reset" onclick="resetData()"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
+
+        <!-- 🔵 KARTU BIRU: Identitas Pengirim -->
+        <div class="section-card section-card-blue">
+            <div class="section-title">
+                <div class="icon-box">🪪</div>
+                <h2>Identitas Pengirim</h2>
+            </div>
+            <input type="text" id="pengirim1" placeholder="Nama Anda (Wajib diisi untuk Laporan)">
+
+            <div class="btn-group-3">
+                <button class="btn btn-wa" onclick="kirimWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
+                <button class="btn btn-drive" onclick="uploadToDrive()"><i class="fa-brands fa-google-drive"></i> Upload Drive</button>
+                <button class="btn btn-pdf" onclick="cetakPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+            </div>
+            <button class="btn-reset" onclick="resetData()"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
+        </div>
     </div>
 
     <div id="slide2" class="page">
