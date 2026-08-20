@@ -576,12 +576,6 @@
                 <div class="icon-box">🩺</div>
                 <h2>Daftar Pasien</h2>
             </div>
-            <label>Pasien Rawat Jalan (Bisa Paste dari Excel)</label>
-            <textarea id="pasienRJ" placeholder="Nama Pasien 1&#10;Nama Pasien 2"></textarea>
-            
-            <div class="section-title no-icon">
-                <h2>Monitoring Pasien HD</h2>
-            </div>
             <button class="btn-add" onclick="addMonitorRow()" style="margin-bottom: 12px;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Pasien</button>
             <div class="table-container">
                 <table class="monitoring-table" id="monitoringTable">
@@ -1163,10 +1157,8 @@ async function submitMonitoringSheet() {
     } catch (e) { alert("❌ Gagal mengirim data: " + e.message); } finally { btn.innerHTML = originalText; btn.disabled = false; }
 }
 
-function shareMonitoringWA() {
-    let txt = `*MONITORING PASIEN HD*\n`;
-    txt += `Tanggal: ${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}\n`;
-    txt += `═══════════════════\n`;
+function getMonitoringText() {
+    let txt = "";
     let mCount = 0;
     for(let i=1; i<=monRowCount; i++) { 
         let row = document.getElementById(`mon_row_${i}`); 
@@ -1184,6 +1176,14 @@ function shareMonitoringWA() {
         } 
     }
     if(mCount === 0) txt += "Tidak ada data monitoring terinput.\n";
+    return txt;
+}
+
+function shareMonitoringWA() {
+    let txt = `*MONITORING PASIEN HD*\n`;
+    txt += `Tanggal: ${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}\n`;
+    txt += `═══════════════════\n`;
+    txt += getMonitoringText();
     
     const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
     window.open(waUrl, '_blank');
@@ -1221,11 +1221,23 @@ function buildReport() {
     let namaPadat = getVal('namaPadatkarya');
     if(namaPadat) { jobStaffCount++; txt += `${jobStaffCount}. *${namaPadat}* : \n`; let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value); if(jobsPadat.length > 0) jobsPadat.forEach(job => txt += `   - ${job}\n`); else txt += `   - -\n`; }
     if(getVal('rencanaTindakan')) { txt += `\n*Rencana Tindakan Umum:*\n${formatPaste(getVal('rencanaTindakan'))}\n`; }
-    txt += `\n───────────────────\n\n`; txt += `*DAFTAR PASIEN*\n`; let rjText = formatPatientList(getVal('pasienRJ')); let rjCount = (getVal('pasienRJ') ? getVal('pasienRJ').split('\n').filter(l => l.trim().length > 0).length : 0); txt += `*Rawat Jalan:*\n${rjText}\n\n`;
+    txt += `\n───────────────────\n\n`; 
+    
+    // Daftar Pasien (Monitoring HD langsung dimasukkan ke laporan popup WA utama)
+    txt += `*DAFTAR PASIEN (MONITORING HD)*\n`;
+    txt += getMonitoringText();
+    let rjCount = 0;
+    for(let i=1; i<=monRowCount; i++) { 
+        let row = document.getElementById(`mon_row_${i}`); 
+        if(row) { 
+            if(getVal(`mon_nama_${i}`)) rjCount++;
+        } 
+    }
+    txt += `\n`;
     
     let ruangCount = 0, ruangIdx = 1, ruangText = "";
     for(let i=1; i<=ruanganCount; i++) { let card = document.getElementById(`ruanganCard-${i}`); if(card) { let nama = getVal(`namaPasienRuang-${i}`); let detail = getVal(`detailPasienRuang-${i}`); if(nama) { ruangCount++; ruangText += `${ruangIdx}. *${nama}*\n`; if(detail) { detail.split('\n').filter(l => l.trim().length > 0).forEach(l => { ruangText += `   > ${l.trim().replace(/^\s*\d+[\.\)\-\,]\s*/, '')}\n`; }); } else { ruangText += `   > -\n`; } ruangText += `\n`; ruangIdx++; } } }
-    if(ruangCount === 0) ruangText = "-\n"; txt += `*Ruangan:*\n${ruangText}`; txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`; txt += `───────────────────\n\n`;
+    if(ruangCount === 0) ruangText = "-\n"; txt += `*RUANGAN (RAWAT INAP):*\n${ruangText}`; txt += `└ _Total Pasien: ${rjCount + ruangCount}_\n\n`; txt += `───────────────────\n\n`;
     
     txt += `*PERENCANAAN TINDAKAN PASIEN*\n`; let adaPasien = false; let pidx = 1;
     for(let i=1; i<=patientCount; i++) { let card = document.getElementById(`patientCard-${i}`); if(card) { let nama = getVal(`namaPasienPlan-${i}`); let rencana = getVal(`rencanaPasien-${i}`); if(nama) { adaPasien = true; txt += `${pidx}. *${nama}*\n`; txt += `   Rencana: \n`; if(rencana) { rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => { txt += `   - ${r}\n`; }); } else { txt += `   - -\n`; } txt += `\n`; pidx++; } } }
