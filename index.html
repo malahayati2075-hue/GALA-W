@@ -14,7 +14,7 @@
             --primary-light: #14b8a6;
             --secondary: #0284c7;
             --accent: #f43f5e;
-            --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #f0fdfa 50%, #fef2f2 100%);
+            --bg-gradient: linear-gradient(135deg, #fff7e0 0%, #f0fdfa 50%, #fff4e6 100%);
             --card-bg: rgba(255, 255, 255, 0.85);
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -22,12 +22,14 @@
             --input-bg: #f8fafc;
             --wa-dark: #075E54;
             --wa-green: #25D366;
-            --ri-red: #c62828;
-            --ri-white: #ffffff;
-            --arema-blue: #0d47a1;
             --drive-blue: #4285F4;
-            --shadow-dark: rgba(0, 0, 0, 0.08);
-            --shadow-light: rgba(255, 255, 255, 0.95);
+
+            /* ===== TEMA SEPTEMBER CERIA ===== */
+            --sc-orange: #f76707;
+            --sc-amber: #f59f00;
+            --sc-deep: #e8590c;
+            --sc-dark: #d9480f;
+            --sc-yellow: #fcc419;
         }
 
         * {
@@ -72,11 +74,12 @@
             border-bottom: 1px solid rgba(255,255,255,0.3);
         }
 
+        /* Overlay hangat khas September Ceria */
         .app-header::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to bottom, rgba(13, 71, 161, 0.3) 0%, rgba(0,0,0,0.4) 40%, rgba(13, 71, 161, 0.9) 100%);
+            background: linear-gradient(to bottom, rgba(217, 72, 15, 0.30) 0%, rgba(0,0,0,0.45) 40%, rgba(135, 36, 6, 0.92) 100%);
             z-index: 1;
         }
 
@@ -96,7 +99,7 @@
             border: 1px solid rgba(255,255,255,0.2); max-width: 200px;
         }
         .prayer-times .loc { font-weight: 700; color: #fff; margin-bottom: 2px; display: block; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2px; }
-        .prayer-times span { font-weight: 700; color: #ffe53b; }
+        .prayer-times span { font-weight: 700; color: var(--sc-yellow); }
 
         .sheet-header-data {
             position: relative; z-index: 2; padding: 8px 15px; background: rgba(0,0,0,0.25); backdrop-filter: blur(4px);
@@ -105,7 +108,7 @@
             overflow-x: auto; white-space: nowrap; margin-bottom: 10px;
         }
         .sheet-header-data span { display: inline-block; margin: 0 8px; font-weight: 600; }
-        .sheet-header-data b { color: #ffe53b; margin-left: 3px; }
+        .sheet-header-data b { color: var(--sc-yellow); margin-left: 3px; }
 
         .header-content { position: relative; z-index: 2; text-align: center; padding: 20px; margin-bottom: 10px; }
 
@@ -117,11 +120,12 @@
         @keyframes floatGALA { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes glowGALA {
             0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0,0,0,0.5); }
-            50% { text-shadow: 0 0 25px rgba(20, 184, 166, 0.9), 0 0 10px rgba(255, 255, 255, 0.8), 0 4px 15px rgba(0,0,0,0.5); }
+            50% { text-shadow: 0 0 25px rgba(252, 196, 25, 0.95), 0 0 10px rgba(255, 255, 255, 0.8), 0 4px 15px rgba(0,0,0,0.5); }
         }
 
         .app-header p { margin: 10px 0 0 0; font-size: 0.9rem; opacity: 0.95; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
 
+        /* ===== ANIMASI SUBTITLE BERGANTIAN (3 baris) ===== */
         .subtitle-rotator {
             position: relative;
             display: block;
@@ -140,10 +144,11 @@
             font-weight: 500;
             opacity: 0;
             text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            animation: rotateSubtitle 4s ease-in-out infinite;
+            animation: rotateSubtitle 6s ease-in-out infinite;
         }
         .subtitle-rotator .sub-line:nth-child(1) { animation-delay: 0s; }
         .subtitle-rotator .sub-line:nth-child(2) { animation-delay: 2s; }
+        .subtitle-rotator .sub-line:nth-child(3) { animation-delay: 4s; }
         @keyframes rotateSubtitle {
             0% { opacity: 0; transform: translateY(8px); }
             10% { opacity: 1; transform: translateY(0); }
@@ -161,15 +166,17 @@
             padding: 12px 5px; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); cursor: pointer;
             border-radius: 16px; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; gap: 8px;
             box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -6px -6px 12px rgba(255,255,255,0.9);
+            font-family: inherit;
         }
         .tab-btn i {
             font-size: 1.3rem; font-style: normal; background: linear-gradient(145deg, #e2e8f0, #ffffff);
             width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
             box-shadow: inset 2px 2px 5px #d1d5db, inset -2px -2px 5px #ffffff;
         }
+        /* Tab aktif: gradien September Ceria */
         .tab-btn.active {
-            background: linear-gradient(135deg, var(--ri-red) 0%, var(--ri-white) 20%, var(--ri-white) 30%, var(--arema-blue) 35%, #1976d2 100%);
-            color: #fff; box-shadow: 8px 8px 15px rgba(13, 71, 161, 0.3), -4px -4px 10px rgba(255,255,255,0.9);
+            background: linear-gradient(135deg, var(--sc-orange) 0%, var(--sc-amber) 35%, var(--sc-deep) 70%, var(--sc-dark) 100%);
+            color: #fff; box-shadow: 8px 8px 15px rgba(217, 72, 15, 0.3), -4px -4px 10px rgba(255,255,255,0.9);
             border: 1px solid rgba(255,255,255,0.4); transform: translateY(-4px);
         }
         .tab-btn.active i { background: rgba(255,255,255,0.25); box-shadow: 0 4px 8px rgba(0,0,0,0.2); color: #fff; }
@@ -185,30 +192,33 @@
             box-shadow: 6px 6px 12px rgba(13, 148, 136, 0.15), -4px -4px 10px rgba(255,255,255,0.8);
         }
         .section-title h2 { font-size: 1.1rem; margin: 0; color: var(--text-main); font-weight: 800; }
-        .section-title.no-icon h2 { font-size: 0.95rem; color: var(--text-muted); margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
 
+        /* Judul utama: gradien September Ceria */
         .main-title-3d {
-            background: linear-gradient(135deg, var(--ri-red) 0%, #e53935 15%, var(--ri-white) 25%, var(--ri-white) 30%, var(--arema-blue) 35%, #1976d2 100%);
+            background: linear-gradient(135deg, var(--sc-orange) 0%, var(--sc-amber) 40%, var(--sc-deep) 100%);
             border-radius: 18px; padding: 22px 20px;
-            box-shadow: 12px 12px 24px rgba(13, 71, 161, 0.25), -4px -4px 10px rgba(255,255,255,0.8), inset 0 2px 5px rgba(255,255,255,0.6);
+            box-shadow: 12px 12px 24px rgba(217, 72, 15, 0.28), -4px -4px 10px rgba(255,255,255,0.8), inset 0 2px 5px rgba(255,255,255,0.6);
             border: 1px solid rgba(255,255,255,0.4); position: relative; overflow: hidden; margin-top: 10px;
         }
         .main-title-3d .icon-box { background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2); box-shadow: none; }
         .main-title-3d h2 { color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
 
-        .waving-flag {
-            position: absolute; right: 20px; top: 50%; font-size: 3rem; font-weight: 900; font-style: italic;
-            color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
-            width: 85px; height: 60px; background: linear-gradient(to bottom, #c62828 50%, #ffffff 50%); border-radius: 2px;
+        /* Bendera September Ceria (pengganti bendera HUT RI) */
+        .sc-flag {
+            position: absolute; right: 20px; top: 50%; font-size: 2.6rem; font-weight: 900; font-style: italic;
+            color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center;
+            width: 85px; height: 60px;
+            background: linear-gradient(135deg, var(--sc-yellow) 0%, var(--sc-orange) 55%, var(--sc-dark) 100%);
+            border-radius: 4px 10px 10px 4px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.4); z-index: 0; transform-origin: left center; animation: flagWave 2.5s ease-in-out infinite; overflow: hidden;
         }
-        .waving-flag::before { content: ''; position: absolute; left: -6px; top: -10px; bottom: -10px; width: 5px; background: linear-gradient(to right, #555, #999, #555); border-radius: 2px; z-index: 1; }
-        .waving-flag::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%, rgba(0,0,0,0.2) 40%, transparent 60%, rgba(0,0,0,0.2) 80%, transparent 100%); background-size: 60px 100%; animation: flagShade 2.5s linear infinite; z-index: 1; }
-        .waving-flag span { position: relative; z-index: 2; }
+        .sc-flag::before { content: ''; position: absolute; left: -6px; top: -10px; bottom: -10px; width: 5px; background: linear-gradient(to right, #555, #999, #555); border-radius: 2px; z-index: 1; }
+        .sc-flag::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%, rgba(0,0,0,0.2) 40%, transparent 60%, rgba(0,0,0,0.2) 80%, transparent 100%); background-size: 60px 100%; animation: flagShade 2.5s linear infinite; z-index: 1; }
+        .sc-flag span { position: relative; z-index: 2; }
 
         @keyframes flagWave { 0%, 100% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); } 25% { transform: translateY(-50%) skewY(6deg) perspective(100px) rotateY(-10deg); } 50% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); } 75% { transform: translateY(-50%) skewY(-6deg) perspective(100px) rotateY(10deg); } }
         @keyframes flagShade { 0% { background-position: 0 0; } 100% { background-position: 60px 0; } }
-        @media (max-width: 480px) { .waving-flag { width: 65px; height: 45px; font-size: 2rem; } }
+        @media (max-width: 480px) { .sc-flag { width: 65px; height: 45px; font-size: 1.7rem; } }
 
         .main-title-3d > .icon-box, .main-title-3d > h2 { position: relative; z-index: 3; }
 
@@ -411,7 +421,7 @@
             border: none; padding: 16px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex;
             align-items: center; justify-content: center; gap: 10px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 5px 0 rgba(0,0,0,0.15), 0 8px 15px rgba(0,0,0,0.1);
-            text-decoration: none;
+            text-decoration: none; font-family: inherit;
         }
         .btn:active { transform: translateY(5px); box-shadow: 0 0 0 rgba(0,0,0,0.15), 0 2px 5px rgba(0,0,0,0.1); }
 
@@ -502,14 +512,14 @@
             .dialyzer-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
         .stat-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: #fff; padding: 20px; border-radius: 16px;
-            text-align: center; box-shadow: 8px 8px 15px rgba(13, 148, 136, 0.2), -4px -4px 10px rgba(255,255,255,0.8); transition: transform 0.2s;
+            background: linear-gradient(135deg, var(--sc-orange) 0%, var(--sc-amber) 60%, var(--sc-deep) 100%); color: #fff; padding: 20px; border-radius: 16px;
+            text-align: center; box-shadow: 8px 8px 15px rgba(217, 72, 15, 0.25), -4px -4px 10px rgba(255,255,255,0.8); transition: transform 0.2s;
         }
         .stat-card:hover { transform: translateY(-3px); }
-        .stat-value { font-size: 2.5rem; font-weight: 900; margin-bottom: 5px; line-height: 1; }
-        .stat-label { font-size: 0.85rem; font-weight: 600; opacity: 0.9; }
+        .stat-value { font-size: 2.2rem; font-weight: 900; margin-bottom: 5px; line-height: 1; }
+        .stat-label { font-size: 0.78rem; font-weight: 600; opacity: 0.95; }
         .stat-loading { text-align: center; color: var(--text-muted); padding: 40px 0; grid-column: 1/-1; }
 
         .analitik-detail pre {
@@ -548,7 +558,7 @@
         .schedule-loading.hidden { opacity: 0; pointer-events: none; }
         .spinner {
             width: 44px; height: 44px;
-            border: 4px solid rgba(37,99,235,0.18); border-top-color: #2563eb;
+            border: 4px solid rgba(217,72,15,0.18); border-top-color: var(--sc-orange);
             border-radius: 50%; animation: spin 0.9s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -591,7 +601,7 @@
         }
         .modal-header {
             display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff;
+            background: linear-gradient(135deg, var(--sc-orange), var(--sc-deep)); color: #fff;
         }
         .modal-header h3 { margin: 0; font-size: 0.95rem; }
         .modal-header button { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
@@ -639,6 +649,7 @@
             <p class="subtitle-rotator">
                 <span class="sub-line">Electronic Report &amp; Analysis</span>
                 <span class="sub-line">Sistem Pelaporan Elektronik Unit Dialisis</span>
+                <span class="sub-line">✨ September Ceria ✨</span>
             </p>
         </div>
 
@@ -653,12 +664,11 @@
     <!-- ================= SLIDE 1 : LAPORAN HARIAN ================= -->
     <div id="slide1" class="page active">
         <div class="section-title main-title-3d">
-            <div class="waving-flag"><span>81</span></div>
+            <div class="sc-flag"><span>SC</span></div>
             <div class="icon-box">📝</div>
             <h2>Laporan Harian Hemodialisis</h2>
         </div>
 
-        <!-- Peran + Tanggal + Shift + Tim -->
         <div class="grid-2">
             <div>
                 <label>Peran / Jabatan *</label>
@@ -800,12 +810,14 @@
     <!-- ================= SLIDE 2 : MUTU ================= -->
     <div id="slide2" class="page">
         <div class="section-title main-title-3d">
-            <div class="waving-flag"><span>81</span></div>
+            <div class="sc-flag"><span>SC</span></div>
             <div class="icon-box">📊</div>
             <h2>MUTU</h2>
         </div>
-        <p style="color: var(--text-muted); text-align: center; margin-top: 20px;">
-            Analisis seluruh data pasien dari sheet REKAP_HARIAN berdasarkan rentang waktu (Tanggal Awal &amp; Akhir).
+        <p style="color: var(--text-muted); text-align: center; margin-top: 20px; line-height: 1.7;">
+            Analisis data dari sheet REKAP_HARIAN per rentang tanggal:<br>
+            ① Jumlah pasien &amp; tindakan HD per shift, ② Akses vaskular (CVC Temporer / CVC Permanen-Tunnel / AV-Shunt / Manual) per shift,<br>
+            ③ Kt/V ≥ 1,4 dan &lt; 1,4, ④ Jenis kelamin per shift, ⑤ Transfusi darah per shift — <b>semua dengan persentase</b>.
         </p>
 
         <div class="grid-2" style="margin-top: 20px;">
@@ -842,7 +854,7 @@
     <!-- ================= SLIDE 3 : PENCARIAN PASIEN ================= -->
     <div id="slide3" class="page">
         <div class="section-title main-title-3d">
-            <div class="waving-flag"><span>81</span></div>
+            <div class="sc-flag"><span>SC</span></div>
             <div class="icon-box">🔍</div>
             <h2>Pencarian Pasien</h2>
         </div>
@@ -859,7 +871,7 @@
     <!-- ================= SLIDE 4 : JADWAL PASIEN ================= -->
     <div id="slide4" class="page">
         <div class="section-title main-title-3d">
-            <div class="waving-flag"><span>81</span></div>
+            <div class="sc-flag"><span>SC</span></div>
             <div class="icon-box">📅</div>
             <h2>Jadwal Pasien Hemodialisis</h2>
         </div>
@@ -872,7 +884,7 @@
             <div class="schedule-frame-wrap" id="scheduleWrap">
                 <div class="schedule-loading" id="jadwalLoading">
                     <div class="spinner"></div>
-                    <p style="margin:0; color:#2563eb; font-weight:600; font-size:0.85rem;">Memuat jadwal pasien...</p>
+                    <p style="margin:0; color:#d9480f; font-weight:600; font-size:0.85rem;">Memuat jadwal pasien...</p>
                 </div>
                 <iframe id="jadwalFrame" title="Jadwal Pasien Hemodialisis" allowfullscreen></iframe>
             </div>
@@ -914,7 +926,7 @@
 
 <script>
 /* =========================================================
-   LAPORAN DIGITAL — Laporan Harian Hemodialisis
+   LAPORAN DIGITAL — Hemodialisis (Tema: September Ceria)
    Sistem Peran: KATIM & Perawat Pelaksana
    ========================================================= */
 
@@ -1080,10 +1092,8 @@ function applyRoleRules() {
     rules.aktif.forEach(function (id) { setSectionLocked(id, false); });
     rules.terkunci.forEach(function (id) { setSectionLocked(id, true); });
 
-    // Rencana Tindakan Umum hanya untuk KATIM
     document.getElementById('rencanaUmumWrap').style.display = (role === 'KATIM') ? '' : 'none';
 
-    // Shift hanya untuk Perawat Pelaksana (KATIM hanya Tim 1/2)
     var sf = document.getElementById('shiftField');
     var ss = document.getElementById('shift1');
     if (role === 'KATIM') { sf.classList.add('field-locked'); ss.disabled = true; }
@@ -1352,7 +1362,6 @@ function buildReportMessage() {
     if (role === 'PERAWAT') msg += '🕐 Shift   : ' + shift + '\n';
     msg += '👤 Peran   : ' + getRoleLabel() + '\n';
 
-    // 1. ANGGOTA TIM (kedua peran)
     var anggota = [];
     document.querySelectorAll('#memberContainer input[type="text"]').forEach(function (i) {
         if (i.value.trim()) anggota.push(i.value.trim());
@@ -1365,11 +1374,9 @@ function buildReportMessage() {
     }
 
     if (role === 'KATIM') {
-        // Rencana Tindakan Umum
         var rencana = document.getElementById('rencanaTindakan').value.trim();
         msg += '\n' + DIVIDER + '\n*📋 RENCANA TINDAKAN UMUM*\n' + (rencana || '-') + '\n';
 
-        // Job Desk Petugas
         msg += '\n' + DIVIDER + '\n*📌 JOB DESK PETUGAS*\n';
         var adaJob = false;
         document.querySelectorAll('#perawatContainer .job-box').forEach(function (box) {
@@ -1393,7 +1400,6 @@ function buildReportMessage() {
         }
         if (!adaJob) msg += '- (tidak ada)\n';
 
-        // Perencanaan Tindakan Pasien
         var renc = getRencanaPasienList();
         msg += '\n' + DIVIDER + '\n*🗓️ PERENCANAAN TINDAKAN PASIEN*\n';
         if (renc.length) {
@@ -1402,13 +1408,11 @@ function buildReportMessage() {
             msg += '- (tidak ada)\n';
         }
     } else {
-        // Daftar Pasien
         var dp = formatDaftarPasien();
         msg += '\n' + DIVIDER + '\n*🩺 DAFTAR PASIEN*\n';
         if (dp.total) { msg += dp.text + 'Total pasien: ' + dp.total + '\n'; }
         else { msg += '- (tidak ada)\n'; }
 
-        // Masalah & Inventaris
         msg += '\n' + DIVIDER + '\n*⚠️ MASALAH & INVENTARIS*\n';
         msg += '• Masalah Pasien    : ' + (document.getElementById('masalahPasien').value.trim() || '-') + '\n';
         msg += '• Masalah Mesin/Alat: ' + (document.getElementById('masalahMesin').value.trim() || '-') + '\n';
@@ -1423,7 +1427,7 @@ function buildReportMessage() {
     }
 
     msg += '\n' + DIVIDER + '\n*🪪 IDENTITAS PENGIRIM*\n👤 Nama: ' + pengirim + '\n';
-    msg += DIVIDER + '\n_Dikirim via Laporan Digital_';
+    msg += DIVIDER + '\n_Dikirim via Laporan Digital ✨ September Ceria ✨_';
     return msg;
 }
 
@@ -1529,7 +1533,13 @@ function resetData() {
 }
 
 /* =========================================================
-   MUTU — Analisis data dari sheet REKAP_HARIAN
+   MUTU — Analisis REKAP_HARIAN (semua dengan persentase)
+   1. Jumlah pasien & tindakan HD per shift 1/2/3
+   2. Akses vaskular (CVC Temporer / CVC Permanen-Tunnel /
+      AV-Shunt / Manual) per shift 1/2/3
+   3. Kt/V >= 1,4 dan < 1,4 (jumlah + persen)
+   4. Jenis kelamin (L/P) per shift 1/2/3
+   5. Transfusi darah per shift 1/2/3
    ========================================================= */
 var analitikData = null;
 var rekapCache = null;
@@ -1547,6 +1557,46 @@ function findCol(headers, keyword, fallback) {
         if (String(headers[i] || '').toLowerCase().indexOf(keyword) !== -1) return i;
     }
     return fallback;
+}
+
+/* --- Normalisasi nilai --- */
+function parseShift(v) {
+    var m = String(v || '').match(/(\d)/);
+    if (!m) return 0;
+    var n = parseInt(m[1], 10);
+    return (n >= 1 && n <= 3) ? n : 0;
+}
+
+function normJK(v) {
+    var s = String(v || '').toLowerCase().trim();
+    if (!s) return '';
+    if (s.indexOf('laki') !== -1 || s.indexOf('pria') !== -1 || s.indexOf('male') !== -1 || s === 'l' || s === 'm') return 'L';
+    if (s.indexOf('perempuan') !== -1 || s.indexOf('wanita') !== -1 || s.indexOf('female') !== -1 || s === 'p' || s === 'f' || s === 'w') return 'P';
+    if (s.charAt(0) === 'l' || s.charAt(0) === 'm') return 'L';
+    if (s.charAt(0) === 'p' || s.charAt(0) === 'f' || s.charAt(0) === 'w') return 'P';
+    return '';
+}
+
+function normAkses(v) {
+    var s = String(v || '').toLowerCase().trim();
+    if (!s || s === '-') return '';
+    if (s.indexOf('temp') !== -1) return 'CVC Temporer';
+    if (s.indexOf('tun') !== -1 || s.indexOf('perman') !== -1 || s.indexOf('semi') !== -1) return 'CVC Permanen/Tunnel';
+    if (s.indexOf('av') !== -1 || s.indexOf('shunt') !== -1 || s.indexOf('fist') !== -1) return 'AV-Shunt';
+    if (s.indexOf('manual') !== -1) return 'Manual';
+    return 'Lainnya';
+}
+
+function isTransfusi(v) {
+    var s = String(v || '').toLowerCase().trim();
+    if (!s) return false;
+    if (s === '-' || s === '0' || s === 'tidak' || s === 'belum' || s === 'no' || s === 'none' || s === 'tanpa' || s === 'false') return false;
+    return true;
+}
+
+function pctFmt(n, total) {
+    if (!total) return '0%';
+    return ((n * 100) / total).toFixed(1).replace('.', ',') + '%';
 }
 
 async function searchFastTrack() {
@@ -1572,74 +1622,115 @@ function analyzeRows(rows, startStr, endStr) {
     var headers = rows[0] || [];
     var cTgl = findCol(headers, 'tanggal', 0);
     var cNama = findCol(headers, 'nama', 1);
-    var cAkses = findCol(headers, 'akses', 6);
-    var cQB = findCol(headers, 'qb', 8);
-    var cKtV = findCol(headers, 'kt', 12);
-    var cTrans = findCol(headers, 'transfusi', 13);
     var cShift = findCol(headers, 'shift', -1);
+    var cJK = findCol(headers, 'jenis kelamin', -1);
+    if (cJK < 0) cJK = findCol(headers, 'kelamin', -1);
+    if (cJK < 0) cJK = findCol(headers, 'jk', -1);
+    if (cJK < 0) cJK = findCol(headers, 'gender', -1);
+    var cAkses = findCol(headers, 'akses', -1);
+    var cKtV = findCol(headers, 'kt', -1);
+    var cTrans = findCol(headers, 'transfusi', -1);
 
     var start = new Date(startStr + 'T00:00:00');
     var end = new Date(endStr + 'T23:59:59');
 
+    /* Filter baris sesuai rentang tanggal */
     var filtered = [];
     for (var i = 1; i < rows.length; i++) {
         var d = parseSheetDate(rows[i][cTgl]);
         if (d && d >= start && d <= end) filtered.push(rows[i]);
     }
 
-    var uniqueSet = {};
-    var aksesCount = {};
-    var shiftCount = {};
-    var qbVals = [], ktvVals = [];
-    var transfusiCount = 0;
-    var perPasien = {};
+    /* Bucket per shift: 1, 2, 3 (0 = tanpa data shift) */
+    var AKSES_KEYS = ['CVC Temporer', 'CVC Permanen/Tunnel', 'AV-Shunt', 'Manual', 'Lainnya'];
+    var S = {};
+    [1, 2, 3, 0].forEach(function (n) {
+        S[n] = { pasien: 0, laki: 0, perempuan: 0, transfusi: 0, akses: {} };
+        AKSES_KEYS.forEach(function (k) { S[n].akses[k] = 0; });
+    });
+
+    var ktvHi = 0, ktvLo = 0, ktvValid = 0;
+    var uniqueNames = {};
 
     filtered.forEach(function (r) {
         var nama = String(r[cNama] || '').trim();
-        if (nama) { uniqueSet[nama] = true; perPasien[nama] = (perPasien[nama] || 0) + 1; }
-        var akses = String(r[cAkses] || '').trim();
-        if (akses) aksesCount[akses] = (aksesCount[akses] || 0) + 1;
-        if (cShift >= 0) {
-            var sh = String(r[cShift] || '').trim();
-            if (sh) shiftCount['Shift ' + sh] = (shiftCount['Shift ' + sh] || 0) + 1;
+        if (!nama) return;
+        var b = S[parseShift(r[cShift])];
+        b.pasien++;
+        uniqueNames[nama] = true;
+
+        var jk = normJK(r[cJK]);
+        if (jk === 'L') b.laki++;
+        else if (jk === 'P') b.perempuan++;
+
+        if (isTransfusi(r[cTrans])) b.transfusi++;
+
+        var ak = normAkses(r[cAkses]);
+        if (ak) b.akses[ak]++;
+
+        var ktv = parseFloat(String(r[cKtV] || '').replace(',', '.').replace(/[^0-9.]/g, ''));
+        if (!isNaN(ktv) && ktv > 0) {
+            ktvValid++;
+            if (ktv >= 1.4) ktvHi++; else ktvLo++;
         }
-        var qb = parseFloat(String(r[cQB] || '').replace(/[^0-9.]/g, ''));
-        if (!isNaN(qb) && qb > 0) qbVals.push(qb);
-        var ktv = parseFloat(String(r[cKtV] || '').replace(',', '.'));
-        if (!isNaN(ktv) && ktv > 0) ktvVals.push(ktv);
-        var trans = String(r[cTrans] || '').trim();
-        if (trans && trans !== '-' && trans !== '0' && trans.toLowerCase() !== 'tidak' && trans.toLowerCase() !== 'belum') transfusiCount++;
     });
 
-    function avg(a) { return a.length ? a.reduce(function (x, y) { return x + y; }, 0) / a.length : 0; }
-    var uniqueCount = Object.keys(uniqueSet).length;
+    var total = S[1].pasien + S[2].pasien + S[3].pasien + S[0].pasien;
+    var totTrans = S[1].transfusi + S[2].transfusi + S[3].transfusi + S[0].transfusi;
 
+    /* ===== Susun teks laporan MUTU ===== */
     var text = '*LAPORAN MUTU HEMODIALISIS*\n' + DIVIDER + '\n';
-    text += '📅 Periode: ' + formatTanggalID(startStr) + ' s/d ' + formatTanggalID(endStr) + '\n';
-    text += '\n' + DIVIDER + '\n*📊 RINGKASAN*\n';
-    text += '• Total Sesi HD : ' + filtered.length + '\n';
-    text += '• Pasien Unik   : ' + uniqueCount + '\n';
-    text += '• Rata-rata QB  : ' + (qbVals.length ? Math.round(avg(qbVals)) + ' ml/jam' : '-') + '\n';
-    text += '• Rata-rata Kt/V: ' + (ktvVals.length ? avg(ktvVals).toFixed(2) : '-') + '\n';
-    text += '• Sesi Transfusi: ' + transfusiCount + '\n';
+    text += '📅 Periode : ' + formatTanggalID(startStr) + ' s/d ' + formatTanggalID(endStr) + '\n';
+    text += '🩺 Total   : ' + total + ' pasien-tindakan (' + Object.keys(uniqueNames).length + ' pasien unik)\n';
 
-    text += '\n' + DIVIDER + '\n*🩸 DISTRIBUSI AKSES*\n';
-    var aKeys = Object.keys(aksesCount);
-    text += aKeys.length ? aKeys.map(function (k) { return '• ' + k + ': ' + aksesCount[k]; }).join('\n') + '\n' : '-\n';
+    /* 1 & 2: Jumlah pasien & tindakan HD per shift */
+    text += '\n' + DIVIDER + '\n*📊 JUMLAH PASIEN & TINDAKAN HD PER SHIFT*\n';
+    [1, 2, 3].forEach(function (n) {
+        text += '• Shift ' + n + ' : ' + S[n].pasien + ' pasien (' + pctFmt(S[n].pasien, total) + ') — Tindakan HD: ' + S[n].pasien + '\n';
+    });
+    if (S[0].pasien > 0) text += '• Tanpa data shift : ' + S[0].pasien + ' pasien (' + pctFmt(S[0].pasien, total) + ')\n';
+    text += '• TOTAL : ' + total + ' pasien (100%)\n';
 
-    text += '\n' + DIVIDER + '\n*🕐 DISTRIBUSI SHIFT*\n';
-    var sKeys = Object.keys(shiftCount);
-    text += sKeys.length ? sKeys.map(function (k) { return '• ' + k + ': ' + shiftCount[k]; }).join('\n') + '\n' : '-\n';
+    /* 3: Akses vaskular per shift */
+    text += '\n' + DIVIDER + '\n*🩸 AKSES VASKULAR PER SHIFT*\n';
+    [1, 2, 3].forEach(function (n) {
+        var b = S[n];
+        text += '*Shift ' + n + ' (Total ' + b.pasien + ' pasien):*\n';
+        AKSES_KEYS.forEach(function (k) {
+            if (k === 'Lainnya' && b.akses[k] === 0) return;
+            text += '  • ' + k + ' : ' + b.akses[k] + ' (' + pctFmt(b.akses[k], b.pasien) + ')\n';
+        });
+    });
 
-    text += '\n' + DIVIDER + '\n*👥 SESI PER PASIEN*\n';
-    var topPasien = Object.keys(perPasien).sort(function (a, b) { return perPasien[b] - perPasien[a]; });
-    text += topPasien.length ? topPasien.map(function (n) { return '• ' + n + ': ' + perPasien[n] + ' sesi'; }).join('\n') + '\n' : '-\n';
+    /* 4: Kt/V */
+    text += '\n' + DIVIDER + '\n*⚖️ KUALITAS DIALISIS (Kt/V)*\n';
+    text += '• Kt/V ≥ 1,4 : ' + ktvHi + ' orang (' + pctFmt(ktvHi, ktvValid) + ')\n';
+    text += '• Kt/V < 1,4 : ' + ktvLo + ' orang (' + pctFmt(ktvLo, ktvValid) + ')\n';
+    text += '• Terdata Kt/V : ' + ktvValid + ' dari ' + total + ' pasien-tindakan\n';
+
+    /* 5: Jenis kelamin per shift */
+    text += '\n' + DIVIDER + '\n*🚻 JENIS KELAMIN PER SHIFT*\n';
+    [1, 2, 3].forEach(function (n) {
+        var b = S[n];
+        text += '*Shift ' + n + ' (Total ' + b.pasien + ' pasien):*\n';
+        text += '  • Laki-laki : ' + b.laki + ' (' + pctFmt(b.laki, b.pasien) + ')\n';
+        text += '  • Perempuan : ' + b.perempuan + ' (' + pctFmt(b.perempuan, b.pasien) + ')\n';
+    });
+
+    /* 6: Transfusi darah per shift */
+    text += '\n' + DIVIDER + '\n*💉 TRANSFUSI DARAH PER SHIFT*\n';
+    [1, 2, 3].forEach(function (n) {
+        text += '• Shift ' + n + ' : ' + S[n].transfusi + ' pasien (' + pctFmt(S[n].transfusi, S[n].pasien) + ')\n';
+    });
+    if (S[0].pasien > 0) text += '• Tanpa data shift : ' + S[0].transfusi + ' pasien (' + pctFmt(S[0].transfusi, S[0].pasien) + ')\n';
+    text += '• TOTAL : ' + totTrans + ' pasien (' + pctFmt(totTrans, total) + ')\n';
 
     return {
-        total: filtered.length,
-        uniqueCount: uniqueCount,
-        avgQBTxt: qbVals.length ? String(Math.round(avg(qbVals))) : '-',
-        transfusi: transfusiCount,
+        total: total,
+        unique: Object.keys(uniqueNames).length,
+        ktvHi: ktvHi, ktvLo: ktvLo, ktvValid: ktvValid,
+        ktvHiPct: pctFmt(ktvHi, ktvValid), ktvLoPct: pctFmt(ktvLo, ktvValid),
+        transfusi: totTrans, transfusiPct: pctFmt(totTrans, total),
         text: text
     };
 }
@@ -1648,10 +1739,10 @@ function renderAnalitik(d) {
     var el = document.getElementById('fastTrackResult');
     var html =
         '<div class="stat-grid">' +
-        '<div class="stat-card"><div class="stat-value">' + d.total + '</div><div class="stat-label">Total Sesi HD</div></div>' +
-        '<div class="stat-card"><div class="stat-value">' + d.uniqueCount + '</div><div class="stat-label">Pasien Unik</div></div>' +
-        '<div class="stat-card"><div class="stat-value">' + escapeHtml(d.avgQBTxt) + '</div><div class="stat-label">Rata-rata QB (ml/jam)</div></div>' +
-        '<div class="stat-card"><div class="stat-value">' + d.transfusi + '</div><div class="stat-label">Sesi Transfusi</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + d.total + '</div><div class="stat-label">Total Pasien &amp; Tindakan HD</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + d.ktvHi + '</div><div class="stat-label">Kt/V ≥ 1,4 (' + d.ktvHiPct + ')</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + d.ktvLo + '</div><div class="stat-label">Kt/V &lt; 1,4 (' + d.ktvLoPct + ')</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + d.transfusi + '</div><div class="stat-label">Transfusi Darah (' + d.transfusiPct + ')</div></div>' +
         '</div>' +
         '<div class="analitik-detail"><pre></pre></div>';
     el.innerHTML = html;
@@ -1662,7 +1753,7 @@ function shareAnalitikWA() {
     if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; }
     var pengirim = document.getElementById('pengirim2').value.trim();
     if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
-    var msg = analitikData.text + '\n' + DIVIDER + '\n*🪪 PENGIRIM*\n👤 ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital_';
+    var msg = analitikData.text + '\n' + DIVIDER + '\n*🪪 PENGIRIM*\n👤 ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital ✨ September Ceria ✨_';
     window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
@@ -1690,7 +1781,7 @@ function printAnalitik() {
     window.print();
 }
 
-/* ================= DATALIST NAMA PASIEN (dari sheet rekap) ================= */
+/* ================= DATALIST NAMA PASIEN ================= */
 async function populatePatientDatalist() {
     try {
         var rows = await loadRekapRows();
