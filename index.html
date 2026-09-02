@@ -497,7 +497,7 @@
         <option value="CVC TEMPORER">
         <option value="CVC TUNNEL/SEMIPERMANEN">
     </datalist>
-    <datalist id="transfusiList">
+<datalist id="transfusiList">
         <option value="Ada">
         <option value="Tidak">
     </datalist>
@@ -582,11 +582,6 @@
             </div>
             <div id="memberContainer"></div>
             <button class="btn-add" onclick="tambahAnggota(true)"><i class="fa-solid fa-circle-plus"></i> Tambah Anggota (Tekan Enter)</button>
-
-            <div id="rencanaUmumWrap">
-                <label>Rencana Tindakan Umum</label>
-                <textarea id="rencanaTindakan" placeholder="Tulis rencana tindakan global di sini..."></textarea>
-            </div>
         </div>
 
         <!-- ===== JOB DESK PETUGAS (KATIM saja) ===== -->
@@ -611,12 +606,24 @@
             </div>
         </div>
 
-        <!-- ===== DAFTAR PASIEN (PERAWAT saja) — kini 16 kolom dgn TD PRE/POST HD ===== -->
+        <!-- ===== RENCANA TINDAKAN UMUM (KATIM saja — di bawah Job Desk) ===== -->
+        <div class="section-card section-card-green" id="rencanaUmumWrap">
+            <div class="section-title">
+                <div class="icon-box">📋</div>
+                <h2>Rencana Tindakan Umum</h2>
+            </div>
+            <textarea id="rencanaTindakan" placeholder="Tulis rencana tindakan global di sini..." style="min-height: 100px;"></textarea>
+        </div>
+
+        <!-- ===== DAFTAR PASIEN (PERAWAT saja) — nama/JK/goldar/TB/akses auto-isi dari sheet PASIEN ===== -->
         <div class="section-card section-card-purple" id="secPasien">
             <div class="section-title">
                 <div class="icon-box">🩺</div>
                 <h2>Daftar Pasien</h2>
             </div>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin:0 0 10px;">
+                <i class="fa-solid fa-circle-info"></i> Ketik/pilih <b>Nama Pasien</b> → kolom <b>JK, Gol Darah, TB, dan Akses</b> terisi otomatis dari sheet <b>PASIEN</b>.
+            </p>
             <button class="btn-add" onclick="addMonitorRow()" style="margin-bottom: 12px;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Pasien</button>
             <div class="table-container">
                 <table class="monitoring-table" id="monitoringTable">
@@ -767,7 +774,7 @@
         </div>
     </div>
 
-    <div class="app-footer">Gala-w versi 4.1 · Laporan Digital</div>
+    <div class="app-footer">Gala-w versi 4.2 · Laporan Digital</div>
 </div>
 
 <!-- ===== SIDEBAR MOBILE (kiri) ===== -->
@@ -783,7 +790,7 @@
         <button class="side-item" data-tab="3" onclick="switchTab(3)"><i>🔍</i><span>Pencarian Pasien</span></button>
         <button class="side-item" data-tab="4" onclick="switchTab(4)"><i>📅</i><span>Jadwal Pasien</span></button>
     </div>
-    <div class="sidebar-footer">Gala-w versi 4.1</div>
+    <div class="sidebar-footer">Gala-w versi 4.2</div>
 </aside>
 
 <!-- ===== POPUP PREVIEW LAPORAN ===== -->
@@ -799,16 +806,18 @@
             <button class="btn-sendwa" onclick="sendReportWA()"><i class="fa-brands fa-whatsapp"></i> Kirim via WA</button>
         </div>
     </div>
-</div>
-
-<div class="print-area" id="printArea">
+</div><div class="print-area" id="printArea">
     <h1>LAPORAN HARIAN HEMODIALISIS</h1>
     <pre id="printContent"></pre>
 </div>
 
 <script>
 /* =========================================================
-   LAPORAN DIGITAL — Hemodialisis · Gala-w versi 4.1
+   LAPORAN DIGITAL — Hemodialisis · Gala-w versi 4.2
+   Perubahan v4.2:
+   1. Rencana Tindakan Umum (KATIM) dipindah ke bawah Job Desk
+   2. Daftar Pasien (PERAWAT): Nama/JK/Goldar/TB/Akses auto-isi
+      dari sheet PASIEN via API (action=getPatients)
    ========================================================= */
 
 var MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwWCP7nMRpslFuxeV8bkYFDmI5OK-fIR4yhvBJp45kRq9Om9RFMMJUHdB35PbDn8z9Fyw/exec";
@@ -818,6 +827,9 @@ var JADWAL_SHEET_ID = "1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0";
 var JADWAL_GID = "1100922958";
 var WA_NUMBER = "";
 var DIVIDER = "━━━━━━━━━━━━━━━━━";
+
+/* Cache data pasien dari sheet PASIEN (untuk auto-isi baris monitoring) */
+var patientData = [];
 
 var PAGE_TITLES = {
     1: 'Laporan Harian Hemodialisis',
@@ -950,8 +962,8 @@ document.addEventListener('keydown', function (e) {
 
 /* ================= SISTEM PERAN ================= */
 var ROLE_SECTIONS = {
-    KATIM:   { aktif: ['secAnggota', 'secJobdesk', 'secIdentitas'], terkunci: ['secPasien', 'secMasalah'] },
-    PERAWAT: { aktif: ['secAnggota', 'secPasien', 'secMasalah', 'secIdentitas'], terkunci: ['secJobdesk'] }
+    KATIM:   { aktif: ['secAnggota', 'secJobdesk', 'rencanaUmumWrap', 'secIdentitas'], terkunci: ['secPasien', 'secMasalah'] },
+    PERAWAT: { aktif: ['secAnggota', 'secPasien', 'secMasalah', 'secIdentitas'], terkunci: ['secJobdesk', 'rencanaUmumWrap'] }
 };
 
 function getRole() { return document.getElementById('roleSelect').value; }
@@ -985,8 +997,6 @@ function applyRoleRules() {
     rules.aktif.forEach(function (id) { setSectionLocked(id, false); });
     rules.terkunci.forEach(function (id) { setSectionLocked(id, true); });
 
-    document.getElementById('rencanaUmumWrap').style.display = (getRole() === 'KATIM') ? '' : 'none';
-
     var sf = document.getElementById('shiftField'), ss = document.getElementById('shift1');
     if (getRole() === 'KATIM') { sf.classList.add('field-locked'); ss.disabled = true; }
     else { sf.classList.remove('field-locked'); ss.disabled = false; }
@@ -994,10 +1004,10 @@ function applyRoleRules() {
     var notice = document.getElementById('roleNotice');
     if (getRole() === 'KATIM') {
         notice.className = 'role-notice katim';
-        notice.innerHTML = '👑 <b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Rencana Tindakan, Job Desk Petugas, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b> (sesuai Tim).';
+        notice.innerHTML = '👑 <b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Job Desk Petugas, Rencana Tindakan Umum, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b> (sesuai Tim).';
     } else {
         notice.className = 'role-notice';
-        notice.innerHTML = '🩺 <b>MODE PERAWAT PELAKSANA</b> — Laporan berisi: <b>Anggota Tim, Daftar Pasien, Masalah &amp; Inventaris, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN PERAWAT PELAKSANA TIM x SHIFT y</b>.';
+        notice.innerHTML = '🩺 <b>MODE PERAWAT PELAKSANA</b> — Laporan berisi: <b>Anggota Tim, Daftar Pasien (auto-isi dari sheet PASIEN), Masalah &amp; Inventaris, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN PERAWAT PELAKSANA TIM x SHIFT y</b>.';
     }
 }
 
@@ -1077,12 +1087,12 @@ function tambahPerawat() {
 }
 function hapusPerawat(id) { var el = document.getElementById('perawatBox-' + id); if (el) el.remove(); }
 
-/* ================= DAFTAR PASIEN (16 KOLOM: dgn TD PRE/POST HD) ================= */
+/* ================= DAFTAR PASIEN (16 KOLOM, auto-isi dari sheet PASIEN) ================= */
 function addMonitorRow() {
     var tr = document.createElement('tr');
     tr.innerHTML =
         '<td><div style="display:flex; align-items:center; gap:2px;">' +
-        '<input type="text" list="patientList" placeholder="Nama Pasien">' +
+        '<input type="text" list="patientList" placeholder="Nama Pasien" oninput="autoFillPasien(this)" onchange="autoFillPasien(this)">' +
         '<button type="button" class="row-del" onclick="this.closest(\'tr\').remove()" title="Hapus baris"><i class="fa-solid fa-circle-xmark"></i></button></div></td>' +
         '<td><select><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td>' +
         '<td><select><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td>' +
@@ -1102,6 +1112,31 @@ function addMonitorRow() {
     document.getElementById('monitoringBody').appendChild(tr);
     var firstInput = tr.querySelector('input[type="text"]');
     if (firstInput) firstInput.focus();
+}
+
+/* ===== AUTO-ISI dari sheet PASIEN: nama → JK, Goldar, TB, Akses ===== */
+function autoFillPasien(inputEl) {
+    var val = inputEl.value.trim().toLowerCase();
+    if (!val || !patientData.length) return;
+    var p = null;
+    for (var i = 0; i < patientData.length; i++) {
+        if (patientData[i].nama.toLowerCase() === val) { p = patientData[i]; break; }
+    }
+    if (!p) return;
+    var tr = inputEl.closest('tr');
+    if (!tr) return;
+    var cells = tr.querySelectorAll('input, select');
+    if (p.jk) {
+        var c = p.jk.charAt(0).toUpperCase();
+        if (c === 'L' || c === 'P') cells[1].value = c;
+    }
+    if (p.goldar) cells[2].value = p.goldar;
+    if (p.tb !== '' && p.tb !== null && p.tb !== undefined) cells[3].value = p.tb;
+    if (p.akses) cells[7].value = p.akses;
+    /* Feedback visual: baris berkedip hijau saat terisi otomatis */
+    tr.style.transition = 'background-color 0.5s';
+    tr.style.backgroundColor = '#e6fff0';
+    setTimeout(function () { tr.style.backgroundColor = ''; }, 900);
 }
 
 function getMonitoringRows() {
@@ -1186,9 +1221,6 @@ function buildReportMessage() {
     msg += anggota.length ? anggota.map(function (n, i) { return (i + 1) + '. ' + n; }).join('\n') + '\n' : '- (tidak ada)\n';
 
     if (role === 'KATIM') {
-        var rencana = document.getElementById('rencanaTindakan').value.trim();
-        msg += '\n' + DIVIDER + '\n*📋 RENCANA TINDAKAN UMUM*\n' + (rencana || '-') + '\n';
-
         msg += '\n' + DIVIDER + '\n*📌 JOB DESK PETUGAS*\n';
         var adaJob = false;
         document.querySelectorAll('#perawatContainer .job-box').forEach(function (box) {
@@ -1211,6 +1243,9 @@ function buildReportMessage() {
             msg += '• *Padatkarya — ' + padat + '*: ' + (pj.length ? pj.join(', ') : '-') + '\n';
         }
         if (!adaJob) msg += '- (tidak ada)\n';
+
+        var rencana = document.getElementById('rencanaTindakan').value.trim();
+        msg += '\n' + DIVIDER + '\n*📋 RENCANA TINDAKAN UMUM*\n' + (rencana || '-') + '\n';
     } else {
         var dp = formatDaftarPasien();
         msg += '\n' + DIVIDER + '\n*🩺 DAFTAR PASIEN*\n';
@@ -1230,7 +1265,7 @@ function buildReportMessage() {
     }
 
     msg += '\n' + DIVIDER + '\n*🪪 IDENTITAS PENGIRIM*\n👤 Nama: ' + pengirim + '\n';
-    msg += DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.1_';
+    msg += DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.2_';
     return msg;
 }
 
@@ -1293,7 +1328,6 @@ function resetData() {
     memberCount = 0; perawatCount = 0;
 
     tambahAnggota(false); tambahPerawat(); addMonitorRow();
-
     document.getElementById('rencanaTindakan').value = '';
     document.getElementById('namaPadatkarya').value = '';
     document.querySelectorAll('#padatkaryaBox input[type="checkbox"]').forEach(function (c) { c.checked = false; });
@@ -1612,7 +1646,7 @@ function shareAnalitikWA() {
     if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; }
     var pengirim = document.getElementById('pengirim2').value.trim();
     if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
-    var msg = analitikData.text + '\n' + DIVIDER + '\n*🪪 PENGIRIM*\n👤 ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.1_';
+    var msg = analitikData.text + '\n' + DIVIDER + '\n*🪪 PENGIRIM*\n👤 ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.2_';
     window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 function isiPrintAreaAnalitik() {
@@ -1634,12 +1668,14 @@ function printAnalitik() {
     window.print();
 }
 
-/* ================= DATALIST NAMA PASIEN ================= */
+/* ================= DATALIST NAMA PASIEN + AUTO-ISI DARI SHEET PASIEN ================= */
 async function populatePatientDatalist() {
     try {
         var res = await fetch(MONITORING_API_URL + '?action=getPatients&t=' + Date.now(), { cache: 'no-store' });
         var j = await res.json();
         if (j.status === 'success' && j.data && j.data.length) {
+            /* Simpan ke cache global untuk autoFillPasien() */
+            patientData = j.data;
             document.getElementById('patientList').innerHTML = j.data.map(function (p) {
                 return '<option value="' + escapeHtml(p.nama) + '"></option>';
             }).join('');
