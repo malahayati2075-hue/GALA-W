@@ -14,22 +14,21 @@
             --primary-light: #14b8a6;
             --secondary: #0284c7;
             --accent: #f43f5e;
-            --bg-gradient: linear-gradient(135deg, #fff7e0 0%, #f0fdfa 50%, #fff4e6 100%);
+            --bg-gradient: linear-gradient(135deg, #ffedd5 0%, #fff1f2 45%, #ede9fe 100%);
             --card-bg: rgba(255, 255, 255, 0.85);
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
-            --input-bg: #f8fafc;
-            --wa-dark: #075E54;
             --wa-green: #25D366;
             --drive-blue: #4285F4;
 
-            /* ===== TEMA SEPTEMBER CERIA ===== */
-            --sc-orange: #f76707;
-            --sc-amber: #f59f00;
-            --sc-deep: #e8590c;
-            --sc-dark: #d9480f;
-            --sc-yellow: #fcc419;
+            /* ===== TEMA SEPTEMBER CERIA — NUANSA SORE ===== */
+            --sore-1: #f97316;   /* oranye senja */
+            --sore-2: #fb923c;   /* amber hangat */
+            --sore-3: #ec4899;   /* merah muda maghrib */
+            --sore-4: #8b5cf6;   /* ungu senja */
+            --sore-deep: #6d28d9;
+            --sunset-grad: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #8b5cf6 100%);
         }
 
         * {
@@ -74,24 +73,38 @@
             border-bottom: 1px solid rgba(255,255,255,0.3);
         }
 
-        /* Overlay hangat khas September Ceria */
+        /* Overlay langit sore: ungu di atas -> oranye di horizon */
         .app-header::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to bottom, rgba(217, 72, 15, 0.30) 0%, rgba(0,0,0,0.45) 40%, rgba(135, 36, 6, 0.92) 100%);
+            background: linear-gradient(to bottom, rgba(88, 28, 135, 0.45) 0%, rgba(0,0,0,0.38) 45%, rgba(124, 45, 18, 0.92) 100%);
             z-index: 1;
         }
 
         .header-top-bar {
             position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; background: rgba(0,0,0,0.2); backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 18px; background: rgba(0,0,0,0.22); backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255,255,255,0.1); gap: 10px;
         }
+        .top-left-group { display: flex; align-items: center; gap: 10px; }
+
+        .hamburger {
+            display: none; width: 40px; height: 40px; flex: none;
+            border: 1px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.15);
+            color: #fff; border-radius: 12px; font-size: 1.05rem; cursor: pointer;
+            align-items: center; justify-content: center; backdrop-filter: blur(4px);
+            transition: background 0.2s;
+        }
+        .hamburger:active { background: rgba(255,255,255,0.3); }
 
         .realtime-clock { text-align: left; }
         .realtime-clock .time { font-size: 1.3rem; font-weight: 800; letter-spacing: 1px; }
         .realtime-clock .date { font-size: 0.75rem; opacity: 0.9; }
+        @media (max-width: 480px) {
+            .realtime-clock .time { font-size: 1.05rem; }
+            .prayer-times { max-width: 150px; font-size: 0.62rem; padding: 6px 8px; }
+        }
 
         .prayer-times {
             text-align: right; font-size: 0.7rem; line-height: 1.5;
@@ -99,7 +112,7 @@
             border: 1px solid rgba(255,255,255,0.2); max-width: 200px;
         }
         .prayer-times .loc { font-weight: 700; color: #fff; margin-bottom: 2px; display: block; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2px; }
-        .prayer-times span { font-weight: 700; color: var(--sc-yellow); }
+        .prayer-times span { font-weight: 700; color: #fdba74; }
 
         .sheet-header-data {
             position: relative; z-index: 2; padding: 8px 15px; background: rgba(0,0,0,0.25); backdrop-filter: blur(4px);
@@ -108,7 +121,7 @@
             overflow-x: auto; white-space: nowrap; margin-bottom: 10px;
         }
         .sheet-header-data span { display: inline-block; margin: 0 8px; font-weight: 600; }
-        .sheet-header-data b { color: var(--sc-yellow); margin-left: 3px; }
+        .sheet-header-data b { color: #fdba74; margin-left: 3px; }
 
         .header-content { position: relative; z-index: 2; text-align: center; padding: 20px; margin-bottom: 10px; }
 
@@ -120,29 +133,25 @@
         @keyframes floatGALA { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes glowGALA {
             0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0,0,0,0.5); }
-            50% { text-shadow: 0 0 25px rgba(252, 196, 25, 0.95), 0 0 10px rgba(255, 255, 255, 0.8), 0 4px 15px rgba(0,0,0,0.5); }
+            50% { text-shadow: 0 0 25px rgba(251, 146, 60, 0.9), 0 0 10px rgba(255, 255, 255, 0.8), 0 4px 15px rgba(0,0,0,0.5); }
         }
 
-        .app-header p { margin: 10px 0 0 0; font-size: 0.9rem; opacity: 0.95; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        /* Judul halaman aktif (tampil di header, khusus PC) */
+        .header-page-title {
+            display: none; margin: 14px auto 0; padding: 8px 24px; border-radius: 999px;
+            background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.35);
+            backdrop-filter: blur(6px); color: #fff; font-weight: 800; letter-spacing: 1.5px;
+            font-size: 0.9rem; text-shadow: 0 2px 4px rgba(0,0,0,0.4); max-width: 92%;
+        }
 
-        /* ===== ANIMASI SUBTITLE BERGANTIAN (3 baris) ===== */
+        /* Subtitle bergilir (nuansa sore) */
         .subtitle-rotator {
-            position: relative;
-            display: block;
-            width: 100%;
-            min-height: 1.5em;
-            margin: 10px 0 0 0;
-            opacity: 1;
+            position: relative; display: block; width: 100%;
+            min-height: 1.5em; margin: 10px 0 0 0; opacity: 1;
         }
         .subtitle-rotator .sub-line {
-            display: block;
-            position: absolute;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: 500;
-            opacity: 0;
+            display: block; position: absolute; left: 0; right: 0; text-align: center;
+            font-size: 0.9rem; font-weight: 500; opacity: 0;
             text-shadow: 0 2px 5px rgba(0,0,0,0.5);
             animation: rotateSubtitle 6s ease-in-out infinite;
         }
@@ -157,6 +166,7 @@
             100% { opacity: 0; transform: translateY(-8px); }
         }
 
+        /* ===== NAVIGASI (PC: menu horizontal di dalam header) ===== */
         .nav-header {
             display: flex; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); padding: 12px; gap: 10px;
             border-bottom: 1px solid rgba(255,255,255,0.4); position: sticky; top: 0; z-index: 10;
@@ -173,10 +183,9 @@
             width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
             box-shadow: inset 2px 2px 5px #d1d5db, inset -2px -2px 5px #ffffff;
         }
-        /* Tab aktif: gradien September Ceria */
         .tab-btn.active {
-            background: linear-gradient(135deg, var(--sc-orange) 0%, var(--sc-amber) 35%, var(--sc-deep) 70%, var(--sc-dark) 100%);
-            color: #fff; box-shadow: 8px 8px 15px rgba(217, 72, 15, 0.3), -4px -4px 10px rgba(255,255,255,0.9);
+            background: var(--sunset-grad);
+            color: #fff; box-shadow: 8px 8px 15px rgba(109, 40, 217, 0.3), -4px -4px 10px rgba(255,255,255,0.9);
             border: 1px solid rgba(255,255,255,0.4); transform: translateY(-4px);
         }
         .tab-btn.active i { background: rgba(255,255,255,0.25); box-shadow: 0 4px 8px rgba(0,0,0,0.2); color: #fff; }
@@ -193,34 +202,15 @@
         }
         .section-title h2 { font-size: 1.1rem; margin: 0; color: var(--text-main); font-weight: 800; }
 
-        /* Judul utama: gradien September Ceria */
+        /* Judul seksi tiap slide (mobile) — gradien sore, tanpa bendera */
         .main-title-3d {
-            background: linear-gradient(135deg, var(--sc-orange) 0%, var(--sc-amber) 40%, var(--sc-deep) 100%);
-            border-radius: 18px; padding: 22px 20px;
-            box-shadow: 12px 12px 24px rgba(217, 72, 15, 0.28), -4px -4px 10px rgba(255,255,255,0.8), inset 0 2px 5px rgba(255,255,255,0.6);
+            background: var(--sunset-grad);
+            border-radius: 18px; padding: 20px 22px;
+            box-shadow: 12px 12px 24px rgba(109, 40, 217, 0.25), -4px -4px 10px rgba(255,255,255,0.8), inset 0 2px 5px rgba(255,255,255,0.5);
             border: 1px solid rgba(255,255,255,0.4); position: relative; overflow: hidden; margin-top: 10px;
         }
         .main-title-3d .icon-box { background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2); box-shadow: none; }
-        .main-title-3d h2 { color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
-
-        /* Bendera September Ceria (pengganti bendera HUT RI) */
-        .sc-flag {
-            position: absolute; right: 20px; top: 50%; font-size: 2.6rem; font-weight: 900; font-style: italic;
-            color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center;
-            width: 85px; height: 60px;
-            background: linear-gradient(135deg, var(--sc-yellow) 0%, var(--sc-orange) 55%, var(--sc-dark) 100%);
-            border-radius: 4px 10px 10px 4px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.4); z-index: 0; transform-origin: left center; animation: flagWave 2.5s ease-in-out infinite; overflow: hidden;
-        }
-        .sc-flag::before { content: ''; position: absolute; left: -6px; top: -10px; bottom: -10px; width: 5px; background: linear-gradient(to right, #555, #999, #555); border-radius: 2px; z-index: 1; }
-        .sc-flag::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, transparent 20%, rgba(0,0,0,0.2) 40%, transparent 60%, rgba(0,0,0,0.2) 80%, transparent 100%); background-size: 60px 100%; animation: flagShade 2.5s linear infinite; z-index: 1; }
-        .sc-flag span { position: relative; z-index: 2; }
-
-        @keyframes flagWave { 0%, 100% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); } 25% { transform: translateY(-50%) skewY(6deg) perspective(100px) rotateY(-10deg); } 50% { transform: translateY(-50%) skewY(0deg) perspective(100px) rotateY(0deg); } 75% { transform: translateY(-50%) skewY(-6deg) perspective(100px) rotateY(10deg); } }
-        @keyframes flagShade { 0% { background-position: 0 0; } 100% { background-position: 60px 0; } }
-        @media (max-width: 480px) { .sc-flag { width: 65px; height: 45px; font-size: 1.7rem; } }
-
-        .main-title-3d > .icon-box, .main-title-3d > h2 { position: relative; z-index: 3; }
+        .main-title-3d h2 { color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); font-size: 1.25rem; font-weight: 900; letter-spacing: 0.5px; }
 
         label { display: block; font-weight: 600; margin-top: 12px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
 
@@ -251,144 +241,58 @@
         }
 
         .section-card {
-            border-radius: 18px;
-            padding: 18px 16px;
-            margin-top: 22px;
-            margin-bottom: 12px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            border-radius: 18px; padding: 18px 16px; margin-top: 22px; margin-bottom: 12px;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             box-shadow: 6px 6px 14px rgba(0,0,0,0.06), -4px -4px 10px rgba(255,255,255,0.85);
             transition: transform 0.25s, box-shadow 0.25s;
         }
-        .section-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 8px 8px 18px rgba(0,0,0,0.08), -4px -4px 12px rgba(255,255,255,0.95);
-        }
         .section-card .section-title { margin-top: 0; margin-bottom: 12px; }
 
-        .section-card-green {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.20) 0%, rgba(240, 253, 244, 0.70) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.40);
-        }
+        .section-card-green { background: linear-gradient(135deg, rgba(16, 185, 129, 0.20) 0%, rgba(240, 253, 244, 0.70) 100%); border: 1px solid rgba(16, 185, 129, 0.40); }
         .section-card-green .icon-box { color: #059669 !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-green .section-title h2 { color: #065f46; }
 
-        .section-card-blue {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%);
-            border: 1px solid rgba(59, 130, 246, 0.40);
-        }
+        .section-card-blue { background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%); border: 1px solid rgba(59, 130, 246, 0.40); }
         .section-card-blue .icon-box { color: #2563eb !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-blue .section-title h2 { color: #1e3a8a; }
 
-        .section-card-purple {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.20) 0%, rgba(245, 243, 255, 0.70) 100%);
-            border: 1px solid rgba(168, 85, 247, 0.40);
-        }
+        .section-card-purple { background: linear-gradient(135deg, rgba(168, 85, 247, 0.20) 0%, rgba(245, 243, 255, 0.70) 100%); border: 1px solid rgba(168, 85, 247, 0.40); }
         .section-card-purple .icon-box { color: #9333ea !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-purple .section-title h2 { color: #581c87; }
 
-        .section-card-orange {
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.20) 0%, rgba(255, 247, 237, 0.70) 100%);
-            border: 1px solid rgba(249, 115, 22, 0.40);
-        }
+        .section-card-orange { background: linear-gradient(135deg, rgba(249, 115, 22, 0.20) 0%, rgba(255, 247, 237, 0.70) 100%); border: 1px solid rgba(249, 115, 22, 0.40); }
         .section-card-orange .icon-box { color: #ea580c !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-orange .section-title h2 { color: #7c2d12; }
 
         .job-desk-wrapper {
-            position: relative;
-            border-radius: 18px;
-            overflow: hidden;
-            margin-top: 22px;
-            margin-bottom: 12px;
-            padding: 16px 14px;
+            position: relative; border-radius: 18px; overflow: hidden; margin-top: 22px; margin-bottom: 12px; padding: 16px 14px;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             box-shadow: 6px 6px 14px rgba(0,0,0,0.06), -4px -4px 10px rgba(255,255,255,0.85);
             border: 1px solid rgba(59, 130, 246, 0.40);
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-        .job-desk-wrapper:hover {
-            transform: translateY(-2px);
-            box-shadow: 8px 8px 18px rgba(0,0,0,0.08), -4px -4px 12px rgba(255,255,255,0.95);
         }
 
-        .job-desk-overlay {
-            position: relative;
-            padding: 0;
-            background: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            border-radius: 0;
-        }
-
+        .job-desk-overlay { position: relative; padding: 0; background: transparent; backdrop-filter: none; border-radius: 0; }
         .job-desk-overlay .section-title { margin-top: 0; margin-bottom: 10px; }
-        .job-desk-overlay .section-title h2 { color: #1e3a8a; text-shadow: none; }
-        .job-desk-overlay .section-title .icon-box {
-            color: #2563eb !important;
-            background: rgba(255,255,255,0.95) !important;
-            width: 38px; height: 38px; font-size: 1.2rem;
-        }
+        .job-desk-overlay .section-title h2 { color: #1e3a8a; }
+        .job-desk-overlay .section-title .icon-box { color: #2563eb !important; background: rgba(255,255,255,0.95) !important; width: 38px; height: 38px; font-size: 1.2rem; }
 
-        .job-desk-overlay .job-box,
-        .job-desk-overlay #padatkaryaBox {
-            background: transparent;
-            border: none;
-            border-bottom: 1px dashed rgba(59, 130, 246, 0.35);
-            box-shadow: none;
-            padding: 8px 4px;
-            margin-bottom: 6px;
-            border-radius: 0;
+        .job-desk-overlay .job-box, .job-desk-overlay #padatkaryaBox {
+            background: transparent; border: none; border-bottom: 1px dashed rgba(59, 130, 246, 0.35);
+            box-shadow: none; padding: 8px 4px; margin-bottom: 6px; border-radius: 0;
         }
-
-        .job-desk-overlay .job-box input[type="text"],
-        .job-desk-overlay input[type="text"] {
-            background: rgba(255, 255, 255, 0.95);
-            font-weight: 600;
-            color: #0f172a;
-            padding: 8px 10px;
-            font-size: 0.85rem;
-            border-radius: 10px;
+        .job-desk-overlay .job-box input[type="text"], .job-desk-overlay input[type="text"] {
+            background: rgba(255, 255, 255, 0.95); font-weight: 600; color: #0f172a; padding: 8px 10px; font-size: 0.85rem; border-radius: 10px;
         }
-
-        .job-desk-overlay .check-item {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(59, 130, 246, 0.20);
-            font-weight: 600;
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            color: #1e3a8a;
-        }
-        .job-desk-overlay .check-item:hover {
-            background: rgba(219, 234, 254, 0.95);
-            border-color: rgba(59, 130, 246, 0.5);
-        }
-
-        .job-desk-overlay .btn-add {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1.5px dashed #2563eb;
-            color: #2563eb;
-            box-shadow: none;
-            margin-top: 4px;
-            margin-bottom: 6px;
-            padding: 6px;
-            font-size: 0.78rem;
-        }
-        .job-desk-overlay .btn-add:hover {
-            background: rgba(219, 234, 254, 0.95);
-            border-style: solid;
-        }
-
+        .job-desk-overlay .check-item { background: rgba(255,255,255,0.85); border: 1px solid rgba(59,130,246,0.20); font-weight: 600; font-size: 0.7rem; padding: 3px 8px; color: #1e3a8a; }
+        .job-desk-overlay .btn-add { background: rgba(255,255,255,0.85); border: 1.5px dashed #2563eb; color: #2563eb; box-shadow: none; margin-top: 4px; margin-bottom: 6px; padding: 6px; font-size: 0.78rem; }
         .job-desk-overlay .job-box .checkbox-group { margin-top: 6px; gap: 4px; }
         .job-desk-overlay .job-box .bed-range { margin-top: 6px; gap: 8px; }
         .job-desk-overlay #padatkaryaBox input[type="text"] { margin-bottom: 6px; }
 
         .bed-range { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 
-        .small-stepper {
-            flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px;
-            background: transparent; border: none; padding: 4px 0; border-radius: 0;
-        }
+        .small-stepper { flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; background: transparent; border: none; padding: 4px 0; }
         .small-stepper .stepper-label { font-size: 0.65rem; font-weight: 600; margin-bottom: 0; color: #1e3a8a; white-space: nowrap; }
         .small-stepper .stepper-controls { display: flex; align-items: center; gap: 4px; }
 
@@ -397,13 +301,9 @@
             font-size: 0.7rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
             transition: background 0.2s, transform 0.1s; box-shadow: 0 2px 0 #1e40af;
         }
-        .stepper-btn:hover { background: #3b82f6; }
-        .stepper-btn:active { transform: translateY(2px); box-shadow: 0 0 0 #1e40af; }
+        .stepper-btn:active { transform: translateY(2px); box-shadow: none; }
 
-        .stepper-input {
-            width: 32px; text-align: center; border: 1px solid #cbd5e1; border-radius: 6px;
-            font-size: 0.75rem; padding: 2px 0; background: #fff; font-weight: 700; color: #0f172a;
-        }
+        .stepper-input { width: 32px; text-align: center; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.75rem; padding: 2px 0; background: #fff; font-weight: 700; color: #0f172a; }
 
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .check-item {
@@ -437,7 +337,6 @@
         .btn-add {
             background: rgba(240, 249, 255, 0.8); color: var(--secondary); border: 1.5px dashed var(--secondary);
             margin-bottom: 15px; width: 100%; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
             font-family: inherit; font-size: 0.9rem;
         }
         .btn-add:hover { background: #e0f2fe; border-style: solid; }
@@ -445,7 +344,6 @@
         .btn-reset {
             background: rgba(255, 241, 242, 0.8); color: var(--accent); margin-top: 15px; width: 100%; padding: 12px;
             border: 1px solid #fecdd3; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
             font-family: inherit; font-size: 0.9rem;
         }
         .btn-reset:hover { background: #ffe4e6; }
@@ -456,8 +354,7 @@
             padding: 10px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; text-align: center; font-weight: 600; transition: all 0.2s;
             font-family: inherit;
         }
-        .action-btn:hover { background: #e0f2fe; border-color: var(--secondary); color: var(--secondary); transform: scale(1.02); }
-        .action-btn.selected { background: #dcfce7; border-color: #16a34a; color: #166534; box-shadow: 0 3px 8px rgba(22, 163, 74, 0.2); }
+        .action-btn.selected { background: #dcfce7; border-color: #16a34a; color: #166534; }
 
         .delete-pasien { color: var(--accent); background: transparent; border: none; font-size: 1.2rem; cursor: pointer; transition: transform 0.2s; }
         .delete-pasien:hover { transform: scale(1.2); }
@@ -475,105 +372,71 @@
         .monitoring-table input:focus, .monitoring-table select:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
 
         .row-del { border: none; background: transparent; color: var(--accent); cursor: pointer; font-size: 0.9rem; padding: 2px 4px; }
-        .row-del:hover { transform: scale(1.15); }
 
-        .dialyzer-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .dialyzer-item {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 8px 5px;
-            text-align: center;
-        }
-        .dialyzer-item label {
-            display: block;
-            font-size: 0.75rem; font-weight: 700; color: var(--text-main);
-            margin: 0 0 5px 0;
-        }
-        .dialyzer-item .controls {
-            display: flex; align-items: center; justify-content: center; gap: 4px;
-        }
-        .dialyzer-item button {
-            width: 22px; height: 22px; border: none; background: var(--secondary); color: #fff;
-            border-radius: 5px; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 0 #075985;
-        }
-        .dialyzer-item button:active { transform: translateY(2px); box-shadow: none; }
-        .dialyzer-item input {
-            width: 35px; text-align: center; border: 1px solid #cbd5e1; border-radius: 5px;
-            font-size: 0.8rem; padding: 2px 0; background: #fff;
-        }
-        @media (max-width: 480px) {
-            .dialyzer-grid { grid-template-columns: repeat(3, 1fr); }
-        }
+        .dialyzer-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 10px; }
+        .dialyzer-item { background: rgba(255,255,255,0.7); border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 5px; text-align: center; }
+        .dialyzer-item label { display: block; font-size: 0.75rem; font-weight: 700; margin: 0 0 5px 0; }
+        .dialyzer-item .controls { display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .dialyzer-item button { width: 22px; height: 22px; border: none; background: var(--secondary); color: #fff; border-radius: 5px; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; }
+        .dialyzer-item input { width: 35px; text-align: center; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 0.8rem; padding: 2px 0; background: #fff; }
+        @media (max-width: 480px) { .dialyzer-grid { grid-template-columns: repeat(3, 1fr); } }
 
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
         .stat-card {
-            background: linear-gradient(135deg, var(--sc-orange) 0%, var(--sc-amber) 60%, var(--sc-deep) 100%); color: #fff; padding: 20px; border-radius: 16px;
-            text-align: center; box-shadow: 8px 8px 15px rgba(217, 72, 15, 0.25), -4px -4px 10px rgba(255,255,255,0.8); transition: transform 0.2s;
+            background: var(--sunset-grad); color: #fff; padding: 20px; border-radius: 16px;
+            text-align: center; box-shadow: 8px 8px 15px rgba(109, 40, 217, 0.22), -4px -4px 10px rgba(255,255,255,0.8);
         }
-        .stat-card:hover { transform: translateY(-3px); }
         .stat-value { font-size: 2.2rem; font-weight: 900; margin-bottom: 5px; line-height: 1; }
         .stat-label { font-size: 0.78rem; font-weight: 600; opacity: 0.95; }
         .stat-loading { text-align: center; color: var(--text-muted); padding: 40px 0; grid-column: 1/-1; }
 
-        .analitik-detail pre {
+        .analitik-detail pre, pre.mutu-text {
             white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.8rem; line-height: 1.7;
             background: rgba(255,255,255,0.85); border: 1px solid var(--border-color); border-radius: 14px;
             padding: 15px; margin: 15px 0 0 0;
         }
+
+        .warn-box {
+            margin-top: 18px; padding: 14px 16px; border-radius: 14px; font-size: 0.82rem; line-height: 1.7;
+            background: linear-gradient(135deg, #fef3c7, #fffbeb); border: 1px solid #f59e0b; color: #92400e;
+        }
+        .diag-box {
+            margin-top: 15px; background: rgba(255,255,255,0.85); border: 1px dashed var(--border-color);
+            border-radius: 12px; padding: 10px 14px; font-size: 0.78rem; color: var(--text-muted);
+        }
+        .diag-box summary { cursor: pointer; font-weight: 700; color: var(--text-main); }
+        pre.diag-text { white-space: pre-wrap; font-family: inherit; font-size: 0.72rem; margin: 8px 0 0; line-height: 1.6; }
 
         .print-area { display: none; padding: 40px; }
         #printArea h1 { text-align: center; }
         #printArea pre { white-space: pre-wrap; font-family: inherit; font-size: 12px; line-height: 1.6; }
         @media print {
             body { background: #fff; }
-            .container { display: none; }
-            .modal-overlay { display: none !important; }
+            .container, .modal-overlay, .mobile-sidebar, .sidebar-overlay { display: none !important; }
             .print-area { display: block; }
         }
 
         .schedule-frame-wrap {
-            position: relative; width: 100%;
-            height: 62vh; min-height: 420px;
-            border-radius: 14px; overflow: hidden;
-            border: 1px solid rgba(59,130,246,0.35);
-            background: #fff;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
-            transition: height 0.4s ease;
+            position: relative; width: 100%; height: 62vh; min-height: 420px; border-radius: 14px; overflow: hidden;
+            border: 1px solid rgba(59,130,246,0.35); background: #fff; box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
         }
         .schedule-frame-wrap.expanded { height: 88vh; }
         .schedule-frame-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
         .schedule-loading {
-            position: absolute; top:0; left:0; right:0; bottom:0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 14px; background: rgba(255,255,255,0.95); z-index: 2;
-            transition: opacity 0.4s ease;
+            position: absolute; top:0; left:0; right:0; bottom:0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 14px; background: rgba(255,255,255,0.95); z-index: 2;
         }
         .schedule-loading.hidden { opacity: 0; pointer-events: none; }
-        .spinner {
-            width: 44px; height: 44px;
-            border: 4px solid rgba(217,72,15,0.18); border-top-color: var(--sc-orange);
-            border-radius: 50%; animation: spin 0.9s linear infinite;
-        }
+        .spinner { width: 44px; height: 44px; border: 4px solid rgba(139,92,246,0.18); border-top-color: var(--sore-4); border-radius: 50%; animation: spin 0.9s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== SISTEM PERAN (KATIM / PERAWAT PELAKSANA) ===== */
+        /* ===== SISTEM PERAN ===== */
         .role-notice {
-            margin-top: 15px; padding: 12px 15px; border-radius: 14px;
-            font-size: 0.78rem; font-weight: 600; line-height: 1.7;
+            margin-top: 15px; padding: 12px 15px; border-radius: 14px; font-size: 0.78rem; font-weight: 600; line-height: 1.7;
             background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(255,255,255,0.75));
             border: 1px dashed rgba(37,99,235,0.5); color: #1e3a8a;
         }
-        .role-notice.katim {
-            background: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(255,255,255,0.75));
-            border-color: rgba(13,148,136,0.5); color: #0f766e;
-        }
+        .role-notice.katim { background: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(255,255,255,0.75)); border-color: rgba(13,148,136,0.5); color: #0f766e; }
 
         .section-locked { position: relative; overflow: hidden; }
         .lock-overlay {
@@ -588,33 +451,94 @@
         .field-locked > label::after { content: " 🔒"; font-size: 0.75rem; }
         .field-locked > select, .field-locked > input { opacity: 0.5; pointer-events: none; background: #f1f5f9; }
 
-        /* ===== POPUP PREVIEW LAPORAN ===== */
-        .modal-overlay {
-            position: fixed; top:0; left:0; right:0; bottom:0;
-            background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
-            z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
-        }
-        .modal-box {
-            background: #fff; border-radius: 20px; max-width: 520px; width: 100%;
-            max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.3); animation: fadeIn 0.3s ease;
-        }
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;
-            background: linear-gradient(135deg, var(--sc-orange), var(--sc-deep)); color: #fff;
-        }
+        /* ===== POPUP PREVIEW ===== */
+        .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: #fff; border-radius: 20px; max-width: 520px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: var(--sunset-grad); color: #fff; }
         .modal-header h3 { margin: 0; font-size: 0.95rem; }
         .modal-header button { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
         .modal-body { padding: 15px; overflow-y: auto; }
-        .modal-body pre {
-            white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.82rem;
-            line-height: 1.7; background: #f8fafc; border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 15px; margin: 0;
-        }
+        .modal-body pre { white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.82rem; line-height: 1.7; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin: 0; }
         .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px 20px; border-top: 1px solid var(--border-color); }
         .btn-secondary { border: none; padding: 12px; border-radius: 12px; background: #f1f5f9; color: var(--text-muted); font-weight: 700; cursor: pointer; font-family: inherit; }
         .btn-sendwa { border: none; padding: 12px; border-radius: 12px; background: #25D366; color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
-        .btn-sendwa:hover { background: #1ebe5b; }
+
+        /* ===== SIDEBAR MOBILE (kiri) ===== */
+        .sidebar-overlay {
+            position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15,23,42,0.5);
+            z-index: 190; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+
+        .mobile-sidebar {
+            position: fixed; top: 0; left: 0; bottom: 0; width: 280px; max-width: 82vw;
+            background: #fff; z-index: 200; display: none; flex-direction: column;
+            transform: translateX(-105%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 12px 0 40px rgba(0,0,0,0.25);
+        }
+        .mobile-sidebar.open { transform: translateX(0); }
+
+        .sidebar-top {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 16px; background: var(--sunset-grad); color: #fff;
+        }
+        .sidebar-brand { font-weight: 800; font-size: 0.95rem; letter-spacing: 0.5px; }
+        .sidebar-close {
+            background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.45); color: #fff;
+            width: 36px; height: 36px; border-radius: 10px; font-size: 1.1rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .sidebar-menu { flex: 1; overflow-y: auto; padding: 12px 10px; display: flex; flex-direction: column; gap: 8px; }
+        .side-item {
+            display: flex; align-items: center; gap: 14px; padding: 13px 14px; border-radius: 14px;
+            background: #f8fafc; border: 1px solid var(--border-color); font-weight: 700;
+            color: var(--text-muted); cursor: pointer; font-size: 0.9rem; font-family: inherit; text-align: left;
+            transition: all 0.2s;
+        }
+        .side-item i { font-style: normal; font-size: 1.25rem; width: 42px; height: 42px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: inset 2px 2px 5px #e2e8f0; flex: none; }
+        .side-item.active { background: var(--sunset-grad); color: #fff; border-color: transparent; box-shadow: 6px 6px 14px rgba(109,40,217,0.25); }
+        .side-item.active i { background: rgba(255,255,255,0.2); box-shadow: none; }
+        .sidebar-footer {
+            padding: 14px; text-align: center; font-size: 0.78rem; font-weight: 700; color: var(--text-muted);
+            border-top: 1px solid var(--border-color); background: #f8fafc; letter-spacing: 0.5px;
+        }
+
+        .app-footer { display: none; text-align: center; padding: 18px; color: var(--text-muted); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px; }
+
+        /* ===================== MODE HP ===================== */
+        @media (max-width: 991px) {
+            .nav-header { display: none; }          /* menu pindah ke sidebar */
+            .hamburger { display: flex; }
+            .mobile-sidebar { display: flex; }
+            .header-page-title { display: none; }
+        }
+
+        /* ===================== MODE PC ===================== */
+        @media (min-width: 992px) {
+            .container { max-width: 880px; }
+            .page { padding: 35px 40px; }
+            .app-header { min-height: 430px; }
+            .header-content { padding: 30px 20px 20px; }
+            .app-header h1 { font-size: 30px; }
+            .header-page-title { display: inline-block; }
+            .main-title-3d { display: none; }       /* judul halaman sudah di header */
+
+            .nav-header {
+                position: static; background: rgba(0,0,0,0.25); backdrop-filter: blur(8px);
+                padding: 12px 20px; gap: 12px;
+                border-top: 1px solid rgba(255,255,255,0.15); border-bottom: none;
+            }
+            .tab-btn {
+                background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22);
+                color: rgba(255,255,255,0.9); box-shadow: none;
+            }
+            .tab-btn i { background: rgba(255,255,255,0.15); box-shadow: none; }
+            .tab-btn.active { box-shadow: 0 8px 18px rgba(0,0,0,0.3); }
+
+            .app-footer { display: block; }
+            .mobile-sidebar, .sidebar-overlay { display: none !important; }
+            .hamburger { display: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -630,9 +554,12 @@
 
     <div class="app-header">
         <div class="header-top-bar">
-            <div class="realtime-clock">
-                <div class="time" id="clockTime">00:00:00</div>
-                <div class="date" id="clockDate">Hari, Tanggal</div>
+            <div class="top-left-group">
+                <button class="hamburger" onclick="openSidebar()" aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+                <div class="realtime-clock">
+                    <div class="time" id="clockTime">00:00:00</div>
+                    <div class="date" id="clockDate">Hari, Tanggal</div>
+                </div>
             </div>
             <div class="prayer-times" id="prayerTimes">
                 <span class="loc">📍 Memuat...</span>
@@ -649,22 +576,23 @@
             <p class="subtitle-rotator">
                 <span class="sub-line">Electronic Report &amp; Analysis</span>
                 <span class="sub-line">Sistem Pelaporan Elektronik Unit Dialisis</span>
-                <span class="sub-line">✨ September Ceria ✨</span>
+                <span class="sub-line">🌇 September Ceria — Nuansa Sore 🌅</span>
             </p>
+            <div class="header-page-title" id="headerPageTitle">Laporan Harian Hemodialisis</div>
         </div>
 
+        <!-- Menu horizontal (khusus PC) -->
         <div class="nav-header">
-            <button class="tab-btn active" onclick="switchTab(1)"><i>📝</i><span>Laporan Harian</span></button>
-            <button class="tab-btn" onclick="switchTab(2)"><i>📊</i><span>MUTU</span></button>
-            <button class="tab-btn" onclick="switchTab(3)"><i>🔍</i><span>Pencarian Pasien</span></button>
-            <button class="tab-btn" onclick="switchTab(4)"><i>📅</i><span>Jadwal Pasien</span></button>
+            <button class="tab-btn active" data-tab="1" onclick="switchTab(1)"><i>📝</i><span>Laporan Harian</span></button>
+            <button class="tab-btn" data-tab="2" onclick="switchTab(2)"><i>📊</i><span>MUTU</span></button>
+            <button class="tab-btn" data-tab="3" onclick="switchTab(3)"><i>🔍</i><span>Pencarian Pasien</span></button>
+            <button class="tab-btn" data-tab="4" onclick="switchTab(4)"><i>📅</i><span>Jadwal Pasien</span></button>
         </div>
     </div>
 
     <!-- ================= SLIDE 1 : LAPORAN HARIAN ================= -->
     <div id="slide1" class="page active">
         <div class="section-title main-title-3d">
-            <div class="sc-flag"><span>SC</span></div>
             <div class="icon-box">📝</div>
             <h2>Laporan Harian Hemodialisis</h2>
         </div>
@@ -810,13 +738,12 @@
     <!-- ================= SLIDE 2 : MUTU ================= -->
     <div id="slide2" class="page">
         <div class="section-title main-title-3d">
-            <div class="sc-flag"><span>SC</span></div>
             <div class="icon-box">📊</div>
             <h2>MUTU</h2>
         </div>
         <p style="color: var(--text-muted); text-align: center; margin-top: 20px; line-height: 1.7;">
-            Analisis data dari sheet REKAP_HARIAN per rentang tanggal:<br>
-            ① Jumlah pasien &amp; tindakan HD per shift, ② Akses vaskular (CVC Temporer / CVC Permanen-Tunnel / AV-Shunt / Manual) per shift,<br>
+            Analisis data dari sheet <b>REKAP_HARIAN</b> per rentang tanggal:<br>
+            ① Jumlah pasien &amp; tindakan HD per shift, ② Akses vaskular (CVC/CDL Temporer, Permanen/Tunnel, AV-Shunt, Manual) per shift,<br>
             ③ Kt/V ≥ 1,4 dan &lt; 1,4, ④ Jenis kelamin per shift, ⑤ Transfusi darah per shift — <b>semua dengan persentase</b>.
         </p>
 
@@ -854,7 +781,6 @@
     <!-- ================= SLIDE 3 : PENCARIAN PASIEN ================= -->
     <div id="slide3" class="page">
         <div class="section-title main-title-3d">
-            <div class="sc-flag"><span>SC</span></div>
             <div class="icon-box">🔍</div>
             <h2>Pencarian Pasien</h2>
         </div>
@@ -871,7 +797,6 @@
     <!-- ================= SLIDE 4 : JADWAL PASIEN ================= -->
     <div id="slide4" class="page">
         <div class="section-title main-title-3d">
-            <div class="sc-flag"><span>SC</span></div>
             <div class="icon-box">📅</div>
             <h2>Jadwal Pasien Hemodialisis</h2>
         </div>
@@ -884,7 +809,7 @@
             <div class="schedule-frame-wrap" id="scheduleWrap">
                 <div class="schedule-loading" id="jadwalLoading">
                     <div class="spinner"></div>
-                    <p style="margin:0; color:#d9480f; font-weight:600; font-size:0.85rem;">Memuat jadwal pasien...</p>
+                    <p style="margin:0; color:#6d28d9; font-weight:600; font-size:0.85rem;">Memuat jadwal pasien...</p>
                 </div>
                 <iframe id="jadwalFrame" title="Jadwal Pasien Hemodialisis" allowfullscreen></iframe>
             </div>
@@ -902,7 +827,25 @@
             <button class="btn btn-wa" onclick="toggleJadwalSize(this)"><i class="fa-solid fa-expand"></i> Perbesar</button>
         </div>
     </div>
+
+    <div class="app-footer">Gala-w versi 4.1 · Laporan Digital</div>
 </div>
+
+<!-- ===== SIDEBAR MOBILE (kiri) ===== -->
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside id="mobileSidebar" class="mobile-sidebar" aria-label="Menu Navigasi">
+    <div class="sidebar-top">
+        <span class="sidebar-brand">☰ Menu Navigasi</span>
+        <button class="sidebar-close" onclick="closeSidebar()" aria-label="Tutup menu"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="sidebar-menu">
+        <button class="side-item active" data-tab="1" onclick="switchTab(1)"><i>📝</i><span>Laporan Harian</span></button>
+        <button class="side-item" data-tab="2" onclick="switchTab(2)"><i>📊</i><span>MUTU</span></button>
+        <button class="side-item" data-tab="3" onclick="switchTab(3)"><i>🔍</i><span>Pencarian Pasien</span></button>
+        <button class="side-item" data-tab="4" onclick="switchTab(4)"><i>📅</i><span>Jadwal Pasien</span></button>
+    </div>
+    <div class="sidebar-footer">Gala-w versi 4.1</div>
+</aside>
 
 <!-- ===== POPUP PREVIEW LAPORAN ===== -->
 <div id="reportModal" class="modal-overlay" style="display: none;">
@@ -926,16 +869,24 @@
 
 <script>
 /* =========================================================
-   LAPORAN DIGITAL — Hemodialisis (Tema: September Ceria)
-   Sistem Peran: KATIM & Perawat Pelaksana
+   LAPORAN DIGITAL — Hemodialisis · Gala-w versi 4.1
+   Tema: September Ceria (Nuansa Sore)
    ========================================================= */
 
 var MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwWCP7nMRpslFuxeV8bkYFDmI5OK-fIR4yhvBJp45kRq9Om9RFMMJUHdB35PbDn8z9Fyw/exec";
-var REKAP_CSV_URL = "https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/export?format=csv&gid=652284391";
+var REKAP_SHEET_ID = "1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c";
+var REKAP_GID = "652284391";
 var JADWAL_SHEET_ID = "1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0";
 var JADWAL_GID = "1100922958";
-var WA_NUMBER = ""; // opsional: isi nomor tujuan tetap, contoh: "6281234567890"
+var WA_NUMBER = "";
 var DIVIDER = "━━━━━━━━━━━━━━━━━";
+
+var PAGE_TITLES = {
+    1: 'Laporan Harian Hemodialisis',
+    2: 'MUTU — Analisis Kinerja',
+    3: 'Pencarian Pasien',
+    4: 'Jadwal Pasien Hemodialisis'
+};
 
 /* ================= JAM & TANGGAL REALTIME ================= */
 function updateClock() {
@@ -969,10 +920,7 @@ function escapeHtml(s) {
 }
 
 function parseCSV(text) {
-    var rows = [];
-    var row = [];
-    var inQuotes = false;
-    var cell = '';
+    var rows = [], row = [], inQuotes = false, cell = '';
     for (var i = 0; i < text.length; i++) {
         var char = text[i];
         if (char === '"') {
@@ -1000,12 +948,22 @@ function formatTanggalID(value) {
     return hari + ', ' + d.getDate() + ' ' + bulan + ' ' + d.getFullYear();
 }
 
+function dateToISO(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+var BULAN_ID = { januari:0, februari:1, maret:2, april:3, mei:4, juni:5, juli:6, agustus:7, september:8, oktober:9, november:10, desember:11 };
+
+/* Parser tanggal fleksibel: 2025-09-05 · 05/09/2025 · 5 September 2025 · Jumat, 5 September 2025 */
 function parseSheetDate(s) {
     if (!s) return null;
-    s = String(s).trim();
-    var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    s = String(s).trim().toLowerCase();
+    if (!s || s === '-' || s === '—') return null;
+    var m = s.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/);              /* 5 September 2025 */
+    if (m && BULAN_ID[m[2]] !== undefined) return new Date(+m[3], BULAN_ID[m[2]], +m[1]);
+    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);                     /* 2025-09-05 */
     if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
-    m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+    m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);         /* 05/09/2025 (dd/mm) */
     if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
     var d = new Date(s);
     return isNaN(d.getTime()) ? null : d;
@@ -1037,27 +995,44 @@ async function fetchHeaderData() {
 }
 fetchHeaderData();
 
-/* ================= NAVIGASI TAB ================= */
+/* ================= NAVIGASI & SIDEBAR ================= */
 function switchTab(n) {
+    n = parseInt(n, 10);
     document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
-    document.getElementById('slide' + n).classList.add('active');
-    document.querySelectorAll('.tab-btn').forEach(function (b, i) { b.classList.toggle('active', i === n - 1); });
+    var page = document.getElementById('slide' + n);
+    if (page) page.classList.add('active');
+    document.querySelectorAll('.tab-btn, .side-item').forEach(function (b) {
+        b.classList.toggle('active', parseInt(b.getAttribute('data-tab'), 10) === n);
+    });
+    var ht = document.getElementById('headerPageTitle');
+    if (ht) ht.textContent = PAGE_TITLES[n] || '';
+    closeSidebar();
     if (n === 4) loadJadwal(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function openSidebar() {
+    document.getElementById('mobileSidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+}
+function closeSidebar() {
+    document.getElementById('mobileSidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+}
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeSidebar(); closeReportModal(); }
+});
+
 /* =========================================================
    SISTEM PERAN : KATIM vs PERAWAT PELAKSANA
-   - KATIM   : Anggota Tim, Job Desk, Perencanaan Tindakan, Identitas
-   - PERAWAT : Anggota Tim, Daftar Pasien, Masalah & Inventaris, Identitas
-   Seksi yang tidak sesuai -> TERKUNCI & tidak ikut laporan WA/PDF
    ========================================================= */
 var ROLE_SECTIONS = {
-    KATIM:   { aktif: ['secAnggota', 'secJobdesk', 'secRencana', 'secIdentitas'],
+    KATIM:   { aktif: ['secAnggota', 'secJobdesk', 'secMasalah_placeholder', 'secIdentitas'],
                terkunci: ['secPasien', 'secMasalah'] },
     PERAWAT: { aktif: ['secAnggota', 'secPasien', 'secMasalah', 'secIdentitas'],
-               terkunci: ['secJobdesk', 'secRencana'] }
+               terkunci: ['secJobdesk'] }
 };
+ROLE_SECTIONS.KATIM.aktif = ['secAnggota', 'secJobdesk', 'secIdentitas'];
 
 function getRole() { return document.getElementById('roleSelect').value; }
 function getRoleLabel() { return getRole() === 'KATIM' ? 'KATIM' : 'Perawat Pelaksana'; }
@@ -1102,14 +1077,13 @@ function applyRoleRules() {
     var notice = document.getElementById('roleNotice');
     if (role === 'KATIM') {
         notice.className = 'role-notice katim';
-        notice.innerHTML = '👑 <b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Job Desk Petugas, Perencanaan Tindakan, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b> (sesuai Tim).';
+        notice.innerHTML = '👑 <b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Job Desk Petugas, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b> (sesuai Tim).';
     } else {
         notice.className = 'role-notice';
         notice.innerHTML = '🩺 <b>MODE PERAWAT PELAKSANA</b> — Laporan berisi: <b>Anggota Tim, Daftar Pasien, Masalah &amp; Inventaris, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN PERAWAT PELAKSANA TIM x SHIFT y</b>.';
     }
 }
 
-/* ================= JUDUL LAPORAN (otomatis sesuai peran) ================= */
 function getReportTitle() {
     var tim = document.getElementById('tim1').value;
     if (getRole() === 'KATIM') return 'LAPORAN KATIM ' + tim;
@@ -1291,62 +1265,6 @@ function shareMonitoringWA() {
     window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
-/* ================= PERENCANAAN TINDAKAN PASIEN (KATIM) ================= */
-var patientCount = 0;
-var tindakanOptions = ["ODC BTKV", "Poli Bedah TKV", "Poli Jantung", "Poli Urologi", "Radiologi", "Poli Saraf", "Transfusi", "Laborat", "Poli Anak", "Poli Kandungan", "Poli Mata"];
-
-function tambahPasien() {
-    patientCount++;
-    var container = document.getElementById('patientPlanContainer');
-    var card = document.createElement('div');
-    card.className = 'patient-card';
-    card.id = 'patientCard-' + patientCount;
-    var optionsHTML = '';
-    tindakanOptions.forEach(function (opt, index) {
-        optionsHTML += '<div class="action-btn" onclick="addTindakan(this)">' + (index + 1) + '. ' + escapeHtml(opt) + '</div>';
-    });
-    card.innerHTML =
-        '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:10px;">' +
-        '<input type="text" class="plan-nama" id="namaPasienPlan-' + patientCount + '" list="patientList" placeholder="Nama Pasien" style="flex:1; margin:0;">' +
-        '<button class="delete-pasien" onclick="hapusPasien(' + patientCount + ')" title="Hapus"><i class="fa-solid fa-circle-xmark"></i></button>' +
-        '</div>' +
-        '<div class="action-grid">' + optionsHTML + '</div>' +
-        '<div id="manualWrap-' + patientCount + '" style="display:none; margin-top:10px;">' +
-        '<input type="text" id="tindakanManual-' + patientCount + '" placeholder="Tulis tindakan / rencana lain...">' +
-        '</div>' +
-        '<div class="rencana-tools">' +
-        '<label class="check-item" style="margin-top:0; background:#fff; border:none; padding-left:0;">' +
-        '<input type="checkbox" onchange="toggleManual(' + patientCount + ', this.checked)"> Aktifkan Isi Manual</label>' +
-        '</div>';
-    container.appendChild(card);
-    var nama = card.querySelector('.plan-nama');
-    if (nama) nama.focus();
-}
-function hapusPasien(id) { var el = document.getElementById('patientCard-' + id); if (el) el.remove(); }
-function addTindakan(btn) { btn.classList.toggle('selected'); }
-function toggleManual(id, checked) {
-    var w = document.getElementById('manualWrap-' + id);
-    if (!w) return;
-    w.style.display = checked ? 'block' : 'none';
-    if (checked) { var inp = document.getElementById('tindakanManual-' + id); if (inp) inp.focus(); }
-}
-
-function getRencanaPasienList() {
-    var hasil = [];
-    document.querySelectorAll('#patientPlanContainer .patient-card').forEach(function (card) {
-        var namaEl = card.querySelector('.plan-nama');
-        var nama = namaEl ? namaEl.value.trim() : '';
-        var tindakan = [];
-        card.querySelectorAll('.action-btn.selected').forEach(function (btn) {
-            tindakan.push(btn.textContent.replace(/^\d+\.\s*/, '').trim());
-        });
-        var manual = card.querySelector('input[id^="tindakanManual"]');
-        if (manual && manual.value.trim()) tindakan.push(manual.value.trim());
-        if (nama || tindakan.length) hasil.push({ nama: nama || '-', tindakan: tindakan.join(', ') || '-' });
-    });
-    return hasil;
-}
-
 /* =========================================================
    SUSUN PESAN LAPORAN — hanya seksi sesuai peran!
    ========================================================= */
@@ -1374,9 +1292,6 @@ function buildReportMessage() {
     }
 
     if (role === 'KATIM') {
-        var rencana = document.getElementById('rencanaTindakan').value.trim();
-        msg += '\n' + DIVIDER + '\n*📋 RENCANA TINDAKAN UMUM*\n' + (rencana || '-') + '\n';
-
         msg += '\n' + DIVIDER + '\n*📌 JOB DESK PETUGAS*\n';
         var adaJob = false;
         document.querySelectorAll('#perawatContainer .job-box').forEach(function (box) {
@@ -1399,14 +1314,6 @@ function buildReportMessage() {
             msg += '• *Padatkarya — ' + padat + '*: ' + (pj.length ? pj.join(', ') : '-') + '\n';
         }
         if (!adaJob) msg += '- (tidak ada)\n';
-
-        var renc = getRencanaPasienList();
-        msg += '\n' + DIVIDER + '\n*🗓️ PERENCANAAN TINDAKAN PASIEN*\n';
-        if (renc.length) {
-            renc.forEach(function (r) { msg += '• *' + r.nama + '*: ' + r.tindakan + '\n'; });
-        } else {
-            msg += '- (tidak ada)\n';
-        }
     } else {
         var dp = formatDaftarPasien();
         msg += '\n' + DIVIDER + '\n*🩺 DAFTAR PASIEN*\n';
@@ -1427,7 +1334,7 @@ function buildReportMessage() {
     }
 
     msg += '\n' + DIVIDER + '\n*🪪 IDENTITAS PENGIRIM*\n👤 Nama: ' + pengirim + '\n';
-    msg += DIVIDER + '\n_Dikirim via Laporan Digital ✨ September Ceria ✨_';
+    msg += DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.1_';
     return msg;
 }
 
@@ -1457,19 +1364,14 @@ function sendReportWA() {
 document.getElementById('reportModal').addEventListener('click', function (e) {
     if (e.target === this) closeReportModal();
 });
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeReportModal();
-});
 
-/* ================= CETAK PDF ================= */
-function cetakPDF() {
-    var pengirim = document.getElementById('pengirim1').value.trim();
-    if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
+/* ================= CETAK PDF & DRIVE ================= */
+function buatPDFLaporan() {
     currentReportMessage = buildReportMessage();
     var judul = getReportTitle();
     document.querySelector('#printArea h1').textContent = judul;
     document.getElementById('printContent').textContent = currentReportMessage;
-    html2pdf().set({
+    return html2pdf().set({
         margin: [10, 10, 10, 10],
         filename: judul.replace(/[^a-z0-9]+/gi, '_') + '.pdf',
         image: { type: 'jpeg', quality: 0.98 },
@@ -1478,23 +1380,18 @@ function cetakPDF() {
     }).from(document.getElementById('printArea')).save();
 }
 
-/* ================= UPLOAD DRIVE ================= */
+function cetakPDF() {
+    var pengirim = document.getElementById('pengirim1').value.trim();
+    if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
+    buatPDFLaporan();
+}
+
 async function uploadToDrive() {
     var pengirim = document.getElementById('pengirim1').value.trim();
     if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
-    currentReportMessage = buildReportMessage();
-    var judul = getReportTitle();
-    document.querySelector('#printArea h1').textContent = judul;
-    document.getElementById('printContent').textContent = currentReportMessage;
     alert('📄 PDF laporan akan diunduh.\nSetelah selesai, silakan upload file tersebut ke Google Drive Anda.');
     try {
-        await html2pdf().set({
-            margin: [10, 10, 10, 10],
-            filename: judul.replace(/[^a-z0-9]+/gi, '_') + '.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).from(document.getElementById('printArea')).save();
+        await buatPDFLaporan();
         window.open('https://drive.google.com/drive/my-drive', '_blank');
     } catch (e) {
         alert('❌ Gagal membuat PDF: ' + e.message);
@@ -1507,8 +1404,7 @@ function resetData() {
     document.getElementById('memberContainer').innerHTML = '';
     document.getElementById('perawatContainer').innerHTML = '';
     document.getElementById('monitoringBody').innerHTML = '';
-    document.getElementById('patientPlanContainer').innerHTML = '';
-    memberCount = 0; perawatCount = 0; patientCount = 0;
+    memberCount = 0; perawatCount = 0;
 
     tambahAnggota(false);
     tambahPerawat();
@@ -1533,30 +1429,57 @@ function resetData() {
 }
 
 /* =========================================================
-   MUTU — Analisis REKAP_HARIAN (semua dengan persentase)
-   1. Jumlah pasien & tindakan HD per shift 1/2/3
-   2. Akses vaskular (CVC Temporer / CVC Permanen-Tunnel /
-      AV-Shunt / Manual) per shift 1/2/3
-   3. Kt/V >= 1,4 dan < 1,4 (jumlah + persen)
-   4. Jenis kelamin (L/P) per shift 1/2/3
-   5. Transfusi darah per shift 1/2/3
+   MUTU — Pembacaan REKAP_HARIAN yang ROBUST
+   (2 endpoint CSV + deteksi baris header otomatis +
+    deteksi kolom otomatis + panel diagnostik)
    ========================================================= */
 var analitikData = null;
-var rekapCache = null;
 
-async function loadRekapRows() {
-    if (rekapCache) return rekapCache;
-    var res = await fetch(REKAP_CSV_URL);
-    var text = await res.text();
-    rekapCache = parseCSV(text);
-    return rekapCache;
+async function fetchSheetCSV(sheetId, gid) {
+    var attempts = [
+        { url: 'https://docs.google.com/spreadsheets/d/' + sheetId + '/gviz/tq?tqx=out:csv&gid=' + gid, label: 'gviz CSV (gid ' + gid + ')' },
+        { url: 'https://docs.google.com/spreadsheets/d/' + sheetId + '/export?format=csv&gid=' + gid, label: 'export CSV (gid ' + gid + ')' }
+    ];
+    var lastErr = null;
+    for (var i = 0; i < attempts.length; i++) {
+        try {
+            var res = await fetch(attempts[i].url, { cache: 'no-cache' });
+            var text = await res.text();
+            var t = text.trim();
+            if (t.length > 10 && t.charAt(0) !== '<') {
+                return { text: text, label: attempts[i].label };
+            }
+            lastErr = new Error('Server merespons halaman HTML (kemungkinan sheet tidak publik).');
+        } catch (e) {
+            lastErr = e;
+        }
+    }
+    throw new Error('Tidak dapat membaca sheet. Pastikan spreadsheet dibagikan sebagai "Siapa saja yang memiliki link → Pelihat (Viewer)". Detail: ' + (lastErr ? lastErr.message : '-'));
 }
 
-function findCol(headers, keyword, fallback) {
-    for (var i = 0; i < headers.length; i++) {
-        if (String(headers[i] || '').toLowerCase().indexOf(keyword) !== -1) return i;
+/* Cari baris header di 12 baris pertama (antisipasi baris judul di atas) */
+function detectHeaderRow(rows) {
+    var limit = Math.min(rows.length, 12);
+    var fallback = -1;
+    for (var i = 0; i < limit; i++) {
+        var joined = (rows[i] || []).join('|').toLowerCase();
+        var hasNama = joined.indexOf('nama') !== -1;
+        var hasTgl = joined.indexOf('tanggal') !== -1 || joined.indexOf('tgl') !== -1;
+        if (hasNama && hasTgl) return i;
+        if (hasNama && fallback === -1) fallback = i;
     }
-    return fallback;
+    return fallback !== -1 ? fallback : 0;
+}
+
+function findCol(headers, keywords) {
+    for (var i = 0; i < headers.length; i++) {
+        var h = String(headers[i] || '').toLowerCase().trim();
+        if (!h) continue;
+        for (var k = 0; k < keywords.length; k++) {
+            if (h.indexOf(keywords[k]) !== -1) return i;
+        }
+    }
+    return -1;
 }
 
 /* --- Normalisasi nilai --- */
@@ -1579,10 +1502,10 @@ function normJK(v) {
 
 function normAkses(v) {
     var s = String(v || '').toLowerCase().trim();
-    if (!s || s === '-') return '';
-    if (s.indexOf('temp') !== -1) return 'CVC Temporer';
-    if (s.indexOf('tun') !== -1 || s.indexOf('perman') !== -1 || s.indexOf('semi') !== -1) return 'CVC Permanen/Tunnel';
-    if (s.indexOf('av') !== -1 || s.indexOf('shunt') !== -1 || s.indexOf('fist') !== -1) return 'AV-Shunt';
+    if (!s || s === '-' || s === '—') return '';
+    if (s.indexOf('temp') !== -1) return 'CVC/CDL Temporer';
+    if (s.indexOf('tun') !== -1 || s.indexOf('perman') !== -1 || s.indexOf('semi') !== -1) return 'CVC/CDL Permanen (Tunnel)';
+    if (s.indexOf('av') !== -1 || s.indexOf('shunt') !== -1 || s.indexOf('fist') !== -1 || s.indexOf('sunt') !== -1) return 'AV-Shunt';
     if (s.indexOf('manual') !== -1) return 'Manual';
     return 'Lainnya';
 }
@@ -1590,7 +1513,7 @@ function normAkses(v) {
 function isTransfusi(v) {
     var s = String(v || '').toLowerCase().trim();
     if (!s) return false;
-    if (s === '-' || s === '0' || s === 'tidak' || s === 'belum' || s === 'no' || s === 'none' || s === 'tanpa' || s === 'false') return false;
+    if (s === '-' || s === '—' || s === '0' || s === 'tidak' || s === 'belum' || s === 'no' || s === 'none' || s === 'tanpa' || s === 'false') return false;
     return true;
 }
 
@@ -1606,43 +1529,61 @@ async function searchFastTrack() {
 
     var resultDiv = document.getElementById('fastTrackResult');
     document.getElementById('analitikActions').style.display = 'none';
-    resultDiv.innerHTML = '<div class="stat-loading">⏳ Memuat &amp; menganalisis data dari sheet...</div>';
+    resultDiv.innerHTML = '<div class="stat-loading">⏳ Memuat &amp; menganalisis data dari sheet REKAP_HARIAN...</div>';
 
     try {
-        var rows = await loadRekapRows();
-        analitikData = analyzeRows(rows, startStr, endStr);
+        var loaded = await fetchSheetCSV(REKAP_SHEET_ID, REKAP_GID);
+        var rows = parseCSV(loaded.text);
+        if (rows.length < 2) throw new Error('Sheet terbaca tetapi kosong / format tidak dikenali.');
+        analitikData = analyzeRows(rows, startStr, endStr, loaded.label);
         renderAnalitik(analitikData);
         document.getElementById('analitikActions').style.display = 'grid';
     } catch (e) {
-        resultDiv.innerHTML = '<div class="stat-loading">❌ Gagal memuat data: ' + escapeHtml(e.message) + '</div>';
+        resultDiv.innerHTML = '<div class="stat-loading">❌ ' + escapeHtml(e.message) + '</div>';
     }
 }
 
-function analyzeRows(rows, startStr, endStr) {
-    var headers = rows[0] || [];
-    var cTgl = findCol(headers, 'tanggal', 0);
-    var cNama = findCol(headers, 'nama', 1);
-    var cShift = findCol(headers, 'shift', -1);
-    var cJK = findCol(headers, 'jenis kelamin', -1);
-    if (cJK < 0) cJK = findCol(headers, 'kelamin', -1);
-    if (cJK < 0) cJK = findCol(headers, 'jk', -1);
-    if (cJK < 0) cJK = findCol(headers, 'gender', -1);
-    var cAkses = findCol(headers, 'akses', -1);
-    var cKtV = findCol(headers, 'kt', -1);
-    var cTrans = findCol(headers, 'transfusi', -1);
+function analyzeRows(rows, startStr, endStr, sourceLabel) {
+    var headerIdx = detectHeaderRow(rows);
+    var headers = rows[headerIdx] || [];
+    var cTgl   = findCol(headers, ['tanggal', 'tgl', 'date']);
+    var cNama  = findCol(headers, ['nama', 'pasien']);
+    var cShift = findCol(headers, ['shift']);
+    var cJK    = findCol(headers, ['jenis kelamin', 'kelamin', 'jk', 'gender', 'sex']);
+    var cAkses = findCol(headers, ['akses', 'vaskular', 'cvc']);
+    var cKtV   = findCol(headers, ['kt/v', 'ktv', 'kt']);
+    var cTrans = findCol(headers, ['transfusi', 'trans']);
 
     var start = new Date(startStr + 'T00:00:00');
     var end = new Date(endStr + 'T23:59:59');
 
-    /* Filter baris sesuai rentang tanggal */
-    var filtered = [];
-    for (var i = 1; i < rows.length; i++) {
-        var d = parseSheetDate(rows[i][cTgl]);
-        if (d && d >= start && d <= end) filtered.push(rows[i]);
+    /* Kumpulkan baris data (yang punya nama) + rentang tanggal di data */
+    var dataRows = [], minD = null, maxD = null, unparsed = 0;
+    for (var i = headerIdx + 1; i < rows.length; i++) {
+        var r = rows[i];
+        if (!r || !r.length) continue;
+        var nama = cNama >= 0 ? String(r[cNama] || '').trim() : '';
+        if (!nama) continue;
+        dataRows.push(r);
+        if (cTgl >= 0) {
+            var d = parseSheetDate(r[cTgl]);
+            if (d) { if (!minD || d < minD) minD = d; if (!maxD || d > maxD) maxD = d; }
+            else unparsed++;
+        }
     }
 
-    /* Bucket per shift: 1, 2, 3 (0 = tanpa data shift) */
-    var AKSES_KEYS = ['CVC Temporer', 'CVC Permanen/Tunnel', 'AV-Shunt', 'Manual', 'Lainnya'];
+    var filtered;
+    if (cTgl < 0) {
+        filtered = dataRows.slice();
+    } else {
+        filtered = dataRows.filter(function (r) {
+            var d = parseSheetDate(r[cTgl]);
+            return d && d >= start && d <= end;
+        });
+    }
+
+    /* Bucket per shift */
+    var AKSES_KEYS = ['CVC/CDL Temporer', 'CVC/CDL Permanen (Tunnel)', 'AV-Shunt', 'Manual', 'Lainnya'];
     var S = {};
     [1, 2, 3, 0].forEach(function (n) {
         S[n] = { pasien: 0, laki: 0, perempuan: 0, transfusi: 0, akses: {} };
@@ -1655,23 +1596,25 @@ function analyzeRows(rows, startStr, endStr) {
     filtered.forEach(function (r) {
         var nama = String(r[cNama] || '').trim();
         if (!nama) return;
-        var b = S[parseShift(r[cShift])];
+        var b = S[parseShift(cShift >= 0 ? r[cShift] : '')];
         b.pasien++;
         uniqueNames[nama] = true;
 
-        var jk = normJK(r[cJK]);
+        var jk = cJK >= 0 ? normJK(r[cJK]) : '';
         if (jk === 'L') b.laki++;
         else if (jk === 'P') b.perempuan++;
 
-        if (isTransfusi(r[cTrans])) b.transfusi++;
+        if (cTrans >= 0 && isTransfusi(r[cTrans])) b.transfusi++;
 
-        var ak = normAkses(r[cAkses]);
+        var ak = cAkses >= 0 ? normAkses(r[cAkses]) : '';
         if (ak) b.akses[ak]++;
 
-        var ktv = parseFloat(String(r[cKtV] || '').replace(',', '.').replace(/[^0-9.]/g, ''));
-        if (!isNaN(ktv) && ktv > 0) {
-            ktvValid++;
-            if (ktv >= 1.4) ktvHi++; else ktvLo++;
+        if (cKtV >= 0) {
+            var ktv = parseFloat(String(r[cKtV] || '').replace(',', '.').replace(/[^0-9.]/g, ''));
+            if (!isNaN(ktv) && ktv > 0) {
+                ktvValid++;
+                if (ktv >= 1.4) ktvHi++; else ktvLo++;
+            }
         }
     });
 
@@ -1683,7 +1626,6 @@ function analyzeRows(rows, startStr, endStr) {
     text += '📅 Periode : ' + formatTanggalID(startStr) + ' s/d ' + formatTanggalID(endStr) + '\n';
     text += '🩺 Total   : ' + total + ' pasien-tindakan (' + Object.keys(uniqueNames).length + ' pasien unik)\n';
 
-    /* 1 & 2: Jumlah pasien & tindakan HD per shift */
     text += '\n' + DIVIDER + '\n*📊 JUMLAH PASIEN & TINDAKAN HD PER SHIFT*\n';
     [1, 2, 3].forEach(function (n) {
         text += '• Shift ' + n + ' : ' + S[n].pasien + ' pasien (' + pctFmt(S[n].pasien, total) + ') — Tindakan HD: ' + S[n].pasien + '\n';
@@ -1691,7 +1633,6 @@ function analyzeRows(rows, startStr, endStr) {
     if (S[0].pasien > 0) text += '• Tanpa data shift : ' + S[0].pasien + ' pasien (' + pctFmt(S[0].pasien, total) + ')\n';
     text += '• TOTAL : ' + total + ' pasien (100%)\n';
 
-    /* 3: Akses vaskular per shift */
     text += '\n' + DIVIDER + '\n*🩸 AKSES VASKULAR PER SHIFT*\n';
     [1, 2, 3].forEach(function (n) {
         var b = S[n];
@@ -1702,13 +1643,11 @@ function analyzeRows(rows, startStr, endStr) {
         });
     });
 
-    /* 4: Kt/V */
     text += '\n' + DIVIDER + '\n*⚖️ KUALITAS DIALISIS (Kt/V)*\n';
     text += '• Kt/V ≥ 1,4 : ' + ktvHi + ' orang (' + pctFmt(ktvHi, ktvValid) + ')\n';
     text += '• Kt/V < 1,4 : ' + ktvLo + ' orang (' + pctFmt(ktvLo, ktvValid) + ')\n';
     text += '• Terdata Kt/V : ' + ktvValid + ' dari ' + total + ' pasien-tindakan\n';
 
-    /* 5: Jenis kelamin per shift */
     text += '\n' + DIVIDER + '\n*🚻 JENIS KELAMIN PER SHIFT*\n';
     [1, 2, 3].forEach(function (n) {
         var b = S[n];
@@ -1717,7 +1656,6 @@ function analyzeRows(rows, startStr, endStr) {
         text += '  • Perempuan : ' + b.perempuan + ' (' + pctFmt(b.perempuan, b.pasien) + ')\n';
     });
 
-    /* 6: Transfusi darah per shift */
     text += '\n' + DIVIDER + '\n*💉 TRANSFUSI DARAH PER SHIFT*\n';
     [1, 2, 3].forEach(function (n) {
         text += '• Shift ' + n + ' : ' + S[n].transfusi + ' pasien (' + pctFmt(S[n].transfusi, S[n].pasien) + ')\n';
@@ -1725,35 +1663,73 @@ function analyzeRows(rows, startStr, endStr) {
     if (S[0].pasien > 0) text += '• Tanpa data shift : ' + S[0].transfusi + ' pasien (' + pctFmt(S[0].transfusi, S[0].pasien) + ')\n';
     text += '• TOTAL : ' + totTrans + ' pasien (' + pctFmt(totTrans, total) + ')\n';
 
+    /* ===== Diagnostik (untuk cek kenapa data 0 / kolom tidak kebaca) ===== */
+    function colInfo(idx) {
+        return idx >= 0 ? 'kolom ' + (idx + 1) + ' ("' + String(headers[idx] || '').trim() + '")' : '❌ TIDAK DITEMUKAN';
+    }
+    var dateRangeText = minD ? (formatTanggalID(dateToISO(minD)) + ' s/d ' + formatTanggalID(dateToISO(maxD))) : 'tidak ada tanggal yang terbaca';
+    var diag = [];
+    diag.push('Sumber data        : ' + sourceLabel);
+    diag.push('Total baris sheet  : ' + rows.length + ' (header terdeteksi di baris ke-' + (headerIdx + 1) + ')');
+    diag.push('Baris data bernerita (kolom nama terisi) : ' + dataRows.length);
+    diag.push('');
+    diag.push('Kolom terdeteksi:');
+    diag.push('  - Tanggal        : ' + colInfo(cTgl));
+    diag.push('  - Nama           : ' + colInfo(cNama));
+    diag.push('  - Shift          : ' + colInfo(cShift));
+    diag.push('  - Jenis Kelamin  : ' + colInfo(cJK));
+    diag.push('  - Akses          : ' + colInfo(cAkses));
+    diag.push('  - Kt/V           : ' + colInfo(cKtV));
+    diag.push('  - Transfusi      : ' + colInfo(cTrans));
+    diag.push('');
+    diag.push('Rentang tanggal di data : ' + dateRangeText);
+    diag.push('Tanggal gagal dibaca    : ' + unparsed + ' baris');
+    diag.push('Baris sesuai filter Anda: ' + filtered.length);
+    if (cTgl < 0) diag.push('');
+    if (cTgl < 0) diag.push('⚠️ Kolom Tanggal tidak ditemukan — semua baris dipakai tanpa filter tanggal.');
+
     return {
         total: total,
         unique: Object.keys(uniqueNames).length,
         ktvHi: ktvHi, ktvLo: ktvLo, ktvValid: ktvValid,
         ktvHiPct: pctFmt(ktvHi, ktvValid), ktvLoPct: pctFmt(ktvLo, ktvValid),
         transfusi: totTrans, transfusiPct: pctFmt(totTrans, total),
-        text: text
+        filteredCount: filtered.length,
+        dateRangeText: dateRangeText,
+        text: text,
+        diag: diag.join('\n')
     };
 }
 
 function renderAnalitik(d) {
     var el = document.getElementById('fastTrackResult');
-    var html =
-        '<div class="stat-grid">' +
+    var html = '';
+
+    if (d.filteredCount === 0) {
+        html += '<div class="warn-box">⚠️ <b>0 baris cocok dengan rentang tanggal yang dipilih.</b><br>' +
+            'Rentang tanggal yang terdeteksi di sheet: <b>' + escapeHtml(d.dateRangeText) + '</b>.<br>' +
+            'Silakan sesuaikan Tanggal Awal/Akhir, atau buka panel <b>🔍 Diagnostik Data</b> di bawah untuk memeriksa kolom yang terbaca.</div>';
+    }
+
+    html += '<div class="stat-grid">' +
         '<div class="stat-card"><div class="stat-value">' + d.total + '</div><div class="stat-label">Total Pasien &amp; Tindakan HD</div></div>' +
         '<div class="stat-card"><div class="stat-value">' + d.ktvHi + '</div><div class="stat-label">Kt/V ≥ 1,4 (' + d.ktvHiPct + ')</div></div>' +
         '<div class="stat-card"><div class="stat-value">' + d.ktvLo + '</div><div class="stat-label">Kt/V &lt; 1,4 (' + d.ktvLoPct + ')</div></div>' +
         '<div class="stat-card"><div class="stat-value">' + d.transfusi + '</div><div class="stat-label">Transfusi Darah (' + d.transfusiPct + ')</div></div>' +
         '</div>' +
-        '<div class="analitik-detail"><pre></pre></div>';
+        '<div class="analitik-detail"><pre class="mutu-text"></pre></div>' +
+        '<details class="diag-box"><summary>🔍 Diagnostik Data (klik untuk detail pembacaan sheet)</summary><pre class="diag-text"></pre></details>';
+
     el.innerHTML = html;
-    el.querySelector('pre').textContent = d.text;
+    el.querySelector('pre.mutu-text').textContent = d.text;
+    el.querySelector('pre.diag-text').textContent = d.diag;
 }
 
 function shareAnalitikWA() {
     if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; }
     var pengirim = document.getElementById('pengirim2').value.trim();
     if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
-    var msg = analitikData.text + '\n' + DIVIDER + '\n*🪪 PENGIRIM*\n👤 ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital ✨ September Ceria ✨_';
+    var msg = analitikData.text + '\n' + DIVIDER + '\n*🪪 PENGIRIM*\n👤 ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.1_';
     window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
@@ -1784,12 +1760,15 @@ function printAnalitik() {
 /* ================= DATALIST NAMA PASIEN ================= */
 async function populatePatientDatalist() {
     try {
-        var rows = await loadRekapRows();
-        var headers = rows[0] || [];
-        var cNama = findCol(headers, 'nama', 1);
+        var loaded = await fetchSheetCSV(REKAP_SHEET_ID, REKAP_GID);
+        var rows = parseCSV(loaded.text);
+        var headerIdx = detectHeaderRow(rows);
+        var headers = rows[headerIdx] || [];
+        var cNama = findCol(headers, ['nama', 'pasien']);
+        if (cNama < 0) return;
         var names = {};
-        for (var i = 1; i < rows.length; i++) {
-            var n = String(rows[i][cNama] || '').trim();
+        for (var i = headerIdx + 1; i < rows.length; i++) {
+            var n = String((rows[i] || [])[cNama] || '').trim();
             if (n) names[n] = true;
         }
         var opts = Object.keys(names).sort().map(function (n) {
@@ -1821,6 +1800,8 @@ function toggleJadwalSize(btn) {
 
 /* ================= INISIALISASI ================= */
 document.getElementById('tanggal1').valueAsDate = new Date();
+document.getElementById('ft_start_date').valueAsDate = new Date();
+document.getElementById('ft_end_date').valueAsDate = new Date();
 tambahAnggota(false);
 tambahPerawat();
 addMonitorRow();
