@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-REPORTASE - Laporan Harian Hemodialisis</title>
-    
+    <title>Laporan Digital</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+
     <style>
         :root {
             --primary: #0d9488;
@@ -71,7 +71,7 @@
             overflow: hidden;
             border-bottom: 1px solid rgba(255,255,255,0.3);
         }
-        
+
         .app-header::before {
             content: '';
             position: absolute;
@@ -108,9 +108,9 @@
         .sheet-header-data b { color: #ffe53b; margin-left: 3px; }
 
         .header-content { position: relative; z-index: 2; text-align: center; padding: 20px; margin-bottom: 10px; }
-        
+
         .app-header h1 {
-            margin: 0; font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #ffffff;
+            margin: 0; font-size: 22px; font-weight: 900; letter-spacing: 3px; color: #ffffff;
             display: inline-block; animation: floatGALA 3s ease-in-out infinite, glowGALA 4s ease-in-out infinite;
         }
 
@@ -122,7 +122,6 @@
 
         .app-header p { margin: 10px 0 0 0; font-size: 0.9rem; opacity: 0.95; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
 
-        /* ===== ANIMASI SUBTITLE BERGANTIAN ===== */
         .subtitle-rotator {
             position: relative;
             display: block;
@@ -143,12 +142,8 @@
             text-shadow: 0 2px 5px rgba(0,0,0,0.5);
             animation: rotateSubtitle 4s ease-in-out infinite;
         }
-        .subtitle-rotator .sub-line:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .subtitle-rotator .sub-line:nth-child(2) {
-            animation-delay: 2s;
-        }
+        .subtitle-rotator .sub-line:nth-child(1) { animation-delay: 0s; }
+        .subtitle-rotator .sub-line:nth-child(2) { animation-delay: 2s; }
         @keyframes rotateSubtitle {
             0% { opacity: 0; transform: translateY(8px); }
             10% { opacity: 1; transform: translateY(0); }
@@ -167,7 +162,7 @@
             border-radius: 16px; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; gap: 8px;
             box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -6px -6px 12px rgba(255,255,255,0.9);
         }
-        .tab-btn i { 
+        .tab-btn i {
             font-size: 1.3rem; font-style: normal; background: linear-gradient(145deg, #e2e8f0, #ffffff);
             width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
             box-shadow: inset 2px 2px 5px #d1d5db, inset -2px -2px 5px #ffffff;
@@ -200,7 +195,7 @@
         }
         .main-title-3d .icon-box { background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2); box-shadow: none; }
         .main-title-3d h2 { color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
-        
+
         .waving-flag {
             position: absolute; right: 20px; top: 50%; font-size: 3rem; font-weight: 900; font-style: italic;
             color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
@@ -232,7 +227,8 @@
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-        
+        @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+
         .member-card, .patient-card {
             border: 1px solid rgba(255,255,255,0.6); border-radius: 16px; padding: 15px;
             background: rgba(255, 255, 255, 0.6); margin-bottom: 12px;
@@ -377,6 +373,8 @@
         .job-desk-overlay .job-box .bed-range { margin-top: 6px; gap: 8px; }
         .job-desk-overlay #padatkaryaBox input[type="text"] { margin-bottom: 6px; }
 
+        .bed-range { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
         .small-stepper {
             flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px;
             background: transparent; border: none; padding: 4px 0; border-radius: 0;
@@ -385,15 +383,15 @@
         .small-stepper .stepper-controls { display: flex; align-items: center; gap: 4px; }
 
         .stepper-btn {
-            width: 22px; height: 22px; border: none; background: #2563eb; color: #fff; border-radius: 6px; 
-            font-size: 0.7rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; 
+            width: 22px; height: 22px; border: none; background: #2563eb; color: #fff; border-radius: 6px;
+            font-size: 0.7rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
             transition: background 0.2s, transform 0.1s; box-shadow: 0 2px 0 #1e40af;
         }
         .stepper-btn:hover { background: #3b82f6; }
         .stepper-btn:active { transform: translateY(2px); box-shadow: 0 0 0 #1e40af; }
-        
-        .stepper-input { 
-            width: 32px; text-align: center; border: 1px solid #cbd5e1; border-radius: 6px; 
+
+        .stepper-input {
+            width: 32px; text-align: center; border: 1px solid #cbd5e1; border-radius: 6px;
             font-size: 0.75rem; padding: 2px 0; background: #fff; font-weight: 700; color: #0f172a;
         }
 
@@ -410,32 +408,35 @@
         @media (max-width: 480px) { .btn-group-3 { grid-template-columns: 1fr; } }
 
         .btn {
-            border: none; padding: 16px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; 
+            border: none; padding: 16px; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex;
             align-items: center; justify-content: center; gap: 10px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 5px 0 rgba(0,0,0,0.15), 0 8px 15px rgba(0,0,0,0.1);
+            text-decoration: none;
         }
         .btn:active { transform: translateY(5px); box-shadow: 0 0 0 rgba(0,0,0,0.15), 0 2px 5px rgba(0,0,0,0.1); }
-        
+
         .btn-wa { background: var(--primary); color: #fff; box-shadow: 0 5px 0 #0f766e, 0 8px 15px rgba(13, 148, 136, 0.3); }
         .btn-wa:hover { background: var(--primary-light); }
-        
+
         .btn-pdf { background: #fff; color: var(--secondary); border: 1.5px solid var(--secondary); box-shadow: 0 5px 0 #0284c7; }
         .btn-pdf:hover { background: #f0f9ff; }
-        
+
         .btn-drive { background: var(--drive-blue); color: #fff; box-shadow: 0 5px 0 #3367D6, 0 8px 15px rgba(66, 133, 244, 0.3); }
         .btn-drive:hover { background: #3367D6; }
-        
-        .btn-add { 
-            background: rgba(240, 249, 255, 0.8); color: var(--secondary); border: 1.5px dashed var(--secondary); 
+
+        .btn-add {
+            background: rgba(240, 249, 255, 0.8); color: var(--secondary); border: 1.5px dashed var(--secondary);
             margin-bottom: 15px; width: 100%; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
             box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
+            font-family: inherit; font-size: 0.9rem;
         }
         .btn-add:hover { background: #e0f2fe; border-style: solid; }
-        
-        .btn-reset { 
-            background: rgba(255, 241, 242, 0.8); color: var(--accent); margin-top: 15px; width: 100%; padding: 12px; 
-            border: 1px solid #fecdd3; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; 
+
+        .btn-reset {
+            background: rgba(255, 241, 242, 0.8); color: var(--accent); margin-top: 15px; width: 100%; padding: 12px;
+            border: 1px solid #fecdd3; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
             box-shadow: inset 2px 2px 5px rgba(0,0,0,0.03), inset -2px -2px 5px rgba(255,255,255,0.5);
+            font-family: inherit; font-size: 0.9rem;
         }
         .btn-reset:hover { background: #ffe4e6; }
 
@@ -443,14 +444,15 @@
         .action-btn {
             background: rgba(248, 250, 252, 0.8); border: 1px solid rgba(226, 232, 240, 0.8); color: var(--text-main);
             padding: 10px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; text-align: center; font-weight: 600; transition: all 0.2s;
+            font-family: inherit;
         }
         .action-btn:hover { background: #e0f2fe; border-color: var(--secondary); color: var(--secondary); transform: scale(1.02); }
+        .action-btn.selected { background: #dcfce7; border-color: #16a34a; color: #166534; box-shadow: 0 3px 8px rgba(22, 163, 74, 0.2); }
 
         .delete-pasien { color: var(--accent); background: transparent; border: none; font-size: 1.2rem; cursor: pointer; transition: transform 0.2s; }
         .delete-pasien:hover { transform: scale(1.2); }
-        
-        .rencana-tools { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
-        .btn-clear-rencana { background: #fff1f2; color: var(--accent); border: 1px solid #fecdd3; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+
+        .rencana-tools { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; flex-wrap: wrap; gap: 8px; }
 
         .table-container {
             overflow-x: auto; margin-top: 15px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.6); border-radius: 14px;
@@ -459,8 +461,11 @@
         .monitoring-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 1600px; }
         .monitoring-table th { background: var(--primary); color: #fff; padding: 10px 5px; font-weight: 700; border: 1px solid #0f766e; text-align: center; white-space: nowrap; position: sticky; top: 0; z-index: 5; }
         .monitoring-table td { border: 1px solid var(--border-color); padding: 0; background: rgba(255,255,255,0.5); }
-        .monitoring-table input, .monitoring-table select { width: 100%; border: none; background: transparent; padding: 8px 5px; font-size: 0.8rem; text-align: center; font-family: inherit; color: var(--text-main); }
+        .monitoring-table input, .monitoring-table select { width: 100%; border: none; background: transparent; padding: 8px 5px; font-size: 0.8rem; text-align: center; font-family: inherit; color: var(--text-main); box-shadow: none; }
         .monitoring-table input:focus, .monitoring-table select:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
+
+        .row-del { border: none; background: transparent; color: var(--accent); cursor: pointer; font-size: 0.9rem; padding: 2px 4px; }
+        .row-del:hover { transform: scale(1.15); }
 
         .dialyzer-grid {
             display: grid;
@@ -484,13 +489,13 @@
             display: flex; align-items: center; justify-content: center; gap: 4px;
         }
         .dialyzer-item button {
-            width: 22px; height: 22px; border: none; background: var(--secondary); color: #fff; 
+            width: 22px; height: 22px; border: none; background: var(--secondary); color: #fff;
             border-radius: 5px; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 2px 0 #075985;
         }
         .dialyzer-item button:active { transform: translateY(2px); box-shadow: none; }
         .dialyzer-item input {
-            width: 35px; text-align: center; border: 1px solid #cbd5e1; border-radius: 5px; 
+            width: 35px; text-align: center; border: 1px solid #cbd5e1; border-radius: 5px;
             font-size: 0.8rem; padding: 2px 0; background: #fff;
         }
         @media (max-width: 480px) {
@@ -507,8 +512,21 @@
         .stat-label { font-size: 0.85rem; font-weight: 600; opacity: 0.9; }
         .stat-loading { text-align: center; color: var(--text-muted); padding: 40px 0; grid-column: 1/-1; }
 
+        .analitik-detail pre {
+            white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.8rem; line-height: 1.7;
+            background: rgba(255,255,255,0.85); border: 1px solid var(--border-color); border-radius: 14px;
+            padding: 15px; margin: 15px 0 0 0;
+        }
+
         .print-area { display: none; padding: 40px; }
-        @media print { body { background: #fff; } .container { display: none; } .print-area { display: block; } .print-area pre { white-space: pre-wrap; font-family: monospace; } }
+        #printArea h1 { text-align: center; }
+        #printArea pre { white-space: pre-wrap; font-family: inherit; font-size: 12px; line-height: 1.6; }
+        @media print {
+            body { background: #fff; }
+            .container { display: none; }
+            .modal-overlay { display: none !important; }
+            .print-area { display: block; }
+        }
 
         .schedule-frame-wrap {
             position: relative; width: 100%;
@@ -534,6 +552,59 @@
             border-radius: 50%; animation: spin 0.9s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== SISTEM PERAN (KATIM / PERAWAT PELAKSANA) ===== */
+        .role-notice {
+            margin-top: 15px; padding: 12px 15px; border-radius: 14px;
+            font-size: 0.78rem; font-weight: 600; line-height: 1.7;
+            background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(255,255,255,0.75));
+            border: 1px dashed rgba(37,99,235,0.5); color: #1e3a8a;
+        }
+        .role-notice.katim {
+            background: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(255,255,255,0.75));
+            border-color: rgba(13,148,136,0.5); color: #0f766e;
+        }
+
+        .section-locked { position: relative; overflow: hidden; }
+        .lock-overlay {
+            position: absolute; top:0; left:0; right:0; bottom:0; z-index: 30; border-radius: inherit;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; text-align: center; padding: 15px; cursor: not-allowed;
+            background: rgba(248,250,252,0.88); backdrop-filter: blur(3px);
+        }
+        .lock-overlay .lock-icon { font-size: 2.2rem; }
+        .lock-overlay .lock-text { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); }
+
+        .field-locked > label::after { content: " 🔒"; font-size: 0.75rem; }
+        .field-locked > select, .field-locked > input { opacity: 0.5; pointer-events: none; background: #f1f5f9; }
+
+        /* ===== POPUP PREVIEW LAPORAN ===== */
+        .modal-overlay {
+            position: fixed; top:0; left:0; right:0; bottom:0;
+            background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
+            z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-box {
+            background: #fff; border-radius: 20px; max-width: 520px; width: 100%;
+            max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3); animation: fadeIn 0.3s ease;
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff;
+        }
+        .modal-header h3 { margin: 0; font-size: 0.95rem; }
+        .modal-header button { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
+        .modal-body { padding: 15px; overflow-y: auto; }
+        .modal-body pre {
+            white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.82rem;
+            line-height: 1.7; background: #f8fafc; border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 15px; margin: 0;
+        }
+        .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px 20px; border-top: 1px solid var(--border-color); }
+        .btn-secondary { border: none; padding: 12px; border-radius: 12px; background: #f1f5f9; color: var(--text-muted); font-weight: 700; cursor: pointer; font-family: inherit; }
+        .btn-sendwa { border: none; padding: 12px; border-radius: 12px; background: #25D366; color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
+        .btn-sendwa:hover { background: #1ebe5b; }
     </style>
 </head>
 <body>
@@ -546,6 +617,7 @@
         <option value="CVC TEMPORER">
         <option value="CVC TUNNEL/SEMIPERMANEN">
     </datalist>
+
     <div class="app-header">
         <div class="header-top-bar">
             <div class="realtime-clock">
@@ -557,13 +629,13 @@
                 Jadwal Sholat
             </div>
         </div>
-        
+
         <div class="sheet-header-data" id="sheetHeaderData">
             <span>Memuat data sheet...</span>
         </div>
 
         <div class="header-content">
-            <h1 class="ereportase-title" data-text="E-REPORTASE">E-REPORTASE</h1>
+            <h1 class="ereportase-title" data-text="Laporan Digital">Laporan Digital</h1>
             <p class="subtitle-rotator">
                 <span class="sub-line">Electronic Report &amp; Analysis</span>
                 <span class="sub-line">Sistem Pelaporan Elektronik Unit Dialisis</span>
@@ -578,19 +650,46 @@
         </div>
     </div>
 
+    <!-- ================= SLIDE 1 : LAPORAN HARIAN ================= -->
     <div id="slide1" class="page active">
         <div class="section-title main-title-3d">
             <div class="waving-flag"><span>81</span></div>
             <div class="icon-box">📝</div>
             <h2>Laporan Harian Hemodialisis</h2>
         </div>
-        <div class="grid-3">
-            <div><label>Tanggal</label><input type="date" id="tanggal1"></div>
-            <div><label>Shift</label><select id="shift1"><option value="1">Shift 1</option><option value="2">Shift 2</option><option value="3">Shift 3</option></select></div>
-            <div><label>Tim</label><select id="tim1"><option value="1">Tim 1</option><option value="2">Tim 2</option></select></div>
-        </div>
 
-        <div class="section-card section-card-green">
+        <!-- Peran + Tanggal + Shift + Tim -->
+        <div class="grid-2">
+            <div>
+                <label>Peran / Jabatan *</label>
+                <select id="roleSelect" onchange="applyRoleRules()">
+                    <option value="KATIM">KATIM (Ketua Tim)</option>
+                    <option value="PERAWAT">Perawat Pelaksana</option>
+                </select>
+            </div>
+            <div><label>Tanggal</label><input type="date" id="tanggal1"></div>
+        </div>
+        <div class="grid-2" style="margin-top: 15px;">
+            <div id="shiftField">
+                <label>Shift</label>
+                <select id="shift1">
+                    <option value="1">Shift 1</option>
+                    <option value="2">Shift 2</option>
+                    <option value="3">Shift 3</option>
+                </select>
+            </div>
+            <div>
+                <label>Tim</label>
+                <select id="tim1">
+                    <option value="1">Tim 1</option>
+                    <option value="2">Tim 2</option>
+                </select>
+            </div>
+        </div>
+        <div id="roleNotice" class="role-notice"></div>
+
+        <!-- ===== ANGGOTA TIM (kedua peran) ===== -->
+        <div class="section-card section-card-green" id="secAnggota">
             <div class="section-title">
                 <div class="icon-box">🧑‍🤝‍🧑</div>
                 <h2>Anggota Tim</h2>
@@ -598,11 +697,14 @@
             <div id="memberContainer"></div>
             <button class="btn-add" onclick="tambahAnggota(true)"><i class="fa-solid fa-circle-plus"></i> Tambah Anggota (Tekan Enter)</button>
 
-            <label>Rencana Tindakan Umum</label>
-            <textarea id="rencanaTindakan" placeholder="Tulis rencana tindakan global di sini..."></textarea>
+            <div id="rencanaUmumWrap">
+                <label>Rencana Tindakan Umum</label>
+                <textarea id="rencanaTindakan" placeholder="Tulis rencana tindakan global di sini..."></textarea>
+            </div>
         </div>
 
-        <div class="job-desk-wrapper">
+        <!-- ===== JOB DESK PETUGAS (KATIM saja) ===== -->
+        <div class="job-desk-wrapper" id="secJobdesk">
             <div class="job-desk-overlay">
                 <div class="section-title">
                     <div class="icon-box">📌</div>
@@ -623,7 +725,8 @@
             </div>
         </div>
 
-        <div class="section-card section-card-purple">
+        <!-- ===== DAFTAR PASIEN (PERAWAT saja) ===== -->
+        <div class="section-card section-card-purple" id="secPasien">
             <div class="section-title">
                 <div class="icon-box">🩺</div>
                 <h2>Daftar Pasien</h2>
@@ -647,7 +750,8 @@
             <a href="https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/edit?gid=652284391#gid=652284391" target="_blank" class="btn btn-pdf" style="display:block; text-decoration: none; margin-bottom: 15px;"><i class="fa-solid fa-table"></i> Buka Spreadsheet</a>
         </div>
 
-        <div class="section-card section-card-orange">
+        <!-- ===== PERENCANAAN TINDAKAN PASIEN (KATIM saja) ===== -->
+        <div class="section-card section-card-orange" id="secRencana">
             <div class="section-title">
                 <div class="icon-box">🗓️</div>
                 <h2>Perencanaan Tindakan Pasien</h2>
@@ -656,26 +760,28 @@
             <button class="btn-add" onclick="tambahPasien()"><i class="fa-solid fa-circle-plus"></i> Tambah Kartu Pasien</button>
         </div>
 
-        <div class="section-card section-card-green">
+        <!-- ===== MASALAH & INVENTARIS (PERAWAT saja) ===== -->
+        <div class="section-card section-card-green" id="secMasalah">
             <div class="section-title">
                 <div class="icon-box">⚠️</div>
-                <h2>Masalah & Inventaris</h2>
+                <h2>Masalah &amp; Inventaris</h2>
             </div>
             <div class="grid-2">
                 <div><label>Masalah Pasien</label><textarea id="masalahPasien" style="min-height: 80px;"></textarea></div>
                 <div><label>Masalah Mesin / Alat</label><textarea id="masalahMesin" style="min-height: 80px;"></textarea></div>
             </div>
-            
+
             <label>Sisa Dialyzer (HF)</label>
             <div class="dialyzer-grid" id="dialyzerContainer"></div>
-            
+
             <div class="grid-2" style="margin-top: 12px;">
                 <div><label>Sisa GD Stick</label><input type="text" id="gdStick" placeholder="Contoh: 12 pcs"></div>
                 <div><label>BOR / Sisa Bed Kosong</label><input type="text" id="sisaBed" placeholder="Contoh: 1 bed (44)"></div>
             </div>
         </div>
 
-        <div class="section-card section-card-blue">
+        <!-- ===== IDENTITAS PENGIRIM (kedua peran) ===== -->
+        <div class="section-card section-card-blue" id="secIdentitas">
             <div class="section-title">
                 <div class="icon-box">🪪</div>
                 <h2>Identitas Pengirim</h2>
@@ -691,6 +797,7 @@
         </div>
     </div>
 
+    <!-- ================= SLIDE 2 : MUTU ================= -->
     <div id="slide2" class="page">
         <div class="section-title main-title-3d">
             <div class="waving-flag"><span>81</span></div>
@@ -698,9 +805,9 @@
             <h2>MUTU</h2>
         </div>
         <p style="color: var(--text-muted); text-align: center; margin-top: 20px;">
-            Analisis seluruh data pasien dari sheet REKAP_HARIAN berdasarkan rentang waktu (Tanggal Awal & Akhir).
+            Analisis seluruh data pasien dari sheet REKAP_HARIAN berdasarkan rentang waktu (Tanggal Awal &amp; Akhir).
         </p>
-        
+
         <div class="grid-2" style="margin-top: 20px;">
             <div>
                 <label>Tanggal Awal</label>
@@ -718,9 +825,9 @@
         </div>
 
         <button class="btn btn-wa" onclick="searchFastTrack()" style="width: 100%; margin-top: 15px;">
-            <i class="fa-solid fa-search"></i> Cari & Analisis Data
+            <i class="fa-solid fa-search"></i> Cari &amp; Analisis Data
         </button>
-        
+
         <div id="fastTrackResult" style="margin-top: 25px;">
             <div class="stat-loading">Hasil pencarian akan muncul di sini.</div>
         </div>
@@ -732,6 +839,7 @@
         </div>
     </div>
 
+    <!-- ================= SLIDE 3 : PENCARIAN PASIEN ================= -->
     <div id="slide3" class="page">
         <div class="section-title main-title-3d">
             <div class="waving-flag"><span>81</span></div>
@@ -748,6 +856,7 @@
         </div>
     </div>
 
+    <!-- ================= SLIDE 4 : JADWAL PASIEN ================= -->
     <div id="slide4" class="page">
         <div class="section-title main-title-3d">
             <div class="waving-flag"><span>81</span></div>
@@ -782,593 +891,850 @@
         </div>
     </div>
 </div>
-    
+
+<!-- ===== POPUP PREVIEW LAPORAN ===== -->
+<div id="reportModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="modalTitle">Preview Laporan</h3>
+            <button onclick="closeReportModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body"><pre id="modalMessage"></pre></div>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeReportModal()">✏️ Tutup / Edit</button>
+            <button class="btn-sendwa" onclick="sendReportWA()"><i class="fa-brands fa-whatsapp"></i> Kirim via WA</button>
+        </div>
+    </div>
+</div>
+
 <div class="print-area" id="printArea">
-    <h1 style="text-align: center;">LAPORAN HARIAN HEMODIALISIS</h1>
+    <h1>LAPORAN HARIAN HEMODIALISIS</h1>
     <pre id="printContent"></pre>
 </div>
 
 <script>
-const MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwWCP7nMRpslFuxeV8bkYFDmI5OK-fIR4yhvBJp45kRq9Om9RFMMJUHdB35PbDn8z9Fyw/exec";
+/* =========================================================
+   LAPORAN DIGITAL — Laporan Harian Hemodialisis
+   Sistem Peran: KATIM & Perawat Pelaksana
+   ========================================================= */
 
+var MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwWCP7nMRpslFuxeV8bkYFDmI5OK-fIR4yhvBJp45kRq9Om9RFMMJUHdB35PbDn8z9Fyw/exec";
+var REKAP_CSV_URL = "https://docs.google.com/spreadsheets/d/1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c/export?format=csv&gid=652284391";
+var JADWAL_SHEET_ID = "1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0";
+var JADWAL_GID = "1100922958";
+var WA_NUMBER = ""; // opsional: isi nomor tujuan tetap, contoh: "6281234567890"
+var DIVIDER = "━━━━━━━━━━━━━━━━━";
+
+/* ================= JAM & TANGGAL REALTIME ================= */
 function updateClock() {
-    const now = new Date();
-    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-    const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-    const day = days[now.getDay()]; const date = now.getDate(); const month = months[now.getMonth()]; const year = now.getFullYear();
-    const h = String(now.getHours()).padStart(2, '0'); const m = String(now.getMinutes()).padStart(2, '0'); const s = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('clockTime').innerText = `${h}:${m}:${s}`;
-    document.getElementById('clockDate').innerText = `${day}, ${date} ${month} ${year}`;
+    var now = new Date();
+    var days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    var day = days[now.getDay()], date = now.getDate(), month = months[now.getMonth()], year = now.getFullYear();
+    var h = String(now.getHours()).padStart(2, '0'), m = String(now.getMinutes()).padStart(2, '0'), s = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clockTime').innerText = h + ':' + m + ':' + s;
+    document.getElementById('clockDate').innerText = day + ', ' + date + ' ' + month + ' ' + year;
 }
 setInterval(updateClock, 1000); updateClock();
 
+/* ================= JADWAL SHOLAT ================= */
 async function fetchPrayerTimes() {
     try {
-        const response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Malang&country=Indonesia&method=20');
-        const data = await response.json();
-        const timings = data.data.timings; const fmt = (t) => t.substring(0, 5);
-        document.getElementById('prayerTimes').innerHTML = `<span class="loc">📍 Malang</span>Subuh: <span>${fmt(timings.Fajr)}</span> | Dzuhur: <span>${fmt(timings.Dhuhr)}</span><br>Ashar: <span>${fmt(timings.Asr)}</span> | Magrib: <span>${fmt(timings.Maghrib)}</span> | Isya: <span>${fmt(timings.Isha)}</span>`;
-    } catch (e) {}
+        var response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Malang&country=Indonesia&method=20');
+        var data = await response.json();
+        var timings = data.data.timings;
+        var fmt = function (t) { return t.substring(0, 5); };
+        document.getElementById('prayerTimes').innerHTML =
+            '<span class="loc">📍 Malang</span>Subuh: <span>' + fmt(timings.Fajr) + '</span> | Dzuhur: <span>' + fmt(timings.Dhuhr) + '</span><br>' +
+            'Ashar: <span>' + fmt(timings.Asr) + '</span> | Magrib: <span>' + fmt(timings.Maghrib) + '</span> | Isya: <span>' + fmt(timings.Isha) + '</span>';
+    } catch (e) { }
 }
 fetchPrayerTimes();
 
+/* ================= UTILITAS ================= */
+function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function parseCSV(text) {
-    const rows = [];
-    let row = [];
-    let inQuotes = false;
-    let cell = '';
-    for (let i = 0; i < text.length; i++) {
-        const char = text[i];
+    var rows = [];
+    var row = [];
+    var inQuotes = false;
+    var cell = '';
+    for (var i = 0; i < text.length; i++) {
+        var char = text[i];
         if (char === '"') {
-            if (inQuotes && text[i+1] === '"') {
-                cell += '"';
-                i++;
-            } else {
-                inQuotes = !inQuotes;
-            }
+            if (inQuotes && text[i + 1] === '"') { cell += '"'; i++; }
+            else { inQuotes = !inQuotes; }
         } else if (char === ',' && !inQuotes) {
-            row.push(cell);
-            cell = '';
+            row.push(cell); cell = '';
         } else if ((char === '\n' || char === '\r') && !inQuotes) {
-            if (cell !== '' || row.length > 0) {
-                row.push(cell);
-                rows.push(row);
-                row = [];
-                cell = '';
-            }
-            if (char === '\r' && text[i+1] === '\n') i++;
+            if (cell !== '' || row.length > 0) { row.push(cell); rows.push(row); row = []; cell = ''; }
+            if (char === '\r' && text[i + 1] === '\n') i++;
         } else {
             cell += char;
         }
     }
-    if (cell !== '' || row.length > 0) {
-        row.push(cell);
-        rows.push(row);
-    }
+    if (cell !== '' || row.length > 0) { row.push(cell); rows.push(row); }
     return rows;
 }
 
+function formatTanggalID(value) {
+    if (!value) return '-';
+    var d = new Date(value + 'T00:00:00');
+    if (isNaN(d.getTime())) return value;
+    var hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][d.getDay()];
+    var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][d.getMonth()];
+    return hari + ', ' + d.getDate() + ' ' + bulan + ' ' + d.getFullYear();
+}
+
+function parseSheetDate(s) {
+    if (!s) return null;
+    s = String(s).trim();
+    var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+    var d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+}
+
+/* ================= DATA HEADER (SHEET INFO) ================= */
 async function fetchHeaderData() {
     try {
-        const csvUrl = "https://docs.google.com/spreadsheets/d/1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0/export?format=csv&gid=432993966";
-        const response = await fetch(csvUrl);
-        const csvText = await response.text();
-        
-        const rows = parseCSV(csvText);
-        
+        var csvUrl = "https://docs.google.com/spreadsheets/d/1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0/export?format=csv&gid=432993966";
+        var response = await fetch(csvUrl);
+        var csvText = await response.text();
+        var rows = parseCSV(csvText);
         if (rows.length >= 2) {
-            const headers = rows[0].slice(5, 22); 
-            const values = rows[1].slice(5, 22);  
-            
-            let html = '';
-            headers.forEach((h, i) => {
+            var headers = rows[0].slice(5, 22);
+            var values = rows[1].slice(5, 22);
+            var html = '';
+            headers.forEach(function (h, i) {
                 if (h && values[i] !== undefined) {
-                    html += `<span>${h.trim()}: <b>${values[i].trim()}</b></span>`;
+                    html += '<span>' + escapeHtml(String(h).trim()) + ': <b>' + escapeHtml(String(values[i]).trim()) + '</b></span>';
                 }
             });
-            document.getElementById('sheetHeaderData').innerHTML = html || `<span>Server Terhubung <b>✓</b></span>`;
+            document.getElementById('sheetHeaderData').innerHTML = html || '<span>Server Terhubung <b>✓</b></span>';
         } else {
-            document.getElementById('sheetHeaderData').innerHTML = `<span>Server Terhubung <b>✓</b></span>`;
+            document.getElementById('sheetHeaderData').innerHTML = '<span>Server Terhubung <b>✓</b></span>';
         }
-    } catch(e) {
-        document.getElementById('sheetHeaderData').innerHTML = `<span>Gagal terhubung ke server <b>✗</b></span>`;
+    } catch (e) {
+        document.getElementById('sheetHeaderData').innerHTML = '<span>Gagal terhubung ke server <b>✗</b></span>';
     }
 }
 fetchHeaderData();
 
-let memberCount = 0;
-function tambahAnggota(focusNew = true) {
-    memberCount++;
-    const container = document.getElementById('memberContainer');
-    const card = document.createElement('div');
-    card.className = 'member-card'; 
-    card.id = `memberBox-${memberCount}`;
-    card.style.display = 'flex'; card.style.alignItems = 'center'; card.style.gap = '10px'; card.style.padding = '10px 15px';
-    card.innerHTML = `<input type="text" id="agt${memberCount}" placeholder="Nama Anggota Tim ${memberCount}" style="flex:1; margin:0;" onkeydown="handleEnterMember(event)"><button class="delete-pasien" onclick="hapusAnggota(${memberCount})" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>`;
-    container.appendChild(card);
-    if(focusNew) document.getElementById(`agt${memberCount}`).focus();
+/* ================= NAVIGASI TAB ================= */
+function switchTab(n) {
+    document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+    document.getElementById('slide' + n).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(function (b, i) { b.classList.toggle('active', i === n - 1); });
+    if (n === 4) loadJadwal(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-function hapusAnggota(id) { document.getElementById(`memberBox-${id}`).remove(); }
+
+/* =========================================================
+   SISTEM PERAN : KATIM vs PERAWAT PELAKSANA
+   - KATIM   : Anggota Tim, Job Desk, Perencanaan Tindakan, Identitas
+   - PERAWAT : Anggota Tim, Daftar Pasien, Masalah & Inventaris, Identitas
+   Seksi yang tidak sesuai -> TERKUNCI & tidak ikut laporan WA/PDF
+   ========================================================= */
+var ROLE_SECTIONS = {
+    KATIM:   { aktif: ['secAnggota', 'secJobdesk', 'secRencana', 'secIdentitas'],
+               terkunci: ['secPasien', 'secMasalah'] },
+    PERAWAT: { aktif: ['secAnggota', 'secPasien', 'secMasalah', 'secIdentitas'],
+               terkunci: ['secJobdesk', 'secRencana'] }
+};
+
+function getRole() { return document.getElementById('roleSelect').value; }
+function getRoleLabel() { return getRole() === 'KATIM' ? 'KATIM' : 'Perawat Pelaksana'; }
+
+function setSectionLocked(id, locked) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var ov = el.querySelector('.lock-overlay');
+    if (locked) {
+        el.classList.add('section-locked');
+        if (!ov) {
+            ov = document.createElement('div');
+            ov.className = 'lock-overlay';
+            ov.innerHTML = '<div class="lock-icon">🔒</div><div class="lock-text"></div>';
+            el.appendChild(ov);
+        }
+        ov.querySelector('.lock-text').textContent = 'Terkunci — tidak berlaku & tidak masuk laporan untuk peran: ' + getRoleLabel();
+        el.querySelectorAll('input, textarea, select, button').forEach(function (x) { x.disabled = true; });
+        el.querySelectorAll('a').forEach(function (a) { a.style.pointerEvents = 'none'; });
+    } else {
+        el.classList.remove('section-locked');
+        if (ov) ov.remove();
+        el.querySelectorAll('input, textarea, select, button').forEach(function (x) { x.disabled = false; });
+        el.querySelectorAll('a').forEach(function (a) { a.style.pointerEvents = ''; });
+    }
+}
+
+function applyRoleRules() {
+    var role = getRole();
+    var rules = ROLE_SECTIONS[role];
+
+    rules.aktif.forEach(function (id) { setSectionLocked(id, false); });
+    rules.terkunci.forEach(function (id) { setSectionLocked(id, true); });
+
+    // Rencana Tindakan Umum hanya untuk KATIM
+    document.getElementById('rencanaUmumWrap').style.display = (role === 'KATIM') ? '' : 'none';
+
+    // Shift hanya untuk Perawat Pelaksana (KATIM hanya Tim 1/2)
+    var sf = document.getElementById('shiftField');
+    var ss = document.getElementById('shift1');
+    if (role === 'KATIM') { sf.classList.add('field-locked'); ss.disabled = true; }
+    else { sf.classList.remove('field-locked'); ss.disabled = false; }
+
+    var notice = document.getElementById('roleNotice');
+    if (role === 'KATIM') {
+        notice.className = 'role-notice katim';
+        notice.innerHTML = '👑 <b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Job Desk Petugas, Perencanaan Tindakan, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b> (sesuai Tim).';
+    } else {
+        notice.className = 'role-notice';
+        notice.innerHTML = '🩺 <b>MODE PERAWAT PELAKSANA</b> — Laporan berisi: <b>Anggota Tim, Daftar Pasien, Masalah &amp; Inventaris, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN PERAWAT PELAKSANA TIM x SHIFT y</b>.';
+    }
+}
+
+/* ================= JUDUL LAPORAN (otomatis sesuai peran) ================= */
+function getReportTitle() {
+    var tim = document.getElementById('tim1').value;
+    if (getRole() === 'KATIM') return 'LAPORAN KATIM ' + tim;
+    var shift = document.getElementById('shift1').value;
+    return 'LAPORAN PERAWAT PELAKSANA TIM ' + tim + ' SHIFT ' + shift;
+}
+
+/* ================= ANGGOTA TIM ================= */
+var memberCount = 0;
+function tambahAnggota(focusNew) {
+    memberCount++;
+    var container = document.getElementById('memberContainer');
+    var card = document.createElement('div');
+    card.className = 'member-card';
+    card.id = 'memberBox-' + memberCount;
+    card.style.display = 'flex'; card.style.alignItems = 'center'; card.style.gap = '10px'; card.style.padding = '10px 15px';
+    card.innerHTML =
+        '<input type="text" id="agt' + memberCount + '" placeholder="Nama Anggota Tim ' + memberCount + '" style="flex:1; margin:0;" onkeydown="handleEnterMember(event)">' +
+        '<button class="delete-pasien" onclick="hapusAnggota(' + memberCount + ')" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>';
+    container.appendChild(card);
+    if (focusNew) document.getElementById('agt' + memberCount).focus();
+}
+function hapusAnggota(id) { var el = document.getElementById('memberBox-' + id); if (el) el.remove(); }
 function handleEnterMember(event) { if (event.key === "Enter") { event.preventDefault(); tambahAnggota(true); } }
-tambahAnggota(false); 
 
-const dialyzerContainer = document.getElementById('dialyzerContainer');
-let dialyzerHTML = '';
-[70, 90, 110, 130, 150, 170].forEach(size => {
-    dialyzerHTML += `<div class="dialyzer-item"><label>HF ${size}</label><div class="controls"><button onclick="adjustVal('hf${size}', -1)">-</button><input type="number" id="hf${size}" value="0"><button onclick="adjustVal('hf${size}', 1)">+</button></div></div>`;
-});
-dialyzerContainer.innerHTML = dialyzerHTML;
+/* ================= SISA DIALYZER ================= */
+(function initDialyzer() {
+    var container = document.getElementById('dialyzerContainer');
+    var html = '';
+    [70, 90, 110, 130, 150, 170].forEach(function (size) {
+        html += '<div class="dialyzer-item"><label>HF ' + size + '</label><div class="controls">' +
+            '<button type="button" onclick="adjustVal(\'hf' + size + '\', -1)">-</button>' +
+            '<input type="number" id="hf' + size + '" value="0">' +
+            '<button type="button" onclick="adjustVal(\'hf' + size + '\', 1)">+</button>' +
+            '</div></div>';
+    });
+    container.innerHTML = html;
+})();
 
-const jobList = ["kendali DL", "spreadsheet", "Laporan", "simrs", "verif box", "perawatan mesin", "DL lock", "persiapan priming", "scan upload", "kendali obat", "verif monitoring", "cek stok Order", "HF"];
-let perawatCount = 0;
+function adjustVal(id, delta) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var v = parseInt(el.value, 10);
+    if (isNaN(v)) v = 0;
+    v += delta;
+    if (v < 0) v = 0;
+    el.value = v;
+}
+
+/* ================= JOB DESK PETUGAS (KATIM) ================= */
+var jobList = ["kendali DL", "spreadsheet", "Laporan", "simrs", "verif box", "perawatan mesin", "DL lock", "persiapan priming", "scan upload", "kendali obat", "verif monitoring", "cek stok Order", "HF"];
+var perawatCount = 0;
+
 function tambahPerawat() {
     perawatCount++;
-    const container = document.getElementById('perawatContainer');
-    const card = document.createElement('div');
-    card.className = 'job-box'; 
-    card.id = `perawatBox-${perawatCount}`;
-    let checkboxHTML = '';
-    jobList.forEach(job => { checkboxHTML += `<label class="check-item"><input type="checkbox" value="${job}" class="job-perawat-${perawatCount}"> ${job}</label>`; });
-    card.innerHTML = `
-        <div style="display:flex; gap:10px; align-items:center; margin-bottom:6px;">
-            <input type="text" id="perawat${perawatCount}" placeholder="Nama Perawat ${perawatCount}" style="flex:1; margin:0;">
-            <button class="delete-pasien" onclick="hapusPerawat(${perawatCount})" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>
-        </div>
-        <div class="bed-range"><div class="small-stepper"><span class="stepper-label">Bed Dari</span><div class="stepper-controls"><button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_start', -1)">-</button><input type="number" id="p_bed${perawatCount}_start" value="0" class="stepper-input"><button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_start', 1)">+</button></div></div><div class="small-stepper"><span class="stepper-label">Bed Sampai</span><div class="stepper-controls"><button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_end', -1)">-</button><input type="number" id="p_bed${perawatCount}_end" value="0" class="stepper-input"><button class="stepper-btn" onclick="adjustVal('p_bed${perawatCount}_end', 1)">+</button></div></div></div>
-        <div class="checkbox-group" style="margin-top:6px;">${checkboxHTML}</div>`;
+    var container = document.getElementById('perawatContainer');
+    var card = document.createElement('div');
+    card.className = 'job-box';
+    card.id = 'perawatBox-' + perawatCount;
+    var checkboxHTML = '';
+    jobList.forEach(function (job) {
+        checkboxHTML += '<label class="check-item"><input type="checkbox" value="' + escapeHtml(job) + '"> ' + escapeHtml(job) + '</label>';
+    });
+    card.innerHTML =
+        '<div style="display:flex; gap:10px; align-items:center; margin-bottom:6px;">' +
+        '<input type="text" id="perawat' + perawatCount + '" placeholder="Nama Perawat ' + perawatCount + '" style="flex:1; margin:0;">' +
+        '<button class="delete-pasien" onclick="hapusPerawat(' + perawatCount + ')" style="font-size:1.5rem;"><i class="fa-solid fa-circle-xmark"></i></button>' +
+        '</div>' +
+        '<div class="bed-range">' +
+        '<div class="small-stepper"><span class="stepper-label">Bed Dari</span><div class="stepper-controls">' +
+        '<button type="button" class="stepper-btn" onclick="adjustVal(\'p_bed' + perawatCount + '_start\', -1)">-</button>' +
+        '<input type="number" id="p_bed' + perawatCount + '_start" value="0" class="stepper-input">' +
+        '<button type="button" class="stepper-btn" onclick="adjustVal(\'p_bed' + perawatCount + '_start\', 1)">+</button>' +
+        '</div></div>' +
+        '<div class="small-stepper"><span class="stepper-label">Bed Sampai</span><div class="stepper-controls">' +
+        '<button type="button" class="stepper-btn" onclick="adjustVal(\'p_bed' + perawatCount + '_end\', -1)">-</button>' +
+        '<input type="number" id="p_bed' + perawatCount + '_end" value="0" class="stepper-input">' +
+        '<button type="button" class="stepper-btn" onclick="adjustVal(\'p_bed' + perawatCount + '_end\', 1)">+</button>' +
+        '</div></div>' +
+        '</div>' +
+        '<div class="checkbox-group" style="margin-top:6px;">' + checkboxHTML + '</div>';
     container.appendChild(card);
+    var namaInput = document.getElementById('perawat' + perawatCount);
+    if (namaInput) namaInput.focus();
 }
-function hapusPerawat(id) { document.getElementById(`perawatBox-${id}`).remove(); }
-tambahPerawat(); 
+function hapusPerawat(id) { var el = document.getElementById('perawatBox-' + id); if (el) el.remove(); }
 
-let patientCount = 0;
-const tindakanOptions = ["ODC BTKV", "Poli Bedah TKV", "Poli Jantung", "Poli Urologi", "Radiologi", "Poli Saraf", "Transfusi", "Laborat", "Poli Anak", "Poli Kandungan", "Poli Mata"];
-function tambahPasien() {
-    patientCount++;
-    const container = document.getElementById('patientPlanContainer');
-    const card = document.createElement('div');
-    card.className = 'patient-card'; card.id = `patientCard-${patientCount}`;
-    let optionsHTML = '';
-    tindakanOptions.forEach((opt, index) => { optionsHTML += `<div class="action-btn" onclick="addTindakan(${patientCount}, '${opt}')">${index+1}. ${opt}</div>`; });
-    card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><input type="text" id="namaPasienPlan-${patientCount}" placeholder="Nama Pasien" style="flex:1; margin-right:10px;"><button class="delete-pasien" onclick="hapusPasien(${patientCount})"><i class="fa-solid fa-circle-xmark"></i></button></div><div class="action-grid">${optionsHTML}</div><div class="rencana-tools"><label class="check-item" style="margin-top:0; background:#fff; border:none; padding-left:0;"><input type="checkbox" id="manualToggle-${patientCount}" onchange="toggleManual(${patientCount}, this.checked)"> Aktifkan Isi Manual</label><button class="btn-clear-rencana" onclick="clearRencana(${patientCount})"><i class="fa-solid fa-eraser"></i> Hapus Rencana</button></div><textarea id="rencanaPasien-${patientCount}" placeholder="Klik pilihan di atas, atau aktifkan isi manual..." style="margin-top:10px; background:#f8fafc;" readonly></textarea>`;
-    container.appendChild(card);
-}
-function addTindakan(id, text) { let el = document.getElementById(`rencanaPasien-${id}`); if(!el.readOnly) return; if(el.value.includes(text)) return; el.value += (el.value ? ", " : "") + text; }
-function toggleManual(id, isChecked) { let el = document.getElementById(`rencanaPasien-${id}`); el.readOnly = !isChecked; if(isChecked) { el.style.background = "#fff"; el.focus(); } else { el.style.background = "#f8fafc"; } }
-function clearRencana(id) { document.getElementById(`rencanaPasien-${id}`).value = ""; }
-function hapusPasien(id) { document.getElementById(`patientCard-${id}`).remove(); }
-tambahPasien();
-
-let monRowCount = 0;
+/* ================= DAFTAR PASIEN / MONITORING (PERAWAT) ================= */
 function addMonitorRow() {
-    monRowCount++;
-    const monitorBody = document.getElementById('monitoringBody');
-    const tr = document.createElement('tr');
-    tr.id = `mon_row_${monRowCount}`;
-    tr.innerHTML = `
-        <td><div style="position: relative;"><input type="text" id="mon_nama_${monRowCount}" placeholder="Ketik Nama" list="patientList" autocomplete="off"></div></td>
-        <td><select id="mon_jk_${monRowCount}"><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td>
-        <td><select id="mon_goldar_${monRowCount}"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td>
-        <td><input type="text" id="mon_tb_${monRowCount}" placeholder="cm"></td>
-        <td><input type="text" id="mon_bb_${monRowCount}" placeholder="kg"></td>
-        <td><input type="text" id="mon_td_${monRowCount}" placeholder="120/80"></td>
-        <td><input type="text" id="mon_akses_${monRowCount}" placeholder="-" list="aksesList" autocomplete="off"></td>
-        <td><input type="text" id="mon_ufg_${monRowCount}" placeholder="cc"></td>
-        <td><input type="number" id="mon_qb_${monRowCount}" placeholder="ml/jam" min="0" max="300" step="5" value="250"></td>
-        <td><select id="mon_qd_${monRowCount}"><option value="300">300</option><option value="350">350</option><option value="400">400</option><option value="450">450</option><option value="500" selected>500</option></select></td>
-        <td><input type="text" id="mon_heparin_${monRowCount}" placeholder="iu"></td>
-        <td><input type="text" id="mon_epo_${monRowCount}" placeholder="-"></td>
-        <td><input type="text" id="mon_ktv_${monRowCount}" placeholder="-" value="1,5"></td>
-        <td><select id="mon_transfusi_${monRowCount}"><option value="Tidak">Tidak</option><option value="Ada">Ada</option></select></td>
-        <td style="display: flex; align-items: center; justify-content: center; gap: 5px;"><input type="text" id="mon_ket_${monRowCount}" placeholder="Ket" style="flex:1;"><button class="delete-pasien" onclick="removeMonitorRow(${monRowCount})" style="border:none; background:transparent; cursor:pointer;"><i class="fa-solid fa-circle-xmark"></i></button></td>
-    `;
-    monitorBody.appendChild(tr);
-    setupAutocomplete(`mon_nama_${monRowCount}`);
-}
-function removeMonitorRow(id) { document.getElementById(`mon_row_${id}`).remove(); }
-for(let i=0; i<5; i++) { addMonitorRow(); }
-
-let patientData = [];
-async function fetchPatientNames() { 
-    try { 
-        const response = await fetch(MONITORING_API_URL + "?action=getPatients"); 
-        const result = await response.json(); 
-        if(result.status === 'success' && result.data) {
-            patientData = result.data;
-            const datalist = document.getElementById('patientList');
-            if(datalist) {
-                let opts = '';
-                patientData.forEach(p => {
-                    opts += `<option value="${p.nama}">`;
-                });
-                datalist.innerHTML = opts;
-            }
-        }
-    } catch(e) {} 
-}
-fetchPatientNames();
-
-function setupAutocomplete(inputId) {
-    const input = document.getElementById(inputId); 
-    if (!input) return;
-    
-    function checkAndFill() {
-        let val = input.value.trim();
-        if (!val) return;
-        let rowId = inputId.split('_')[2]; 
-        
-        let found = null;
-        for (let i = 0; i < patientData.length; i++) {
-            if (patientData[i].nama && patientData[i].nama.toUpperCase() === val.toUpperCase()) {
-                found = patientData[i];
-                break;
-            }
-        }
-        
-        if (found) {
-            let jkInput = document.getElementById(`mon_jk_${rowId}`);
-            let goldarInput = document.getElementById(`mon_goldar_${rowId}`);
-            let tbInput = document.getElementById(`mon_tb_${rowId}`);
-            let aksesInput = document.getElementById(`mon_akses_${rowId}`);
-            if (jkInput) jkInput.value = found.jk;
-            if (goldarInput) goldarInput.value = found.goldar;
-            if (tbInput) tbInput.value = found.tb;
-            if (aksesInput) aksesInput.value = found.akses;
-        }
-    }
-    
-    input.addEventListener('input', checkAndFill);
-    input.addEventListener('change', checkAndFill); 
-    input.addEventListener('blur', checkAndFill);
+    var tbody = document.getElementById('monitoringBody');
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+        '<td><div style="display:flex; align-items:center; gap:2px;">' +
+        '<input type="text" list="patientList" placeholder="Nama Pasien">' +
+        '<button type="button" class="row-del" onclick="this.closest(\'tr\').remove()" title="Hapus baris"><i class="fa-solid fa-circle-xmark"></i></button>' +
+        '</div></td>' +
+        '<td><select><option value="">-</option><option value="L">L</option><option value="P">P</option></select></td>' +
+        '<td><select><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></td>' +
+        '<td><input type="text" placeholder="cm"></td>' +
+        '<td><input type="text" placeholder="kg"></td>' +
+        '<td><input type="text" placeholder="mmHg"></td>' +
+        '<td><input type="text" list="aksesList" placeholder="-"></td>' +
+        '<td><input type="text" placeholder="ml"></td>' +
+        '<td><input type="text" placeholder="ml/jam"></td>' +
+        '<td><input type="text" placeholder="ml/mnt"></td>' +
+        '<td><input type="text" placeholder="IU"></td>' +
+        '<td><input type="text" placeholder="-"></td>' +
+        '<td><input type="text" placeholder="-"></td>' +
+        '<td><input type="text" placeholder="-"></td>' +
+        '<td><input type="text" placeholder="Ket..."></td>';
+    tbody.appendChild(tr);
+    var firstInput = tr.querySelector('input[type="text"]');
+    if (firstInput) firstInput.focus();
 }
 
-let analitikData = null;
-async function searchFastTrack() {
-    const startDate = document.getElementById('ft_start_date').value;
-    const endDate = document.getElementById('ft_end_date').value;
-    const resultDiv = document.getElementById('fastTrackResult');
-    const actionsDiv = document.getElementById('analitikActions');
-
-    if (!startDate && !endDate) {
-        alert("Mohon isi Tanggal Awal dan/atau Tanggal Akhir untuk mencari!");
-        return;
-    }
-
-    resultDiv.innerHTML = '<div class="stat-loading"><i class="fa-solid fa-spinner fa-spin"></i> Menghitung data dari Spreadsheet...</div>';
-    actionsDiv.style.display = 'none';
-
-    try {
-        let url = MONITORING_API_URL + "?action=searchFastTrack";
-        if (startDate) url += "&startDate=" + encodeURIComponent(startDate);
-        if (endDate) url += "&endDate=" + encodeURIComponent(endDate);
-
-        const response = await fetch(url);
-        const result = await response.json();
-        
-        if (result.status === 'success' && result.data) {
-            const d = result.data;
-            analitikData = d;
-            
-            if (d.totalPasien === 0) {
-                resultDiv.innerHTML = '<div class="stat-loading">Data tidak ditemukan. Coba ubah rentang tanggal pencarian.</div>';
-                return;
-            }
-            
-            let html = `<p style="color: var(--primary); font-weight: 700; margin-bottom: 15px;">Total Data Ditemukan: ${d.totalPasien} pasien</p>`;
-            
-            html += '<div class="stat-grid">';
-            html += `<div class="stat-card"><div class="stat-value">${d.jk_L}</div><div class="stat-label">LAKI-LAKI</div></div>`;
-            html += `<div class="stat-card"><div class="stat-value">${d.jk_P}</div><div class="stat-label">PEREMPUAN</div></div>`;
-            html += `<div class="stat-card"><div class="stat-value">${d.goldar_A}</div><div class="stat-label">GOL. A</div></div>`;
-            html += `<div class="stat-card"><div class="stat-value">${d.goldar_B}</div><div class="stat-label">GOL. B</div></div>`;
-            html += `<div class="stat-card"><div class="stat-value">${d.goldar_AB}</div><div class="stat-label">GOL. AB</div></div>`;
-            html += `<div class="stat-card"><div class="stat-value">${d.goldar_O}</div><div class="stat-label">GOL. O</div></div>`;
-            html += `<div class="stat-card"><div class="stat-value">${d.transfusi_Ada}</div><div class="stat-label">TRANSFUSI ADA</div></div>`;
-            html += `<div class="stat-card"><div class="stat-value">${d.transfusi_Tidak}</div><div class="stat-label">TRANSFUSI TIDAK</div></div>`;
-            html += '</div>';
-
-            html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table" style="min-width: 400px;"><thead><tr><th>Akses Vaskuler</th><th>Jumlah Pasien</th></tr></thead><tbody>';
-            html += `<tr><td style="text-align:left; padding-left:10px;">AV-SHUNT</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.akses_av_shunt}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">MANUAL</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.akses_manual}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">CVC TEMPORER</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.akses_cvc_temporer}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">CVC TUNNEL/SEMIPERMANEN</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.akses_cvc_tunnel}</td></tr>`;
-            html += '</tbody></table></div>';
-
-            html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table" style="min-width: 400px;"><thead><tr><th>Kategori Kt/V</th><th>Jumlah Pasien</th></tr></thead><tbody>';
-            html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V &lt; 1,4</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_lt_1_4}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V 1,4 - 1,5</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_1_4_1_5}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">Kt/V &gt; 1,5</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ktv_gt_1_5}</td></tr>`;
-            html += '</tbody></table></div>';
-
-            html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table" style="min-width: 400px;"><thead><tr><th>Kategori UFG (Liter)</th><th>Jumlah Pasien</th></tr></thead><tbody>';
-            html += `<tr><td style="text-align:left; padding-left:10px;">0L - 0,5L</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_0_05}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">0,6L - 1L</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_06_1}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">1,5L - 2L</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_15_2}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">2,5L - 3L</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_25_3}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">&gt; 3L</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.ufg_gt_3}</td></tr>`;
-            html += '</tbody></table></div>';
-
-            html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table" style="min-width: 400px;"><thead><tr><th>QB (ml/jam)</th><th>Jumlah Pasien</th></tr></thead><tbody>';
-            html += `<tr><td style="text-align:left; padding-left:10px;">&lt; 150</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qb_lt_150}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">160 - 200</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qb_160_200}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">210 - 250</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qb_210_250}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">&gt; 250</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qb_gt_250}</td></tr>`;
-            html += '</tbody></table></div>';
-
-            html += '<div class="table-container" style="margin-top: 20px;"><table class="monitoring-table" style="min-width: 400px;"><thead><tr><th>QD</th><th>Jumlah Pasien</th></tr></thead><tbody>';
-            html += `<tr><td style="text-align:left; padding-left:10px;">QD 300</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qd_300}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">QD 350</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qd_350}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">QD 400</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qd_400}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">QD 450</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qd_450}</td></tr>`;
-            html += `<tr><td style="text-align:left; padding-left:10px;">QD 500</td><td style="text-align:center; background:#fff; font-weight:bold;">${d.qd_500}</td></tr>`;
-            html += '</tbody></table></div>';
-            
-            resultDiv.innerHTML = html;
-            actionsDiv.style.display = 'grid'; 
-        } else {
-            resultDiv.innerHTML = `<div class="stat-loading" style="color:var(--accent);">Error: ${result.message || 'Data tidak ditemukan.'}</div>`;
-        }
-    } catch (e) {
-        console.error(e);
-        resultDiv.innerHTML = '<div class="stat-loading" style="color: var(--accent);">Gagal mengambil data. Periksa koneksi atau URL Macro.</div>';
-    }
-}
-
-function buildAnalitikText() {
-    if (!analitikData || analitikData.totalPasien === 0) return "Tidak ada data.";
-    const d = analitikData;
-    let txt = `*MUTU DATA PASIEN HD*\n`; 
-    txt += `Rentang: ${document.getElementById('ft_start_date').value || 'Awal'} s/d ${document.getElementById('ft_end_date').value || 'Akhir'}\n`; 
-    txt += `═══════════════════\n\n`;
-    txt += `*Total Pasien Dianalisis:* ${d.totalPasien}\n\n`;
-    txt += `*DISTRIBUSI PASIEN:*\n`;
-    txt += `- Laki-laki: ${d.jk_L} | Perempuan: ${d.jk_P}\n`;
-    txt += `- Gol. A: ${d.goldar_A} | Gol. B: ${d.goldar_B}\n`;
-    txt += `- Gol. AB: ${d.goldar_AB} | Gol. O: ${d.goldar_O}\n`;
-    txt += `- Transfusi Ada: ${d.transfusi_Ada} | Tidak: ${d.transfusi_Tidak}\n\n`;
-    
-    txt += `*AKSES VASKULER:*\n`;
-    txt += `- AV-SHUNT : ${d.akses_av_shunt} pasien\n`;
-    txt += `- MANUAL : ${d.akses_manual} pasien\n`;
-    txt += `- CVC TEMPORER : ${d.akses_cvc_temporer} pasien\n`;
-    txt += `- CVC TUNNEL/SEMI : ${d.akses_cvc_tunnel} pasien\n\n`;
-    
-    txt += `*KATEGORI Kt/V:*\n`;
-    txt += `- Kt/V < 1,4 : ${d.ktv_lt_1_4} pasien\n`;
-    txt += `- Kt/V 1,4 - 1,5 : ${d.ktv_1_4_1_5} pasien\n`;
-    txt += `- Kt/V > 1,5 : ${d.ktv_gt_1_5} pasien\n\n`;
-    
-    txt += `*KATEGORI UFG (Liter):*\n`;
-    txt += `- 0L - 0,5L : ${d.ufg_0_05} pasien\n`;
-    txt += `- 0,6L - 1L : ${d.ufg_06_1} pasien\n`;
-    txt += `- 1,5L - 2L : ${d.ufg_15_2} pasien\n`;
-    txt += `- 2,5L - 3L : ${d.ufg_25_3} pasien\n`;
-    txt += `- > 3L : ${d.ufg_gt_3} pasien\n\n`;
-    
-    txt += `*QB (ml/jam):*\n`;
-    txt += `- < 150 : ${d.qb_lt_150} pasien\n`;
-    txt += `- 160 - 200 : ${d.qb_160_200} pasien\n`;
-    txt += `- 210 - 250 : ${d.qb_210_250} pasien\n`;
-    txt += `- > 250 : ${d.qb_gt_250} pasien\n\n`;
-    
-    txt += `*QD:*\n`;
-    txt += `- QD 300: ${d.qd_300} | QD 350: ${d.qd_350} | QD 400: ${d.qd_400} | QD 450: ${d.qd_450} | QD 500: ${d.qd_500}\n\n`;
-    
-    txt += `═══════════════════\n`;
-    
-    let pengirim = getVal('pengirim1') || getVal('pengirim2');
-    if (!pengirim) pengirim = "Tidak Diketahui";
-    txt += `\nDikirim oleh: *${pengirim}*\n`; 
-    return txt;
-}
-
-function shareAnalitikWA() {
-    if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
-    let pengirim = getVal('pengirim1') || getVal('pengirim2');
-    if(!pengirim) { alert("❌ Nama Pengirim wajib diisi!"); document.getElementById('pengirim2').focus(); return; }
-    const txt = buildAnalitikText();
-    const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
-    window.open(waUrl, '_blank');
-}
-
-function saveAnalitikPDF() {
-    if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
-    let pengirim = getVal('pengirim1') || getVal('pengirim2');
-    if(!pengirim) { alert("❌ Nama Pengirim wajib diisi!"); document.getElementById('pengirim2').focus(); return; }
-    const txt = buildAnalitikText();
-    const fileName = `MUTU_HD_${document.getElementById('ft_start_date').value || 'awal'}_sd_${document.getElementById('ft_end_date').value || 'akhir'}.pdf`;
-    const tempDiv = document.createElement('div');
-    tempDiv.style.cssText = 'position:absolute;left:-9999px;top:0;width:800px;padding:40px;font-family:monospace;white-space:pre-wrap;font-size:14px;';
-    tempDiv.innerText = txt; document.body.appendChild(tempDiv);
-    const opt = { margin: 10, filename: fileName, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-    html2pdf().set(opt).from(tempDiv).save().then(() => { document.body.removeChild(tempDiv); alert("✅ File PDF MUTU telah dibuat dan terunduh."); });
-}
-
-function printAnalitik() {
-    if (!analitikData) { alert("Cari data terlebih dahulu!"); return; }
-    let pengirim = getVal('pengirim1') || getVal('pengirim2');
-    if(!pengirim) { alert("❌ Nama Pengirim wajib diisi!"); document.getElementById('pengirim2').focus(); return; }
-    document.getElementById('printContent').innerText = buildAnalitikText(); 
-    window.print();
+function getMonitoringRows() {
+    var rows = [];
+    document.querySelectorAll('#monitoringBody tr').forEach(function (tr) {
+        var fields = [];
+        tr.querySelectorAll('input, select').forEach(function (el) { fields.push(el.value.trim()); });
+        if (fields.length >= 15) rows.push(fields.slice(0, 15));
+    });
+    return rows;
 }
 
 async function submitMonitoringSheet() {
-    let dataRows = [];
-    for(let i=1; i<=monRowCount; i++) { 
-        let row = document.getElementById(`mon_row_${i}`); 
-        if(row) { 
-            let nama = getVal(`mon_nama_${i}`); 
-            if(nama) { 
-                dataRows.push([
-                    nama, getVal(`mon_jk_${i}`), getVal(`mon_goldar_${i}`), getVal(`mon_tb_${i}`), 
-                    getVal(`mon_bb_${i}`), getVal(`mon_td_${i}`), getVal(`mon_akses_${i}`), 
-                    getVal(`mon_ufg_${i}`), getVal(`mon_qb_${i}`), getVal(`mon_qd_${i}`), 
-                    getVal(`mon_heparin_${i}`), getVal(`mon_epo_${i}`), getVal(`mon_ktv_${i}`), 
-                    getVal(`mon_transfusi_${i}`), getVal(`mon_ket_${i}`)
-                ]); 
-            } 
-        } 
-    }
-    if(dataRows.length === 0) { alert("❌ Tidak ada data monitoring terisi!"); return; }
-    let btn = event.target; let originalText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
+    var rows = getMonitoringRows().filter(function (r) { return r[0] !== ''; });
+    if (!rows.length) { alert('⚠️ Tidak ada baris pasien dengan nama terisi!'); return; }
+    var payload = {
+        action: 'saveMonitoring',
+        role: getRole(),
+        tanggal: document.getElementById('tanggal1').value,
+        shift: document.getElementById('shift1').value,
+        tim: document.getElementById('tim1').value,
+        pengirim: document.getElementById('pengirim1').value.trim(),
+        rows: rows
+    };
     try {
-        const response = await fetch(MONITORING_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'saveMonitoring', data: dataRows }) });
-        const result = await response.json();
-        if(result.status === 'success') alert("✅ Berhasil! Data monitoring telah tersimpan di Spreadsheet.");
-        else throw new Error(result.message || 'Unknown error');
-    } catch (e) { alert("❌ Gagal mengirim data: " + e.message); } finally { btn.innerHTML = originalText; btn.disabled = false; }
+        await fetch(MONITORING_API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+        });
+        alert('✅ Data monitoring sedang dikirim ke Spreadsheet.\n(Jika belum langsung muncul, tunggu beberapa detik lalu refresh sheet.)');
+    } catch (e) {
+        alert('❌ Gagal mengirim data: ' + e.message);
+    }
 }
 
-function getMonitoringText() {
-    let txt = "";
-    let mCount = 0;
-    for(let i=1; i<=monRowCount; i++) { 
-        let row = document.getElementById(`mon_row_${i}`); 
-        if(row) { 
-            let nama = getVal(`mon_nama_${i}`); 
-            if(nama) { 
-                mCount++; 
-                txt += `\n${mCount}. *${nama}* (${getVal(`mon_jk_${i}`)}, ${getVal(`mon_goldar_${i}`)})\n`; 
-                txt += `   TD: ${getVal(`mon_td_${i}`)} | TB: ${getVal(`mon_tb_${i}`)} | BB: ${getVal(`mon_bb_${i}`)}\n`; 
-                txt += `   Akses: ${getVal(`mon_akses_${i}`)} | UFG: ${getVal(`mon_ufg_${i}`)}\n`; 
-                txt += `   QB: ${getVal(`mon_qb_${i}`)} | QD: ${getVal(`mon_qd_${i}`)}\n`; 
-                txt += `   Heparin: ${getVal(`mon_heparin_${i}`)} | Kt/V: ${getVal(`mon_ktv_${i}`)} | Transfusi: ${getVal(`mon_transfusi_${i}`)}\n`; 
-                if(getVal(`mon_ket_${i}`)) txt += `   Ket: ${getVal(`mon_ket_${i}`)}\n`; 
-            } 
-        } 
-    }
-    if(mCount === 0) txt += "Tidak ada data monitoring terinput.\n";
-    return txt;
+function formatDaftarPasien() {
+    var msg = '';
+    var idx = 0;
+    document.querySelectorAll('#monitoringBody tr').forEach(function (tr) {
+        var fields = [];
+        tr.querySelectorAll('input, select').forEach(function (el) { fields.push(el.value.trim()); });
+        if (fields.length < 15) return;
+        var ada = fields.some(function (f) { return f !== ''; });
+        if (!ada) return;
+        idx++;
+        msg += idx + '. *' + (fields[0] || '-') + '*\n';
+        msg += '   JK: ' + (fields[1] || '-') + ' | Goldar: ' + (fields[2] || '-') + ' | TB: ' + (fields[3] || '-') + ' | BB: ' + (fields[4] || '-') + ' | TD: ' + (fields[5] || '-') + '\n';
+        msg += '   Akses: ' + (fields[6] || '-') + ' | UFG: ' + (fields[7] || '-') + ' | QB: ' + (fields[8] || '-') + ' | QD: ' + (fields[9] || '-') + '\n';
+        msg += '   Heparin: ' + (fields[10] || '-') + ' | EPO/FE: ' + (fields[11] || '-') + ' | Kt/V: ' + (fields[12] || '-') + ' | Transfusi: ' + (fields[13] || '-') + '\n';
+        if (fields[14]) msg += '   Ket: ' + fields[14] + '\n';
+    });
+    return { text: msg, total: idx };
 }
 
 function shareMonitoringWA() {
-    let txt = `*MONITORING PASIEN HD*\n`;
-    txt += `Tanggal: ${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}\n`;
-    txt += `═══════════════════\n`;
-    txt += getMonitoringText();
-    
-    const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt);
-    window.open(waUrl, '_blank');
+    var dp = formatDaftarPasien();
+    if (!dp.total) { alert('⚠️ Belum ada data pasien yang terisi!'); return; }
+    var msg = '*' + getReportTitle() + ' — DAFTAR PASIEN*\n' + DIVIDER + '\n';
+    msg += '📅 Tanggal: ' + formatTanggalID(document.getElementById('tanggal1').value) + '\n';
+    msg += '👥 Tim: ' + document.getElementById('tim1').value + '\n';
+    if (getRole() === 'PERAWAT') msg += '🕐 Shift: ' + document.getElementById('shift1').value + '\n';
+    msg += '\n' + DIVIDER + '\n*🩺 DAFTAR PASIEN*\n' + dp.text + 'Total pasien: ' + dp.total + '\n';
+    msg += DIVIDER + '\n_Dikirim via Laporan Digital_';
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
-function switchTab(tab) {
-    if (tab === 2) {
-        let pwd = prompt("Masukkan password untuk mengakses menu MUTU:");
-        if (pwd !== "HDmalahayat!2075") {
-            if (pwd !== null) alert("❌ Password salah! Akses ditolak.");
-            return; 
+/* ================= PERENCANAAN TINDAKAN PASIEN (KATIM) ================= */
+var patientCount = 0;
+var tindakanOptions = ["ODC BTKV", "Poli Bedah TKV", "Poli Jantung", "Poli Urologi", "Radiologi", "Poli Saraf", "Transfusi", "Laborat", "Poli Anak", "Poli Kandungan", "Poli Mata"];
+
+function tambahPasien() {
+    patientCount++;
+    var container = document.getElementById('patientPlanContainer');
+    var card = document.createElement('div');
+    card.className = 'patient-card';
+    card.id = 'patientCard-' + patientCount;
+    var optionsHTML = '';
+    tindakanOptions.forEach(function (opt, index) {
+        optionsHTML += '<div class="action-btn" onclick="addTindakan(this)">' + (index + 1) + '. ' + escapeHtml(opt) + '</div>';
+    });
+    card.innerHTML =
+        '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:10px;">' +
+        '<input type="text" class="plan-nama" id="namaPasienPlan-' + patientCount + '" list="patientList" placeholder="Nama Pasien" style="flex:1; margin:0;">' +
+        '<button class="delete-pasien" onclick="hapusPasien(' + patientCount + ')" title="Hapus"><i class="fa-solid fa-circle-xmark"></i></button>' +
+        '</div>' +
+        '<div class="action-grid">' + optionsHTML + '</div>' +
+        '<div id="manualWrap-' + patientCount + '" style="display:none; margin-top:10px;">' +
+        '<input type="text" id="tindakanManual-' + patientCount + '" placeholder="Tulis tindakan / rencana lain...">' +
+        '</div>' +
+        '<div class="rencana-tools">' +
+        '<label class="check-item" style="margin-top:0; background:#fff; border:none; padding-left:0;">' +
+        '<input type="checkbox" onchange="toggleManual(' + patientCount + ', this.checked)"> Aktifkan Isi Manual</label>' +
+        '</div>';
+    container.appendChild(card);
+    var nama = card.querySelector('.plan-nama');
+    if (nama) nama.focus();
+}
+function hapusPasien(id) { var el = document.getElementById('patientCard-' + id); if (el) el.remove(); }
+function addTindakan(btn) { btn.classList.toggle('selected'); }
+function toggleManual(id, checked) {
+    var w = document.getElementById('manualWrap-' + id);
+    if (!w) return;
+    w.style.display = checked ? 'block' : 'none';
+    if (checked) { var inp = document.getElementById('tindakanManual-' + id); if (inp) inp.focus(); }
+}
+
+function getRencanaPasienList() {
+    var hasil = [];
+    document.querySelectorAll('#patientPlanContainer .patient-card').forEach(function (card) {
+        var namaEl = card.querySelector('.plan-nama');
+        var nama = namaEl ? namaEl.value.trim() : '';
+        var tindakan = [];
+        card.querySelectorAll('.action-btn.selected').forEach(function (btn) {
+            tindakan.push(btn.textContent.replace(/^\d+\.\s*/, '').trim());
+        });
+        var manual = card.querySelector('input[id^="tindakanManual"]');
+        if (manual && manual.value.trim()) tindakan.push(manual.value.trim());
+        if (nama || tindakan.length) hasil.push({ nama: nama || '-', tindakan: tindakan.join(', ') || '-' });
+    });
+    return hasil;
+}
+
+/* =========================================================
+   SUSUN PESAN LAPORAN — hanya seksi sesuai peran!
+   ========================================================= */
+function buildReportMessage() {
+    var role = getRole();
+    var tim = document.getElementById('tim1').value;
+    var shift = document.getElementById('shift1').value;
+    var pengirim = document.getElementById('pengirim1').value.trim();
+
+    var msg = '*' + getReportTitle() + '*\n' + DIVIDER + '\n';
+    msg += '📅 Tanggal : ' + formatTanggalID(document.getElementById('tanggal1').value) + '\n';
+    msg += '👥 Tim     : ' + tim + '\n';
+    if (role === 'PERAWAT') msg += '🕐 Shift   : ' + shift + '\n';
+    msg += '👤 Peran   : ' + getRoleLabel() + '\n';
+
+    // 1. ANGGOTA TIM (kedua peran)
+    var anggota = [];
+    document.querySelectorAll('#memberContainer input[type="text"]').forEach(function (i) {
+        if (i.value.trim()) anggota.push(i.value.trim());
+    });
+    msg += '\n' + DIVIDER + '\n*👥 ANGGOTA TIM*\n';
+    if (anggota.length) {
+        anggota.forEach(function (n, i) { msg += (i + 1) + '. ' + n + '\n'; });
+    } else {
+        msg += '- (tidak ada)\n';
+    }
+
+    if (role === 'KATIM') {
+        // Rencana Tindakan Umum
+        var rencana = document.getElementById('rencanaTindakan').value.trim();
+        msg += '\n' + DIVIDER + '\n*📋 RENCANA TINDAKAN UMUM*\n' + (rencana || '-') + '\n';
+
+        // Job Desk Petugas
+        msg += '\n' + DIVIDER + '\n*📌 JOB DESK PETUGAS*\n';
+        var adaJob = false;
+        document.querySelectorAll('#perawatContainer .job-box').forEach(function (box) {
+            var namaEl = box.querySelector('input[id^="perawat"]');
+            var nama = namaEl ? namaEl.value.trim() : '';
+            if (!nama) return;
+            adaJob = true;
+            var b1 = box.querySelector('input[id$="_start"]');
+            var b2 = box.querySelector('input[id$="_end"]');
+            var bed = (b1 && b2) ? (b1.value + '–' + b2.value) : '-';
+            var jobs = [];
+            box.querySelectorAll('input[type="checkbox"]:checked').forEach(function (c) { jobs.push(c.value); });
+            msg += '• *' + nama + '* (Bed ' + bed + '): ' + (jobs.length ? jobs.join(', ') : '-') + '\n';
+        });
+        var padat = document.getElementById('namaPadatkarya').value.trim();
+        if (padat) {
+            adaJob = true;
+            var pj = [];
+            document.querySelectorAll('#padatkaryaBox input[type="checkbox"]:checked').forEach(function (c) { pj.push(c.value); });
+            msg += '• *Padatkarya — ' + padat + '*: ' + (pj.length ? pj.join(', ') : '-') + '\n';
         }
-    }
-    
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('slide' + tab).classList.add('active');
-    document.querySelectorAll('.tab-btn')[tab - 1].classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (!adaJob) msg += '- (tidak ada)\n';
 
-    if (Number(tab) === 4) loadJadwal(false);
+        // Perencanaan Tindakan Pasien
+        var renc = getRencanaPasienList();
+        msg += '\n' + DIVIDER + '\n*🗓️ PERENCANAAN TINDAKAN PASIEN*\n';
+        if (renc.length) {
+            renc.forEach(function (r) { msg += '• *' + r.nama + '*: ' + r.tindakan + '\n'; });
+        } else {
+            msg += '- (tidak ada)\n';
+        }
+    } else {
+        // Daftar Pasien
+        var dp = formatDaftarPasien();
+        msg += '\n' + DIVIDER + '\n*🩺 DAFTAR PASIEN*\n';
+        if (dp.total) { msg += dp.text + 'Total pasien: ' + dp.total + '\n'; }
+        else { msg += '- (tidak ada)\n'; }
+
+        // Masalah & Inventaris
+        msg += '\n' + DIVIDER + '\n*⚠️ MASALAH & INVENTARIS*\n';
+        msg += '• Masalah Pasien    : ' + (document.getElementById('masalahPasien').value.trim() || '-') + '\n';
+        msg += '• Masalah Mesin/Alat: ' + (document.getElementById('masalahMesin').value.trim() || '-') + '\n';
+        var hfParts = [];
+        [70, 90, 110, 130, 150, 170].forEach(function (s) {
+            var el = document.getElementById('hf' + s);
+            if (el && el.value !== '' && el.value !== '0') hfParts.push('HF' + s + ': ' + el.value);
+        });
+        msg += '• Sisa Dialyzer    : ' + (hfParts.length ? hfParts.join(', ') : '-') + '\n';
+        msg += '• Sisa GD Stick    : ' + (document.getElementById('gdStick').value.trim() || '-') + '\n';
+        msg += '• BOR / Bed Kosong : ' + (document.getElementById('sisaBed').value.trim() || '-') + '\n';
+    }
+
+    msg += '\n' + DIVIDER + '\n*🪪 IDENTITAS PENGIRIM*\n👤 Nama: ' + pengirim + '\n';
+    msg += DIVIDER + '\n_Dikirim via Laporan Digital_';
+    return msg;
 }
 
-function adjustVal(id, delta) { let el = document.getElementById(id); let newVal = (parseInt(el.value) || 0) + delta; if (newVal < 0) newVal = 0; el.value = newVal; }
-function formatPaste(text) { if (!text) return "-"; return text.split('\n').map(line => `- ${line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')}`).filter(line => line.length > 3).join('\n'); }
-function formatPatientList(text) { if (!text) return "-"; let lines = text.split('\n').map(line => line.trim().replace(/\t+/g, ' ').replace(/\s+/g, ' ')).filter(line => line.length > 0); if (lines.length === 0) return "-"; return lines.map((line, index) => { let cleanedLine = line.replace(/^\s*\d+[\.\)\-\,]\s*/, ''); return `${index + 1}. ${cleanedLine}`; }).join('\n'); }
-function getVal(id) { let el = document.getElementById(id); return el ? el.value.trim() : ""; }
-function formatDate(dateStr) { if (!dateStr) return "-"; const date = new Date(dateStr); return `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`; }
-
-function buildReport() {
-    let txt = `*LAPORAN HARIAN HEMODIALISIS*\n`; txt += `*${formatDate(getVal('tanggal1'))} | Shift ${getVal('shift1')} | Tim ${getVal('tim1')}*\n`; txt += `═══════════════════\n\n`;
-    txt += `*ANGGOTA TIM ${getVal('tim1')}*\n`; let staffCount = 0;
-    for(let i=1; i<=memberCount; i++) { let box = document.getElementById(`memberBox-${i}`); if(box) { let nm = getVal(`agt${i}`); if(nm) { staffCount++; txt += `${staffCount}. ${nm}\n`; } } }
-    txt += `└ _Total Anggota: ${staffCount}_\n\n`; txt += `───────────────────\n\n`;
-    txt += `*JOB DESK PETUGAS*\n`; let jobStaffCount = 0;
-    for(let i=1; i<=perawatCount; i++) { let box = document.getElementById(`perawatBox-${i}`); if(box) { let nama = getVal(`perawat${i}`); if(nama) { jobStaffCount++; let bS = getVal(`p_bed${i}_start`); let bE = getVal(`p_bed${i}_end`); let bedStr = (bS !== "0" && bE !== "0" && bS !== "" && bE !== "") ? ` (Bed ${bS}-${bE})` : ""; txt += `${jobStaffCount}. *${nama}${bedStr}* : \n`; let jobs = Array.from(document.querySelectorAll(`#perawatBox-${i} .check-item input:checked`)).map(c => c.value); if(jobs.length > 0) jobs.forEach(job => txt += `   - ${job}\n`); else txt += `   - -\n`; } } }
-    let namaPadat = getVal('namaPadatkarya');
-    if(namaPadat) { jobStaffCount++; txt += `${jobStaffCount}. *${namaPadat}* : \n`; let jobsPadat = Array.from(document.querySelectorAll('#padatkaryaBox .check-item input:checked')).map(c => c.value); if(jobsPadat.length > 0) jobsPadat.forEach(job => txt += `   - ${job}\n`); else txt += `   - -\n`; }
-    if(getVal('rencanaTindakan')) { txt += `\n*Rencana Tindakan Umum:*\n${formatPaste(getVal('rencanaTindakan'))}\n`; }
-    txt += `\n───────────────────\n\n`; 
-    
-    txt += `*DAFTAR PASIEN (MONITORING HD)*\n`;
-    txt += getMonitoringText();
-    let rjCount = 0;
-    for(let i=1; i<=monRowCount; i++) { 
-        let row = document.getElementById(`mon_row_${i}`); 
-        if(row) { 
-            if(getVal(`mon_nama_${i}`)) rjCount++;
-        } 
-    }
-    txt += `\n`;
-    
-    txt += `└ _Total Pasien: ${rjCount}_\n\n`; txt += `───────────────────\n\n`;
-    
-    txt += `*PERENCANAAN TINDAKAN PASIEN*\n`; let adaPasien = false; let pidx = 1;
-    for(let i=1; i<=patientCount; i++) { let card = document.getElementById(`patientCard-${i}`); if(card) { let nama = getVal(`namaPasienPlan-${i}`); let rencana = getVal(`rencanaPasien-${i}`); if(nama) { adaPasien = true; txt += `${pidx}. *${nama}*\n`; txt += `   Rencana: \n`; if(rencana) { rencana.split(',').map(r => r.trim()).filter(r => r.length > 0).forEach(r => { txt += `   - ${r}\n`; }); } else { txt += `   - -\n`; } txt += `\n`; pidx++; } } }
-    if(!adaPasien) txt += "Tidak ada pasien yang diinput.\n"; txt += `\n───────────────────\n\n`;
-    
-    txt += `*MASALAH & INVENTARIS*\n`; let mPasien = getVal('masalahPasien'); txt += `- Pasien: \n`; if(mPasien) mPasien.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`); else txt += `   > -\n`; let mMesin = getVal('masalahMesin'); txt += `- Mesin/Alat: \n`; if(mMesin) mMesin.split('\n').filter(l => l.trim().length > 0).forEach(l => txt += `   > ${l.trim()}\n`); else txt += `   > -\n`; txt += `\n`;
-    txt += `*SISA ALAT:*\n`; txt += `- HF 70: ${getVal('hf70') || '0'} | HF 90: ${getVal('hf90') || '0'} | HF 110: ${getVal('hf110') || '0'}\n`; txt += `- HF 130: ${getVal('hf130') || '0'} | HF 150: ${getVal('hf150') || '0'} | HF 170: ${getVal('hf170') || '0'}\n`; txt += `- GD Stick: ${getVal('gdStick') || '-'} | Sisa Bed: ${getVal('sisaBed') || '-'}\n`; txt += `\n═══════════════════\n`;
-    txt += `Dikirim oleh: *${getVal('pengirim1')}*\n\n\n`; txt += `Mengetahui,\n\n\n\n( ${getVal('pengirim1')} )\n`; txt += `Pelapor Harian`; return txt;
-}
+/* ================= POPUP PREVIEW & KIRIM WA ================= */
+var currentReportMessage = '';
 
 function kirimWA() {
-    if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
-    const txt = buildReport(); const waUrl = "https://wa.me/?text=" + encodeURIComponent(txt); window.open(waUrl, '_blank');
+    var pengirim = document.getElementById('pengirim1').value.trim();
+    if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi sebelum mengirim laporan!'); document.getElementById('pengirim1').focus(); return; }
+    if (!document.getElementById('tanggal1').value) { alert('⚠️ Tanggal wajib diisi!'); return; }
+    currentReportMessage = buildReportMessage();
+    document.getElementById('modalTitle').textContent = getReportTitle();
+    document.getElementById('modalMessage').textContent = currentReportMessage;
+    document.getElementById('reportModal').style.display = 'flex';
 }
 
-function uploadToDrive() {
-    if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); document.getElementById('pengirim1').focus(); return; }
-    const txt = buildReport(); const fileName = `Laporan_HD_${formatDate(getVal('tanggal1'))}_Shift${getVal('shift1')}.pdf`;
-    const tempDiv = document.createElement('div');
-    tempDiv.style.cssText = 'position:absolute;left:-9999px;top:0;width:800px;padding:40px;font-family:monospace;white-space:pre-wrap;font-size:14px;';
-    tempDiv.innerText = txt; document.body.appendChild(tempDiv);
-    let btn = event.target; let originalText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Membuat PDF...'; btn.disabled = true;
-    const opt = { margin: 10, filename: fileName, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-    html2pdf().set(opt).from(tempDiv).save().then(() => { document.body.removeChild(tempDiv); alert("✅ File PDF telah dibuat dan terunduh ke perangkat Anda. Silakan bagikan file tersebut."); btn.innerHTML = originalText; btn.disabled = false; });
+function closeReportModal() { document.getElementById('reportModal').style.display = 'none'; }
+
+function sendReportWA() {
+    var url = WA_NUMBER
+        ? 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(currentReportMessage)
+        : 'https://wa.me/?text=' + encodeURIComponent(currentReportMessage);
+    window.open(url, '_blank');
+    closeReportModal();
 }
 
+document.getElementById('reportModal').addEventListener('click', function (e) {
+    if (e.target === this) closeReportModal();
+});
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeReportModal();
+});
+
+/* ================= CETAK PDF ================= */
 function cetakPDF() {
-    if(getVal('pengirim1') === "") { alert("❌ Nama Pengirim wajib diisi!"); switchTab(1); return; }
-    document.getElementById('printContent').innerText = buildReport(); window.print();
+    var pengirim = document.getElementById('pengirim1').value.trim();
+    if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
+    currentReportMessage = buildReportMessage();
+    var judul = getReportTitle();
+    document.querySelector('#printArea h1').textContent = judul;
+    document.getElementById('printContent').textContent = currentReportMessage;
+    html2pdf().set({
+        margin: [10, 10, 10, 10],
+        filename: judul.replace(/[^a-z0-9]+/gi, '_') + '.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(document.getElementById('printArea')).save();
 }
 
+/* ================= UPLOAD DRIVE ================= */
+async function uploadToDrive() {
+    var pengirim = document.getElementById('pengirim1').value.trim();
+    if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
+    currentReportMessage = buildReportMessage();
+    var judul = getReportTitle();
+    document.querySelector('#printArea h1').textContent = judul;
+    document.getElementById('printContent').textContent = currentReportMessage;
+    alert('📄 PDF laporan akan diunduh.\nSetelah selesai, silakan upload file tersebut ke Google Drive Anda.');
+    try {
+        await html2pdf().set({
+            margin: [10, 10, 10, 10],
+            filename: judul.replace(/[^a-z0-9]+/gi, '_') + '.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).from(document.getElementById('printArea')).save();
+        window.open('https://drive.google.com/drive/my-drive', '_blank');
+    } catch (e) {
+        alert('❌ Gagal membuat PDF: ' + e.message);
+    }
+}
+
+/* ================= RESET DATA ================= */
 function resetData() {
-    if(confirm("Yakin mereset SEMUA data di halaman laporan harian?")) {
-        document.querySelectorAll('input[type="text"], textarea, input[type="date"], input[type="number"]').forEach(el => { el.value = ""; if(el.type === 'number') el.value = 0; });
-        document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
-        document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
-        document.getElementById('memberContainer').innerHTML = ""; memberCount = 0; tambahAnggota(false);
-        document.getElementById('perawatContainer').innerHTML = ""; perawatCount = 0; tambahPerawat();
-        document.getElementById('patientPlanContainer').innerHTML = ""; patientCount = 0; tambahPasien();
-        document.getElementById('monitoringBody').innerHTML = ""; monRowCount = 0; for(let i=0; i<5; i++) { addMonitorRow(); }
-        switchTab(1);
+    if (!confirm('⚠️ Yakin ingin mengreset SEMUA data laporan?\nTindakan ini tidak bisa dibatalkan.')) return;
+    document.getElementById('memberContainer').innerHTML = '';
+    document.getElementById('perawatContainer').innerHTML = '';
+    document.getElementById('monitoringBody').innerHTML = '';
+    document.getElementById('patientPlanContainer').innerHTML = '';
+    memberCount = 0; perawatCount = 0; patientCount = 0;
+
+    tambahAnggota(false);
+    tambahPerawat();
+    addMonitorRow();
+
+    document.getElementById('rencanaTindakan').value = '';
+    document.getElementById('namaPadatkarya').value = '';
+    document.querySelectorAll('#padatkaryaBox input[type="checkbox"]').forEach(function (c) { c.checked = false; });
+    document.getElementById('masalahPasien').value = '';
+    document.getElementById('masalahMesin').value = '';
+    [70, 90, 110, 130, 150, 170].forEach(function (s) {
+        var el = document.getElementById('hf' + s);
+        if (el) el.value = 0;
+    });
+    document.getElementById('gdStick').value = '';
+    document.getElementById('sisaBed').value = '';
+    document.getElementById('pengirim1').value = '';
+    document.getElementById('tanggal1').valueAsDate = new Date();
+
+    applyRoleRules();
+    alert('✅ Semua data berhasil direset.');
+}
+
+/* =========================================================
+   MUTU — Analisis data dari sheet REKAP_HARIAN
+   ========================================================= */
+var analitikData = null;
+var rekapCache = null;
+
+async function loadRekapRows() {
+    if (rekapCache) return rekapCache;
+    var res = await fetch(REKAP_CSV_URL);
+    var text = await res.text();
+    rekapCache = parseCSV(text);
+    return rekapCache;
+}
+
+function findCol(headers, keyword, fallback) {
+    for (var i = 0; i < headers.length; i++) {
+        if (String(headers[i] || '').toLowerCase().indexOf(keyword) !== -1) return i;
+    }
+    return fallback;
+}
+
+async function searchFastTrack() {
+    var startStr = document.getElementById('ft_start_date').value;
+    var endStr = document.getElementById('ft_end_date').value;
+    if (!startStr || !endStr) { alert('⚠️ Tanggal awal dan akhir wajib dipilih!'); return; }
+
+    var resultDiv = document.getElementById('fastTrackResult');
+    document.getElementById('analitikActions').style.display = 'none';
+    resultDiv.innerHTML = '<div class="stat-loading">⏳ Memuat &amp; menganalisis data dari sheet...</div>';
+
+    try {
+        var rows = await loadRekapRows();
+        analitikData = analyzeRows(rows, startStr, endStr);
+        renderAnalitik(analitikData);
+        document.getElementById('analitikActions').style.display = 'grid';
+    } catch (e) {
+        resultDiv.innerHTML = '<div class="stat-loading">❌ Gagal memuat data: ' + escapeHtml(e.message) + '</div>';
     }
 }
 
-/* ===== FUNGSI JADWAL PASIEN (SLIDE 4) ===== */
-function loadJadwal(reload) {
-    const iframe = document.getElementById('jadwalFrame');
-    const loading = document.getElementById('jadwalLoading');
-    const url = "https://docs.google.com/spreadsheets/d/1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0/preview?gid=1100922958&single=true";
-    
-    if (reload || !iframe.src) {
-        iframe.src = url;
-        loading.classList.remove('hidden');
-        iframe.onload = function() {
-            setTimeout(() => {
-                loading.classList.add('hidden');
-            }, 500);
-        };
+function analyzeRows(rows, startStr, endStr) {
+    var headers = rows[0] || [];
+    var cTgl = findCol(headers, 'tanggal', 0);
+    var cNama = findCol(headers, 'nama', 1);
+    var cAkses = findCol(headers, 'akses', 6);
+    var cQB = findCol(headers, 'qb', 8);
+    var cKtV = findCol(headers, 'kt', 12);
+    var cTrans = findCol(headers, 'transfusi', 13);
+    var cShift = findCol(headers, 'shift', -1);
+
+    var start = new Date(startStr + 'T00:00:00');
+    var end = new Date(endStr + 'T23:59:59');
+
+    var filtered = [];
+    for (var i = 1; i < rows.length; i++) {
+        var d = parseSheetDate(rows[i][cTgl]);
+        if (d && d >= start && d <= end) filtered.push(rows[i]);
     }
+
+    var uniqueSet = {};
+    var aksesCount = {};
+    var shiftCount = {};
+    var qbVals = [], ktvVals = [];
+    var transfusiCount = 0;
+    var perPasien = {};
+
+    filtered.forEach(function (r) {
+        var nama = String(r[cNama] || '').trim();
+        if (nama) { uniqueSet[nama] = true; perPasien[nama] = (perPasien[nama] || 0) + 1; }
+        var akses = String(r[cAkses] || '').trim();
+        if (akses) aksesCount[akses] = (aksesCount[akses] || 0) + 1;
+        if (cShift >= 0) {
+            var sh = String(r[cShift] || '').trim();
+            if (sh) shiftCount['Shift ' + sh] = (shiftCount['Shift ' + sh] || 0) + 1;
+        }
+        var qb = parseFloat(String(r[cQB] || '').replace(/[^0-9.]/g, ''));
+        if (!isNaN(qb) && qb > 0) qbVals.push(qb);
+        var ktv = parseFloat(String(r[cKtV] || '').replace(',', '.'));
+        if (!isNaN(ktv) && ktv > 0) ktvVals.push(ktv);
+        var trans = String(r[cTrans] || '').trim();
+        if (trans && trans !== '-' && trans !== '0' && trans.toLowerCase() !== 'tidak' && trans.toLowerCase() !== 'belum') transfusiCount++;
+    });
+
+    function avg(a) { return a.length ? a.reduce(function (x, y) { return x + y; }, 0) / a.length : 0; }
+    var uniqueCount = Object.keys(uniqueSet).length;
+
+    var text = '*LAPORAN MUTU HEMODIALISIS*\n' + DIVIDER + '\n';
+    text += '📅 Periode: ' + formatTanggalID(startStr) + ' s/d ' + formatTanggalID(endStr) + '\n';
+    text += '\n' + DIVIDER + '\n*📊 RINGKASAN*\n';
+    text += '• Total Sesi HD : ' + filtered.length + '\n';
+    text += '• Pasien Unik   : ' + uniqueCount + '\n';
+    text += '• Rata-rata QB  : ' + (qbVals.length ? Math.round(avg(qbVals)) + ' ml/jam' : '-') + '\n';
+    text += '• Rata-rata Kt/V: ' + (ktvVals.length ? avg(ktvVals).toFixed(2) : '-') + '\n';
+    text += '• Sesi Transfusi: ' + transfusiCount + '\n';
+
+    text += '\n' + DIVIDER + '\n*🩸 DISTRIBUSI AKSES*\n';
+    var aKeys = Object.keys(aksesCount);
+    text += aKeys.length ? aKeys.map(function (k) { return '• ' + k + ': ' + aksesCount[k]; }).join('\n') + '\n' : '-\n';
+
+    text += '\n' + DIVIDER + '\n*🕐 DISTRIBUSI SHIFT*\n';
+    var sKeys = Object.keys(shiftCount);
+    text += sKeys.length ? sKeys.map(function (k) { return '• ' + k + ': ' + shiftCount[k]; }).join('\n') + '\n' : '-\n';
+
+    text += '\n' + DIVIDER + '\n*👥 SESI PER PASIEN*\n';
+    var topPasien = Object.keys(perPasien).sort(function (a, b) { return perPasien[b] - perPasien[a]; });
+    text += topPasien.length ? topPasien.map(function (n) { return '• ' + n + ': ' + perPasien[n] + ' sesi'; }).join('\n') + '\n' : '-\n';
+
+    return {
+        total: filtered.length,
+        uniqueCount: uniqueCount,
+        avgQBTxt: qbVals.length ? String(Math.round(avg(qbVals))) : '-',
+        transfusi: transfusiCount,
+        text: text
+    };
 }
 
+function renderAnalitik(d) {
+    var el = document.getElementById('fastTrackResult');
+    var html =
+        '<div class="stat-grid">' +
+        '<div class="stat-card"><div class="stat-value">' + d.total + '</div><div class="stat-label">Total Sesi HD</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + d.uniqueCount + '</div><div class="stat-label">Pasien Unik</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + escapeHtml(d.avgQBTxt) + '</div><div class="stat-label">Rata-rata QB (ml/jam)</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + d.transfusi + '</div><div class="stat-label">Sesi Transfusi</div></div>' +
+        '</div>' +
+        '<div class="analitik-detail"><pre></pre></div>';
+    el.innerHTML = html;
+    el.querySelector('pre').textContent = d.text;
+}
+
+function shareAnalitikWA() {
+    if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; }
+    var pengirim = document.getElementById('pengirim2').value.trim();
+    if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; }
+    var msg = analitikData.text + '\n' + DIVIDER + '\n*🪪 PENGIRIM*\n👤 ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital_';
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function isiPrintAreaAnalitik() {
+    var pengirim = document.getElementById('pengirim2').value.trim() || '-';
+    document.querySelector('#printArea h1').textContent = 'LAPORAN MUTU HEMODIALISIS';
+    document.getElementById('printContent').textContent = analitikData.text + '\n' + DIVIDER + '\nPengirim: ' + pengirim;
+}
+
+function saveAnalitikPDF() {
+    if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; }
+    isiPrintAreaAnalitik();
+    html2pdf().set({
+        margin: [10, 10, 10, 10],
+        filename: 'LAPORAN_MUTU_HEMODIALISIS.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(document.getElementById('printArea')).save();
+}
+
+function printAnalitik() {
+    if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; }
+    isiPrintAreaAnalitik();
+    window.print();
+}
+
+/* ================= DATALIST NAMA PASIEN (dari sheet rekap) ================= */
+async function populatePatientDatalist() {
+    try {
+        var rows = await loadRekapRows();
+        var headers = rows[0] || [];
+        var cNama = findCol(headers, 'nama', 1);
+        var names = {};
+        for (var i = 1; i < rows.length; i++) {
+            var n = String(rows[i][cNama] || '').trim();
+            if (n) names[n] = true;
+        }
+        var opts = Object.keys(names).sort().map(function (n) {
+            return '<option value="' + escapeHtml(n) + '"></option>';
+        }).join('');
+        document.getElementById('patientList').innerHTML = opts;
+    } catch (e) { }
+}
+
+/* ================= JADWAL PASIEN (iframe) ================= */
+var jadwalLoaded = false;
+function loadJadwal(force) {
+    if (jadwalLoaded && !force) return;
+    jadwalLoaded = true;
+    var frame = document.getElementById('jadwalFrame');
+    var loading = document.getElementById('jadwalLoading');
+    loading.classList.remove('hidden');
+    frame.onload = function () { loading.classList.add('hidden'); };
+    frame.src = 'https://docs.google.com/spreadsheets/d/' + JADWAL_SHEET_ID + '/htmlembed?gid=' + JADWAL_GID + '&single=true';
+}
 function toggleJadwalSize(btn) {
-    const wrap = document.getElementById('scheduleWrap');
+    var wrap = document.getElementById('scheduleWrap');
     wrap.classList.toggle('expanded');
-    if (wrap.classList.contains('expanded')) {
-        btn.innerHTML = '<i class="fa-solid fa-compress"></i> Perkecil';
-    } else {
-        btn.innerHTML = '<i class="fa-solid fa-expand"></i> Perbesar';
-    }
+    var expanded = wrap.classList.contains('expanded');
+    btn.innerHTML = expanded
+        ? '<i class="fa-solid fa-compress"></i> Perkecil'
+        : '<i class="fa-solid fa-expand"></i> Perbesar';
 }
+
+/* ================= INISIALISASI ================= */
+document.getElementById('tanggal1').valueAsDate = new Date();
+tambahAnggota(false);
+tambahPerawat();
+addMonitorRow();
+applyRoleRules();
+populatePatientDatalist();
 </script>
 </body>
 </html>
