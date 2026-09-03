@@ -373,7 +373,6 @@
         .btn-secondary { border: none; padding: 10px; border-radius: 10px; background: #f1f5f9; color: var(--text-muted); font-weight: 700; cursor: pointer; font-family: inherit; }
         .btn-sendwa { border: none; padding: 10px; border-radius: 10px; background: #25D366; color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
 
-        /* ===== SIDEBAR RAPI & RINGKAS ===== */
         .sidebar-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15,23,42,0.5); z-index: 190; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
 
@@ -402,21 +401,20 @@
 
         .app-footer { display: none; text-align: center; padding: 15px; color: var(--text-muted); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; }
 
-        /* ===== STYLE LAPORAN LAB ===== */
-        .lab-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-        .lab-card {
+        .special-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .special-card {
             display: flex; align-items: center; justify-content: space-between; gap: 10px;
             padding: 10px 14px; border-radius: 10px; background: rgba(255,255,255,0.8);
             border: 1px solid var(--border-color); text-decoration: none; color: var(--text-main);
             box-shadow: 2px 2px 5px rgba(0,0,0,0.03);
             transition: transform 0.15s, border-color 0.15s;
         }
-        .lab-card:hover { transform: translateX(4px); border-color: var(--primary); }
-        .lab-icon { font-size: 1.2rem; color: var(--drive-blue); }
-        .lab-name { flex: 1; font-weight: 700; font-size: 0.85rem; }
-        .lab-del { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 0.9rem; opacity: 0.5; padding: 4px; }
-        .lab-del:hover { opacity: 1; transform: scale(1.1); }
-        .lab-empty { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px; }
+        .special-card:hover { transform: translateX(4px); border-color: var(--primary); }
+        .special-icon { font-size: 1.2rem; color: var(--drive-blue); }
+        .special-name { flex: 1; font-weight: 700; font-size: 0.85rem; }
+        .special-del { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 0.9rem; opacity: 0.5; padding: 4px; }
+        .special-del:hover { opacity: 1; transform: scale(1.1); }
+        .special-empty { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px; }
 
         @media (max-width: 991px) {
             .nav-header { display: none; }
@@ -493,7 +491,7 @@
             <button class="tab-btn" data-tab="2" onclick="switchTab(2)"><i>📊</i><span>MUTU</span></button>
             <button class="tab-btn" data-tab="3" onclick="switchTab(3)"><i>🔍</i><span>Cari Pasien</span></button>
             <button class="tab-btn" data-tab="4" onclick="switchTab(4)"><i>📅</i><span>Jadwal</span></button>
-            <button class="tab-btn" data-tab="5" onclick="switchTab(5)"><i>🧪</i><span>Laporan Lab</span></button>
+            <button class="tab-btn" data-tab="5" onclick="switchTab(5)"><i>📌</i><span>Laporan Khusus</span></button>
         </div>
     </div>
 
@@ -740,33 +738,33 @@
         </div>
     </div>
 
-    <!-- ================= SLIDE 5 : LAPORAN LAB ================= -->
+    <!-- ================= SLIDE 5 : LAPORAN KHUSUS ================= -->
     <div id="slide5" class="page">
         <div class="section-title main-title-3d">
-            <div class="icon-box">🧪</div>
-            <h2>Laporan Laboratorium</h2>
+            <div class="icon-box">📌</div>
+            <h2>Laporan Khusus</h2>
         </div>
         <p style="color: var(--text-muted); text-align: center; margin: 15px 0; font-size: 0.85rem;">
-            Daftar dokumen hasil pemeriksaan laboratorium. Klik nama dokumen untuk langsung membuka file.
+            Daftar dokumen atau laporan khusus beserta bukti link. Data tersimpan di Spreadsheet dan dapat dilihat semua pengguna.
         </p>
 
         <div class="section-card section-card-green">
             <div class="section-title">
                 <div class="icon-box">🔗</div>
-                <h2>Tambah Link Dokumen</h2>
+                <h2>Tambah Dokumen / Link</h2>
             </div>
             <div class="grid-2">
                 <div>
-                    <label>Nama Dokumen</label>
-                    <input type="text" id="labName" placeholder="Contoh: Lab Bulan Januari">
+                    <label>Nama Dokumen / Laporan</label>
+                    <input type="text" id="specialName" placeholder="Contoh: Laporan Insiden Bulan Mei">
                 </div>
                 <div>
-                    <label>URL Google Drive</label>
-                    <input type="url" id="labUrl" placeholder="https://drive.google.com/...">
+                    <label>Bukti Link (URL)</label>
+                    <input type="url" id="specialUrl" placeholder="https://drive.google.com/...">
                 </div>
             </div>
-            <button class="btn btn-wa" onclick="addLabLink()" style="width: 100%; margin-top: 12px;">
-                <i class="fa-solid fa-plus"></i> Tambah Dokumen
+            <button class="btn btn-wa" onclick="addSpecialLink()" style="width: 100%; margin-top: 12px;">
+                <i class="fa-solid fa-plus"></i> Simpan ke Server
             </button>
         </div>
 
@@ -775,8 +773,8 @@
                 <div class="icon-box">📂</div>
                 <h2>Daftar Dokumen Tersimpan</h2>
             </div>
-            <div id="labListContainer" class="lab-list">
-                <div class="lab-empty">Belum ada dokumen ditambahkan.</div>
+            <div id="specialListContainer" class="special-list">
+                <div class="special-empty">Memuat data dari server...</div>
             </div>
         </div>
     </div>
@@ -796,7 +794,7 @@
         <button class="side-item" data-tab="2" onclick="switchTab(2)"><i>📊</i><span>MUTU</span></button>
         <button class="side-item" data-tab="3" onclick="switchTab(3)"><i>🔍</i><span>Cari Pasien</span></button>
         <button class="side-item" data-tab="4" onclick="switchTab(4)"><i>📅</i><span>Jadwal</span></button>
-        <button class="side-item" data-tab="5" onclick="switchTab(5)"><i>🧪</i><span>Laporan Lab</span></button>
+        <button class="side-item" data-tab="5" onclick="switchTab(5)"><i>📌</i><span>Laporan Khusus</span></button>
     </div>
     <div class="sidebar-footer">Gala-w versi 4.2</div>
 </aside>
@@ -834,14 +832,18 @@ var JADWAL_GID = "1100922958";
 var WA_NUMBER = "";
 var DIVIDER = "━━━━━━━━━━━━━━━━━";
 
+// PASTE URL WEB APP DARI APPS SCRIPT SPREADSHEET LAPORAN KHUSUS DI SINI:
+var SPECIAL_API_URL = "MASUKKAN_URL_APPS_SCRIPT_DI_SINI"; 
+
 var patientData = [];
+var specialLinks = [];
 
 var PAGE_TITLES = {
     1: 'Laporan Harian Hemodialisis',
     2: 'MUTU — Analisis Kinerja',
     3: 'Pencarian Pasien',
     4: 'Jadwal Pasien Hemodialisis',
-    5: 'Laporan Laboratorium'
+    5: 'Laporan Khusus'
 };
 
 /* ================= JAM REALTIME ================= */
@@ -1737,50 +1739,84 @@ function toggleJadwalSize(btn) {
         : '<i class="fa-solid fa-expand"></i> Perbesar';
 }
 
-/* ================= LAPORAN LAB ================= */
-var labLinks = [];
-function loadLabLinks() {
-    try {
-        var saved = localStorage.getItem('labLinksData');
-        if (saved) labLinks = JSON.parse(saved);
-    } catch (e) { labLinks = []; }
-    renderLabLinks();
-}
-function saveLabLinks() {
-    try { localStorage.setItem('labLinksData', JSON.stringify(labLinks)); } catch (e) {}
-}
-function addLabLink() {
-    var name = document.getElementById('labName').value.trim();
-    var url = document.getElementById('labUrl').value.trim();
-    if (!name || !url) { alert('Nama dan URL dokumen harus diisi!'); return; }
-    if (!url.startsWith('http')) url = 'https://' + url;
-    
-    labLinks.push({ id: Date.now(), name: name, url: url });
-    saveLabLinks();
-    renderLabLinks();
-    
-    document.getElementById('labName').value = '';
-    document.getElementById('labUrl').value = '';
-    document.getElementById('labName').focus();
-}
-function deleteLabLink(id) {
-    if (!confirm('Hapus dokumen ini dari daftar?')) return;
-    labLinks = labLinks.filter(function(l) { return l.id !== id; });
-    saveLabLinks();
-    renderLabLinks();
-}
-function renderLabLinks() {
-    var c = document.getElementById('labListContainer');
-    if (!c) return;
-    if (labLinks.length === 0) {
-        c.innerHTML = '<div class="lab-empty">Belum ada dokumen ditambahkan.</div>';
+/* ================= LAPORAN KHUSUS (SYNC SPREADSHEET) ================= */
+async function loadSpecialLinks() {
+    var c = document.getElementById('specialListContainer');
+    if (SPECIAL_API_URL === "MASUKKAN_URL_APPS_SCRIPT_DI_SINI") {
+        c.innerHTML = '<div class="special-empty">⚠️ URL Apps Script belum dimasukkan ke dalam kode.</div>';
         return;
     }
-    c.innerHTML = labLinks.map(function(l) {
-        return '<a href="' + escapeHtml(l.url) + '" target="_blank" class="lab-card">' +
-               '<span class="lab-icon">📄</span>' +
-               '<span class="lab-name">' + escapeHtml(l.name) + '</span>' +
-               '<button class="lab-del" onclick="event.preventDefault(); event.stopPropagation(); deleteLabLink(' + l.id + ')"><i class="fa-solid fa-trash"></i></button>' +
+    c.innerHTML = '<div class="special-empty">Memuat data dari server...</div>';
+    try {
+        var res = await fetch(SPECIAL_API_URL + '?action=getSpecialLinks&t=' + Date.now(), { cache: 'no-store' });
+        var j = await res.json();
+        if (j.status === 'success') {
+            specialLinks = j.data || [];
+            renderSpecialLinks();
+        } else {
+            throw new Error(j.message || 'Gagal memuat');
+        }
+    } catch (e) {
+        c.innerHTML = '<div class="special-empty">❌ Gagal terhubung ke server.<br><small>Pastikan URL Apps Script sudah benar & di-deploy dengan akses "Anyone".</small></div>';
+    }
+}
+
+async function addSpecialLink() {
+    var name = document.getElementById('specialName').value.trim();
+    var url = document.getElementById('specialUrl').value.trim();
+    if (!name || !url) { alert('Nama dan URL dokumen harus diisi!'); return; }
+    if (!url.startsWith('http')) url = 'https://' + url;
+
+    var newId = Date.now();
+    var newLink = { id: newId, name: name, url: url };
+    
+    // Tambahkan ke UI secara optimis
+    specialLinks.push(newLink);
+    renderSpecialLinks();
+    document.getElementById('specialName').value = '';
+    document.getElementById('specialUrl').value = '';
+    document.getElementById('specialName').focus();
+
+    // Kirim ke Server
+    try {
+        await fetch(SPECIAL_API_URL, {
+            method: 'POST', mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'saveSpecialLink', id: String(newId), name: name, url: url })
+        });
+    } catch (e) {
+        alert('❌ Gagal menyimpan ke server. Cek koneksi internet.');
+    }
+}
+
+async function deleteSpecialLink(id) {
+    if (!confirm('Hapus dokumen ini dari daftar?')) return;
+    // Hapus dari UI secara optimis
+    specialLinks = specialLinks.filter(function(l) { return String(l.id) !== String(id); });
+    renderSpecialLinks();
+
+    // Kirim hapus ke Server
+    try {
+        await fetch(SPECIAL_API_URL, {
+            method: 'POST', mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'deleteSpecialLink', id: String(id) })
+        });
+    } catch (e) { }
+}
+
+function renderSpecialLinks() {
+    var c = document.getElementById('specialListContainer');
+    if (!c) return;
+    if (specialLinks.length === 0) {
+        c.innerHTML = '<div class="special-empty">Belum ada dokumen ditambahkan.</div>';
+        return;
+    }
+    c.innerHTML = specialLinks.map(function(l) {
+        return '<a href="' + escapeHtml(l.url) + '" target="_blank" class="special-card">' +
+               '<span class="special-icon">📄</span>' +
+               '<span class="special-name">' + escapeHtml(l.name) + '</span>' +
+               '<button class="special-del" onclick="event.preventDefault(); event.stopPropagation(); deleteSpecialLink(' + l.id + ')"><i class="fa-solid fa-trash"></i></button>' +
                '</a>';
     }).join('');
 }
@@ -1796,7 +1832,7 @@ function renderLabLinks() {
     addMonitorRow();
     applyRoleRules();
     populatePatientDatalist();
-    loadLabLinks();
+    loadSpecialLinks();
 })();
 </script>
 </body>
