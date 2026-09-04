@@ -284,7 +284,7 @@
             <button class="nav-item" data-tab="2" onclick="switchTab(2)"><i class="fa-solid fa-chart-line"></i> MUTU</button>
             <button class="nav-item" data-tab="3" onclick="switchTab(3)"><i class="fa-solid fa-magnifying-glass"></i> Cari Pasien</button>
             <button class="nav-item" data-tab="4" onclick="switchTab(4)"><i class="fa-solid fa-calendar-days"></i> Jadwal</button>
-            <button class="nav-item" data-tab="5" onclick="switchTab(5)"><i class="fa-solid fa-thumbtack"></i> Laporan Khusus</button>
+            <button class="nav-item" data-tab="5" onclick="switchTab(5)"><i class="fa-solid fa-thumbtack"></i> Quick Access</button>
         </nav>
         <div class="sidebar-footer">Gala-w versi 4.5</div>
     </aside>
@@ -547,14 +547,14 @@
                 </div>
             </div>
 
-            <!-- ================= SLIDE 5 : LAPORAN KHUSUS ================= -->
+            <!-- ================= SLIDE 5 : Quick Access ================= -->
             <div id="slide5" class="page">
                 <div class="main-title-3d">
                     <div class="icon-box">📌</div>
-                    <h2>Laporan Khusus</h2>
+                    <h2>Quick Access</h2>
                 </div>
                 <p style="color: var(--text-muted); text-align: center; margin: 15px 0; font-size: 0.85rem;">
-                    Daftar dokumen atau laporan khusus beserta bukti link. Data tersimpan di Spreadsheet dan dapat dilihat semua pengguna.
+                    Daftar dokumen atau Quick Access beserta bukti link. Data tersimpan di Spreadsheet dan dapat dilihat semua pengguna.
                 </p>
                 <div class="section-card section-card-green">
                     <div class="section-title">
@@ -593,7 +593,7 @@
         <button class="side-item" data-tab="2" onclick="switchTab(2)"><i class="fa-solid fa-chart-line"></i> MUTU</button>
         <button class="side-item" data-tab="3" onclick="switchTab(3)"><i class="fa-solid fa-magnifying-glass"></i> Cari Pasien</button>
         <button class="side-item" data-tab="4" onclick="switchTab(4)"><i class="fa-solid fa-calendar-days"></i> Jadwal</button>
-        <button class="side-item" data-tab="5" onclick="switchTab(5)"><i class="fa-solid fa-thumbtack"></i> Laporan Khusus</button>
+        <button class="side-item" data-tab="5" onclick="switchTab(5)"><i class="fa-solid fa-thumbtack"></i> Quick Access</button>
     </div>
 </aside>
 
@@ -1068,7 +1068,7 @@ var jadwalLoaded = false;
 function loadJadwal(force) { if (jadwalLoaded && !force) return; jadwalLoaded = true; var frame = document.getElementById('jadwalFrame'); var loading = document.getElementById('jadwalLoading'); loading.classList.remove('hidden'); frame.onload = function () { loading.classList.add('hidden'); }; frame.src = 'https://docs.google.com/spreadsheets/d/' + JADWAL_SHEET_ID + '/htmlembed?gid=' + JADWAL_GID + '&single=true'; }
 function toggleJadwalSize(btn) { var wrap = document.getElementById('scheduleWrap'); wrap.classList.toggle('expanded'); btn.innerHTML = wrap.classList.contains('expanded') ? '<i class="fa-solid fa-compress"></i> Perkecil' : '<i class="fa-solid fa-expand"></i> Perbesar'; }
 
-/* === LAPORAN KHUSUS === */
+/* === Quick Access === */
 async function loadSpecialLinks() {
     var c = document.getElementById('specialListContainer');
     c.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Memuat data dari server...</div>';
