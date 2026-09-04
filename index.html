@@ -14,7 +14,6 @@
             --primary-light: #14b8a6;
             --secondary: #0284c7;
             --accent: #f43f5e;
-            /* Background Gradient diubah ke Tosca */
             --bg-gradient: linear-gradient(135deg, #ccfbf1 0%, #f0fdfa 45%, #ecfeff 100%);
             --card-bg: rgba(255, 255, 255, 0.9);
             --text-main: #0f172a;
@@ -23,7 +22,6 @@
             --wa-green: #25D366;
             --drive-blue: #4285F4;
 
-            /* Variabel Sore diganti Tosca */
             --sore-1: #14b8a6;
             --sore-2: #0d9488;
             --sore-3: #0891b2;
@@ -33,12 +31,9 @@
         }
 
         * { box-sizing: border-box; font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-
         body { margin: 0; padding: 0; background: var(--bg-gradient); min-height: 100vh; color: var(--text-main); padding-bottom: 30px; }
-
         .app-container { display: flex; max-width: 1200px; margin: 20px auto; background: var(--card-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); min-height: 95vh; box-shadow: 12px 12px 40px rgba(0,0,0,0.08), -6px -6px 15px rgba(255,255,255,0.9); border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.6); }
 
-        /* Sidebar Hijau Tosca */
         .pc-sidebar { width: 250px; flex-shrink: 0; background: #0d9488; display: flex; flex-direction: column; padding: 25px 15px; color: #fff; }
         .sidebar-brand { text-align: center; font-size: 1.2rem; font-weight: 800; margin-bottom: 25px; color: #fff; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); }
         .sidebar-nav { display: flex; flex-direction: column; gap: 8px; }
@@ -49,17 +44,13 @@
         .sidebar-footer { margin-top: auto; padding: 10px; text-align: center; font-size: 0.7rem; font-weight: 600; color: rgba(255, 255, 255, 0.6); border-top: 1px solid rgba(255,255,255,0.2); }
 
         .main-wrapper { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-        
         .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); gap: 10px; position: sticky; top: 0; z-index: 10; }
         .top-left-group { display: flex; align-items: center; gap: 10px; }
-
         .hamburger { display: none; width: 36px; height: 36px; flex: none; border: 1px solid var(--border-color); background: #fff; color: var(--text-main); border-radius: 10px; font-size: 1rem; cursor: pointer; align-items: center; justify-content: center; }
         .hamburger:active { background: #f1f5f9; }
-
         .realtime-clock { text-align: left; }
         .realtime-clock .time { font-size: 1.1rem; font-weight: 800; letter-spacing: 1px; color: var(--sore-deep); }
         .realtime-clock .date { font-size: 0.7rem; opacity: 0.9; color: var(--text-muted); }
-
         .prayer-times { text-align: right; font-size: 0.65rem; line-height: 1.4; background: rgba(255,255,255,0.8); padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border-color); max-width: 180px; color: var(--text-main); }
         .prayer-times .loc { font-weight: 700; color: var(--sore-deep); margin-bottom: 2px; display: block; border-bottom: 1px solid var(--border-color); padding-bottom: 2px; }
         .prayer-times span { font-weight: 700; color: var(--sore-1); }
@@ -82,7 +73,6 @@
         .main-title-3d h2 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); font-size: 1.15rem; font-weight: 900; letter-spacing: 0.5px; margin: 0; }
 
         label { display: block; font-weight: 600; margin-top: 10px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
-
         input[type="text"], input[type="date"], input[type="number"], input[type="url"], textarea, select { width: 100%; padding: 10px; border: 1.5px solid rgba(226, 232, 240, 0.8); border-radius: 10px; font-size: 0.85rem; background: rgba(248, 250, 252, 0.8); transition: all 0.2s ease-in-out; font-family: inherit; color: var(--text-main); box-shadow: inset 2px 2px 4px rgba(0,0,0,0.03), inset -2px -2px 4px rgba(255,255,255,0.5); }
         input:focus, textarea:focus, select:focus { border-color: var(--primary-light); background: #fff; outline: none; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1), inset 2px 2px 4px rgba(0,0,0,0.02); }
         textarea { min-height: 70px; resize: vertical; line-height: 1.4; }
@@ -94,15 +84,12 @@
 
         .section-card { border-radius: 16px; padding: 15px; margin-top: 18px; margin-bottom: 10px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 4px 4px 10px rgba(0,0,0,0.05), -3px -3px 8px rgba(255,255,255,0.85); }
         .section-card .section-title { margin-top: 0; margin-bottom: 10px; }
-
         .section-card-green { background: linear-gradient(135deg, rgba(16, 185, 129, 0.20) 0%, rgba(240, 253, 244, 0.70) 100%); border: 1px solid rgba(16, 185, 129, 0.40); }
         .section-card-green .icon-box { color: #059669 !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-green .section-title h2 { color: #065f46; }
-
         .section-card-blue { background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%); border: 1px solid rgba(59, 130, 246, 0.40); }
         .section-card-blue .icon-box { color: #2563eb !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-blue .section-title h2 { color: #1e3a8a; }
-
         .section-card-purple { background: linear-gradient(135deg, rgba(20, 184, 166, 0.20) 0%, rgba(240, 253, 250, 0.70) 100%); border: 1px solid rgba(20, 184, 166, 0.40); }
         .section-card-purple .icon-box { color: #0d9488 !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-purple .section-title h2 { color: #115e59; }
@@ -152,7 +139,6 @@
         .delete-pasien { color: var(--accent); background: transparent; border: none; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s; }
         .delete-pasien:hover { transform: scale(1.2); }
 
-        /* Ukuran Kolom Tabel Monitoring */
         .table-container { overflow-x: auto; margin-top: 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.6); border-radius: 12px; background: rgba(255,255,255,0.6); box-shadow: 4px 4px 8px rgba(0,0,0,0.04), -3px -3px 8px rgba(255,255,255,0.8); }
         .monitoring-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 1800px; }
         .monitoring-table th { background: var(--primary); color: #fff; padding: 8px 4px; font-weight: 700; border: 1px solid #0f766e; text-align: center; white-space: nowrap; position: sticky; top: 0; z-index: 5; font-size: 0.7rem; }
@@ -161,16 +147,15 @@
         .monitoring-table input:focus, .monitoring-table select:focus, .monitoring-table textarea:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
         .monitoring-table textarea { text-align: left; min-height: 50px; resize: vertical; }
         
-        /* Penyesuaian Lebar Kolom */
-        .monitoring-table th:nth-child(1), .monitoring-table td:nth-child(1) { width: 40px; } /* Bed */
-        .monitoring-table th:nth-child(2), .monitoring-table td:nth-child(2) { width: 160px; } /* Nama */
-        .monitoring-table th:nth-child(3), .monitoring-table td:nth-child(3) { width: 30px; } /* JK */
-        .monitoring-table th:nth-child(7), .monitoring-table td:nth-child(7) { width: 45px; } /* Gol Darah */
-        .monitoring-table th:nth-child(8), .monitoring-table td:nth-child(8) { width: 30px; } /* TB */
-        .monitoring-table th:nth-child(9), .monitoring-table td:nth-child(9) { width: 30px; } /* BB */
-        .monitoring-table th:nth-child(12), .monitoring-table td:nth-child(12) { width: 45px; } /* QB */
-        .monitoring-table th:nth-child(13), .monitoring-table td:nth-child(13) { width: 45px; } /* QD */
-        .monitoring-table th:nth-child(18), .monitoring-table td:nth-child(18) { width: 180px; } /* Keterangan */
+        .monitoring-table th:nth-child(1), .monitoring-table td:nth-child(1) { width: 40px; } 
+        .monitoring-table th:nth-child(2), .monitoring-table td:nth-child(2) { width: 160px; } 
+        .monitoring-table th:nth-child(3), .monitoring-table td:nth-child(3) { width: 30px; } 
+        .monitoring-table th:nth-child(7), .monitoring-table td:nth-child(7) { width: 45px; } 
+        .monitoring-table th:nth-child(8), .monitoring-table td:nth-child(8) { width: 30px; } 
+        .monitoring-table th:nth-child(9), .monitoring-table td:nth-child(9) { width: 30px; } 
+        .monitoring-table th:nth-child(12), .monitoring-table td:nth-child(12) { width: 45px; } 
+        .monitoring-table th:nth-child(13), .monitoring-table td:nth-child(13) { width: 45px; } 
+        .monitoring-table th:nth-child(18), .monitoring-table td:nth-child(18) { width: 180px; } 
         
         .row-del { border: none; background: transparent; color: var(--accent); cursor: pointer; font-size: 0.85rem; padding: 2px 4px; }
 
@@ -707,7 +692,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { cl
 function sendKritikWA() {
     var msg = document.getElementById('kritikSaranInput').value.trim();
     if (!msg) { alert('Harap isi kritik atau saran terlebih dahulu!'); return; }
-    var pesan = '*KRITIK & SARAN APLIKASI LAPORAN DIGITAL*\n' + DIVIDER + '\n📄 Detail:\n' + msg + '\n\n' + DIVIDER + '\n_Dikirim via Gala-w v4.5_';
+    var pesan = '*KRITIK & SARAN APLIKASI LAPORAN DIGITAL*\n' + DIVIDER + '\nDetail:\n' + msg + '\n\n' + DIVIDER + '\n_Dikirim via Gala-w v4.5_';
     var url = WA_NUMBER ? 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(pesan) : 'https://wa.me/?text=' + encodeURIComponent(pesan);
     window.open(url, '_blank');
 }
@@ -737,10 +722,10 @@ function applyRoleRules() {
     var notice = document.getElementById('roleNotice');
     if (getRole() === 'KATIM') {
         notice.className = 'role-notice katim';
-        notice.innerHTML = '👑 <b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Job Desk Petugas, Rencana Tindakan Umum, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b>.';
+        notice.innerHTML = '<b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Job Desk Petugas, Rencana Tindakan Umum, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b>.';
     } else {
         notice.className = 'role-notice';
-        notice.innerHTML = '🩺 <b>MODE PERAWAT PELAKSANA</b> — Laporan berisi: <b>Anggota Tim, Monitoring (auto-isi 20 kolom), Masalah &amp; Inventaris, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN PERAWAT PELAKSANA TIM x SHIFT y</b>.';
+        notice.innerHTML = '<b>MODE PERAWAT PELAKSANA</b> — Laporan berisi: <b>Anggota Tim, Monitoring (auto-isi 20 kolom), Masalah &amp; Inventaris, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN PERAWAT PELAKSANA TIM x SHIFT y</b>.';
     }
 }
 
@@ -783,6 +768,10 @@ function addMonitorRow() {
     markMonitoringUnsaved();
     var tr = document.createElement('tr');
     var ketTemplate = "Keluhan pre : \nKeluhan intra : \nKeluhan post : ";
+    var randomQB = Math.random() < 0.5 ? "250" : "300";
+    var defaultQD = "500";
+    var defaultHeparin = "5000";
+    
     tr.innerHTML =
         '<td><input type="text" placeholder="Bed" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><div style="display:flex; align-items:center; gap:2px;"><input type="text" list="patientList" placeholder="Nama Pasien" oninput="autoFillPasien(this)" onchange="autoFillPasien(this)" style="padding:4px; font-size:0.75rem;"><button type="button" class="row-del" onclick="markMonitoringUnsaved(); this.closest(\'tr\').remove()" title="Hapus baris"><i class="fa-solid fa-circle-xmark"></i></button></div></td>' +
@@ -795,9 +784,9 @@ function addMonitorRow() {
         '<td><input type="text" placeholder="kg" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" list="aksesList" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="liter" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
-        '<td><input type="text" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
-        '<td><input type="text" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
-        '<td><input type="text" placeholder="IU" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
+        '<td><input type="text" value="' + randomQB + '" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
+        '<td><input type="text" value="' + defaultQD + '" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
+        '<td><input type="text" value="' + defaultHeparin + '" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" list="transfusiList" placeholder="Ada/Tidak" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
@@ -850,13 +839,18 @@ function formatDaftarPasien() {
         var f = []; inputs.forEach(function (el) { f.push(el.value.trim()); });
         if(textareas.length > 0) { f.splice(17, 0, textareas[0].value.trim()); }
         if (f.length < 20) return; if (!f.some(function (x) { return x !== ''; })) return; idx++;
+        
         msg += idx + '. *Bed ' + (f[0] || '-') + ' — ' + (f[1] || '-') + '*\n';
-        msg += '   JK: ' + (f[2] || '-') + ' | Goldar: ' + (f[6] || '-') + ' | TB: ' + (f[7] || '-') + ' | BB: ' + (f[8] || '-') + '\n';
-        msg += '   TD Pre: ' + (f[3] || '-') + ' | TD Intra: ' + (f[4] || '-') + ' | TD Post: ' + (f[5] || '-') + '\n';
-        msg += '   Akses: ' + (f[9] || '-') + ' | UFG: ' + (f[10] || '-') + ' | QB: ' + (f[11] || '-') + ' | QD: ' + (f[12] || '-') + '\n';
-        msg += '   Heparin: ' + (f[13] || '-') + ' | EPO/FE: ' + (f[14] || '-') + ' | Kt/V: ' + (f[15] || '-') + ' | Transfusi: ' + (f[16] || '-') + '\n';
-        if (f[17] && f[17] !== 'Keluhan pre : \nKeluhan intra : \nKeluhan post : ') msg += '   Ket: ' + f[17] + '\n';
-        msg += '   Penyerah: ' + (f[18] || '-') + ' | Penerima: ' + (f[19] || '-') + '\n';
+        msg += '   • JK: ' + (f[2] || '-') + ' | Goldar: ' + (f[6] || '-') + ' | TB: ' + (f[7] || '-') + ' | BB: ' + (f[8] || '-') + '\n';
+        msg += '   • TD Pre: ' + (f[3] || '-') + ' | TD Intra: ' + (f[4] || '-') + ' | TD Post: ' + (f[5] || '-') + '\n';
+        msg += '   • Akses: ' + (f[9] || '-') + ' | UFG: ' + (f[10] || '-') + ' | QB: ' + (f[11] || '-') + ' | QD: ' + (f[12] || '-') + '\n';
+        msg += '   • Heparin: ' + (f[13] || '-') + ' | EPO/FE: ' + (f[14] || '-') + ' | Kt/V: ' + (f[15] || '-') + ' | Transfusi: ' + (f[16] || '-') + '\n';
+        if (f[17] && f[17] !== 'Keluhan pre : \nKeluhan intra : \nKeluhan post : ') {
+            msg += '   • Keterangan:\n';
+            f[17].split('\n').forEach(function(line) { if(line.trim()) msg += '     ' + line.trim() + '\n'; });
+        }
+        msg += '   • *Penyerah:* ' + (f[18] || '-') + '\n';
+        msg += '   • *Penerima:* ' + (f[19] || '-') + '\n';
     });
     return { text: msg, total: idx };
 }
@@ -864,23 +858,23 @@ function formatDaftarPasien() {
 function shareMonitoringWA() {
     var dp = formatDaftarPasien(); if (!dp.total) { alert('⚠️ Belum ada data pasien yang terisi!'); return; }
     if (!monitoringSheetSaved) { alert('⚠️ PERHATIAN!\nData Monitoring belum disimpan ke Sheet.\nHarap klik tombol "Simpan ke Sheet" terlebih dahulu.'); document.getElementById('secPasien').scrollIntoView({ behavior: 'smooth' }); return; }
-    var msg = '*' + getReportTitle() + ' — MONITORING*\n' + DIVIDER + '\n📅 Tanggal: ' + formatTanggalID(document.getElementById('tanggal1').value) + '\n👥 Tim: ' + document.getElementById('tim1').value + '\n';
-    if (getRole() === 'PERAWAT') msg += '🕐 Shift: ' + document.getElementById('shift1').value + '\n';
-    msg += '\n' + DIVIDER + '\n*🩺 MONITORING*\n' + dp.text + 'Total pasien: ' + dp.total + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital_';
+    var msg = '*' + getReportTitle() + ' — MONITORING*\n' + DIVIDER + '\nTanggal: ' + formatTanggalID(document.getElementById('tanggal1').value) + '\nTim: ' + document.getElementById('tim1').value + '\n';
+    if (getRole() === 'PERAWAT') msg += 'Shift: ' + document.getElementById('shift1').value + '\n';
+    msg += '\n' + DIVIDER + '\n*MONITORING*\n' + dp.text + 'Total pasien: ' + dp.total + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital_';
     window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function buildReportMessage() {
     var role = getRole(); var pengirim = document.getElementById('pengirim1').value.trim();
-    var msg = '*' + getReportTitle() + '*\n' + DIVIDER + '\n📅 Tanggal : ' + formatTanggalID(document.getElementById('tanggal1').value) + '\n👥 Tim     : ' + document.getElementById('tim1').value + '\n';
-    if (role === 'PERAWAT') msg += '🕐 Shift   : ' + document.getElementById('shift1').value + '\n';
-    msg += '👤 Peran   : ' + getRoleLabel() + '\n';
+    var msg = '*' + getReportTitle() + '*\n' + DIVIDER + '\nTanggal : ' + formatTanggalID(document.getElementById('tanggal1').value) + '\nTim     : ' + document.getElementById('tim1').value + '\n';
+    if (role === 'PERAWAT') msg += 'Shift   : ' + document.getElementById('shift1').value + '\n';
+    msg += 'Peran   : ' + getRoleLabel() + '\n';
     var anggota = [];
     document.querySelectorAll('#memberContainer input[type="text"]').forEach(function (i) { if (i.value.trim()) anggota.push(i.value.trim()); });
-    msg += '\n' + DIVIDER + '\n*👥 ANGGOTA TIM*\n' + (anggota.length ? anggota.map(function (n, i) { return (i + 1) + '. ' + n; }).join('\n') + '\n' : '- (tidak ada)\n');
+    msg += '\n' + DIVIDER + '\n*ANGGOTA TIM*\n' + (anggota.length ? anggota.map(function (n, i) { return (i + 1) + '. ' + n; }).join('\n') + '\n' : '- (tidak ada)\n');
 
     if (role === 'KATIM') {
-        msg += '\n' + DIVIDER + '\n*📌 JOB DESK PETUGAS*\n'; var adaJob = false;
+        msg += '\n' + DIVIDER + '\n*JOB DESK PETUGAS*\n'; var adaJob = false;
         document.querySelectorAll('#perawatContainer .job-box').forEach(function (box) {
             var namaEl = box.querySelector('input[id^="perawat"]'); var nama = namaEl ? namaEl.value.trim() : ''; if (!nama) return;
             adaJob = true; var b1 = box.querySelector('input[id$="_start"]'); var b2 = box.querySelector('input[id$="_end"]');
@@ -892,10 +886,10 @@ function buildReportMessage() {
         if (padat) { adaJob = true; var pj = []; document.querySelectorAll('#padatkaryaBox input[type="checkbox"]:checked').forEach(function (c) { pj.push(c.value); }); msg += '• *Padatkarya — ' + padat + '*: ' + (pj.length ? pj.join(', ') : '-') + '\n'; }
         if (!adaJob) msg += '- (tidak ada)\n';
         var rencana = document.getElementById('rencanaTindakan').value.trim();
-        msg += '\n' + DIVIDER + '\n*📋 RENCANA TINDAKAN UMUM*\n' + (rencana || '-') + '\n';
+        msg += '\n' + DIVIDER + '\n*RENCANA TINDAKAN UMUM*\n' + (rencana || '-') + '\n';
     } else {
-        var dp = formatDaftarPasien(); msg += '\n' + DIVIDER + '\n*🩺 MONITORING*\n' + (dp.total ? dp.text + 'Total pasien: ' + dp.total + '\n' : '- (tidak ada)\n');
-        msg += '\n' + DIVIDER + '\n*⚠️ MASALAH & INVENTARIS*\n';
+        var dp = formatDaftarPasien(); msg += '\n' + DIVIDER + '\n*MONITORING*\n' + (dp.total ? dp.text + 'Total pasien: ' + dp.total + '\n' : '- (tidak ada)\n');
+        msg += '\n' + DIVIDER + '\n*MASALAH & INVENTARIS*\n';
         msg += '• Masalah Pasien    : ' + (document.getElementById('masalahPasien').value.trim() || '-') + '\n';
         msg += '• Masalah Mesin/Alat: ' + (document.getElementById('masalahMesin').value.trim() || '-') + '\n';
         var hfParts = []; [70, 90, 110, 130, 150, 170].forEach(function (s) { var el = document.getElementById('hf' + s); if (el && el.value !== '' && el.value !== '0') hfParts.push('HF' + s + ': ' + el.value); });
@@ -903,7 +897,7 @@ function buildReportMessage() {
         msg += '• Sisa GD Stick    : ' + (document.getElementById('gdStick').value.trim() || '-') + '\n';
         msg += '• BOR / Bed Kosong : ' + (document.getElementById('sisaBed').value.trim() || '-') + '\n';
     }
-    msg += '\n' + DIVIDER + '\n*🪪 IDENTITAS PENGIRIM*\n👤 Nama: ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.5_';
+    msg += '\n' + DIVIDER + '\n*IDENTITAS PENGIRIM*\nNama: ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.5_';
     return msg;
 }
 
@@ -1026,32 +1020,32 @@ function analyzeRowsCSV(rows, startStr, endStr, sourceLabel) {
 
 function susunTeksMutu(agg) {
     var S = agg.S, total = agg.total, ktv = agg.ktv; var totTrans = 0; [1, 2, 3, 0].forEach(function (n) { totTrans += (S[n] ? S[n].transfusi : 0); }); var MAX_BED_PER_SHIFT = 29;
-    var text = '*LAPORAN MUTU HEMODIALISIS*\n' + DIVIDER + '\n📅 Periode : ' + formatTanggalID(agg.startStr) + ' s/d ' + formatTanggalID(agg.endStr) + '\n🩺 Total   : ' + total + ' pasien-tindakan\n';
-    text += '\n' + DIVIDER + '\n*📊 JUMLAH PASIEN & TINDAKAN HD PER SHIFT*\n';
+    var text = '*LAPORAN MUTU HEMODIALISIS*\n' + DIVIDER + '\nPeriode : ' + formatTanggalID(agg.startStr) + ' s/d ' + formatTanggalID(agg.endStr) + '\nTotal   : ' + total + ' pasien-tindakan\n';
+    text += '\n' + DIVIDER + '\n*JUMLAH PASIEN & TINDAKAN HD PER SHIFT*\n';
     [1, 2, 3].forEach(function (n) { text += '• Shift ' + n + ' : ' + S[n].pasien + ' pasien — Tindakan HD: ' + S[n].pasien + '\n'; });
     if (S[0] && S[0].pasien > 0) text += '• Tanpa data shift : ' + S[0].pasien + ' pasien\n';
     text += '• TOTAL : ' + total + ' pasien\n';
-    text += '\n' + DIVIDER + '\n*🩸 AKSES VASKULAR PER SHIFT*\n';
+    text += '\n' + DIVIDER + '\n*AKSES VASKULAR PER SHIFT*\n';
     [1, 2, 3].forEach(function (n) { var b = S[n]; text += '*Shift ' + n + ' (Total ' + b.pasien + ' pasien):*\n'; AKSES_KEYS.forEach(function (k) { if (k === 'Lainnya' && !b.akses[k]) return; text += '  • ' + k + ' : ' + b.akses[k] + '\n'; }); });
-    text += '\n' + DIVIDER + '\n*⚖️ KUALITAS DIALISIS (Kt/V)*\n• Kt/V ≥ 1,4 : ' + ktv.hi + ' orang\n• Kt/V < 1,4 : ' + ktv.lo + ' orang\n• Terdata Kt/V : ' + ktv.valid + ' dari ' + total + ' pasien-tindakan\n';
-    text += '\n' + DIVIDER + '\n*🚻 JENIS KELAMIN PER SHIFT*\n';
+    text += '\n' + DIVIDER + '\n*KUALITAS DIALISIS (Kt/V)*\n• Kt/V ≥ 1,4 : ' + ktv.hi + ' orang\n• Kt/V < 1,4 : ' + ktv.lo + ' orang\n• Terdata Kt/V : ' + ktv.valid + ' dari ' + total + ' pasien-tindakan\n';
+    text += '\n' + DIVIDER + '\n*JENIS KELAMIN PER SHIFT*\n';
     [1, 2, 3].forEach(function (n) { var b = S[n]; text += '*Shift ' + n + ' (Total ' + b.pasien + ' pasien):*\n  • Laki-laki : ' + b.laki + '\n  • Perempuan : ' + b.perempuan + '\n'; });
-    text += '\n' + DIVIDER + '\n*💉 TRANSFUSI DARAH PER SHIFT*\n';
+    text += '\n' + DIVIDER + '\n*TRANSFUSI DARAH PER SHIFT*\n';
     [1, 2, 3].forEach(function (n) { text += '• Shift ' + n + ' : ' + S[n].transfusi + ' pasien\n'; });
     if (S[0] && S[0].pasien > 0) text += '• Tanpa data shift : ' + S[0].transfusi + ' pasien\n';
     text += '• TOTAL : ' + totTrans + ' pasien\n';
-    text += '\n' + DIVIDER + '\n*🏥 BOR (BED OCCUPANCY RATE)*\n';
+    text += '\n' + DIVIDER + '\n*BOR (BED OCCUPANCY RATE)*\n';
     [1, 2, 3].forEach(function (n) { var pasien = S[n].pasien; text += '• Shift ' + n + ' : ' + pasien + ' pasien / ' + MAX_BED_PER_SHIFT + ' bed\n'; });
     return text;
 }
 
 function renderAnalitik(d) {
     var el = document.getElementById('fastTrackResult'); var html = '';
-    if (d.filteredCount === 0) { html += '<div class="warn-box">⚠️ <b>0 baris cocok dengan rentang tanggal yang dipilih.</b><br>Rentang tanggal yang terdeteksi di sheet: <b>' + escapeHtml(d.dateRangeText) + '</b>.<br>Sesuaikan Tanggal Awal/Akhir, atau buka <b>🔍 Diagnostik Data</b> di bawah.</div>'; }
+    if (d.filteredCount === 0) { html += '<div class="warn-box">⚠️ <b>0 baris cocok dengan rentang tanggal yang dipilih.</b><br>Rentang tanggal yang terdeteksi di sheet: <b>' + escapeHtml(d.dateRangeText) + '</b>.<br>Sesuaikan Tanggal Awal/Akhir, atau buka <b>Diagnostik Data</b> di bawah.</div>'; }
     html += '<div class="stat-grid"><div class="stat-card"><div class="stat-value">' + d.total + '</div><div class="stat-label">Total Pasien &amp; Tindakan HD</div></div><div class="stat-card"><div class="stat-value">' + d.ktvHi + '</div><div class="stat-label">Kt/V ≥ 1,4 (Orang)</div></div><div class="stat-card"><div class="stat-value">' + d.ktvLo + '</div><div class="stat-label">Kt/V &lt; 1,4 (Orang)</div></div><div class="stat-card"><div class="stat-value">' + d.transfusiTotal + '</div><div class="stat-label">Transfusi Darah (Pasien)</div></div></div><div class="analitik-detail"><pre class="mutu-text"></pre></div><details class="diag-box"><summary>🔍 Diagnostik Data (klik untuk detail pembacaan sheet)</summary><pre class="diag-text"></pre></details>';
     el.innerHTML = html; el.querySelector('pre.mutu-text').textContent = d.text; el.querySelector('pre.diag-text').textContent = d.diag;
 }
-function shareAnalitikWA() { if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; } var pengirim = document.getElementById('pengirim2').value.trim(); if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; } var msg = analitikData.text + '\n' + DIVIDER + '\n*🪪 PENGIRIM*\n👤 ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.5_'; window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'); }
+function shareAnalitikWA() { if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; } var pengirim = document.getElementById('pengirim2').value.trim(); if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; } var msg = analitikData.text + '\n' + DIVIDER + '\n*PENGIRIM*\nNama: ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.5_'; window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'); }
 function isiPrintAreaAnalitik() { document.querySelector('#printArea h1').textContent = 'LAPORAN MUTU HEMODIALISIS'; document.getElementById('printContent').textContent = analitikData.text + '\n' + DIVIDER + '\nPengirim: ' + (document.getElementById('pengirim2').value.trim() || '-'); }
 function saveAnalitikPDF() { if (!analitikData) { alert('⚠️ Analisis data dulu!'); return; } isiPrintAreaAnalitik(); html2pdf().set({ margin: [10, 10, 10, 10], filename: 'LAPORAN_MUTU_HEMODIALISIS.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(document.getElementById('printArea')).save(); }
 function printAnalitik() { if (!analitikData) { alert('⚠️ Analisis data dulu!'); return; } isiPrintAreaAnalitik(); window.print(); }
@@ -1068,7 +1062,6 @@ var jadwalLoaded = false;
 function loadJadwal(force) { if (jadwalLoaded && !force) return; jadwalLoaded = true; var frame = document.getElementById('jadwalFrame'); var loading = document.getElementById('jadwalLoading'); loading.classList.remove('hidden'); frame.onload = function () { loading.classList.add('hidden'); }; frame.src = 'https://docs.google.com/spreadsheets/d/' + JADWAL_SHEET_ID + '/htmlembed?gid=' + JADWAL_GID + '&single=true'; }
 function toggleJadwalSize(btn) { var wrap = document.getElementById('scheduleWrap'); wrap.classList.toggle('expanded'); btn.innerHTML = wrap.classList.contains('expanded') ? '<i class="fa-solid fa-compress"></i> Perkecil' : '<i class="fa-solid fa-expand"></i> Perbesar'; }
 
-/* === Quick Access === */
 async function loadSpecialLinks() {
     var c = document.getElementById('specialListContainer');
     c.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Memuat data dari server...</div>';
