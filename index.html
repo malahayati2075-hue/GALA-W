@@ -34,82 +34,35 @@
 
         body { margin: 0; padding: 0; background: var(--bg-gradient); min-height: 100vh; color: var(--text-main); padding-bottom: 30px; }
 
-        /* Layout Dashboard */
-        .app-container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
-            background: var(--card-bg);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            min-height: 95vh;
-            box-shadow: 12px 12px 40px rgba(0,0,0,0.08), -6px -6px 15px rgba(255,255,255,0.9);
-            border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.6);
-        }
+        .app-container { display: flex; max-width: 1200px; margin: 20px auto; background: var(--card-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); min-height: 95vh; box-shadow: 12px 12px 40px rgba(0,0,0,0.08), -6px -6px 15px rgba(255,255,255,0.9); border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.6); }
 
-        .pc-sidebar {
-            width: 250px; flex-shrink: 0;
-            background: rgba(255, 255, 255, 0.95);
-            border-right: 1px solid var(--border-color);
-            display: flex; flex-direction: column;
-            padding: 25px 15px;
-        }
-        .sidebar-brand {
-            text-align: center; font-size: 1.2rem; font-weight: 800;
-            margin-bottom: 25px; color: var(--sore-deep);
-            padding-bottom: 15px; border-bottom: 1px solid var(--border-color);
-        }
+        /* Sidebar Hijau Tosca */
+        .pc-sidebar { width: 250px; flex-shrink: 0; background: #0d9488; display: flex; flex-direction: column; padding: 25px 15px; color: #fff; }
+        .sidebar-brand { text-align: center; font-size: 1.2rem; font-weight: 800; margin-bottom: 25px; color: #fff; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); }
         .sidebar-nav { display: flex; flex-direction: column; gap: 8px; }
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 15px; border-radius: 12px; border: none;
-            background: transparent; font-weight: 600; color: var(--text-muted);
-            cursor: pointer; text-align: left; transition: all 0.2s; width: 100%;
-            font-family: inherit; font-size: 0.9rem;
-        }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 12px; border: none; background: transparent; font-weight: 600; color: rgba(255, 255, 255, 0.85); cursor: pointer; text-align: left; transition: all 0.2s; width: 100%; font-family: inherit; font-size: 0.9rem; }
         .nav-item i { width: 20px; text-align: center; font-size: 1rem; }
-        .nav-item:hover { background: #f1f5f9; color: var(--text-main); }
-        .nav-item.active {
-            background: var(--sunset-grad); color: #fff;
-            box-shadow: 4px 4px 10px rgba(109, 40, 217, 0.2);
-        }
-        .sidebar-footer { margin-top: auto; padding: 10px; text-align: center; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); border-top: 1px solid var(--border-color); }
+        .nav-item:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+        .nav-item.active { background: #ffffff; color: #0d9488; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .sidebar-footer { margin-top: auto; padding: 10px; text-align: center; font-size: 0.7rem; font-weight: 600; color: rgba(255, 255, 255, 0.6); border-top: 1px solid rgba(255,255,255,0.2); }
 
         .main-wrapper { flex: 1; display: flex; flex-direction: column; min-width: 0; }
         
-        .top-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color);
-            gap: 10px; position: sticky; top: 0; z-index: 10;
-        }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); gap: 10px; position: sticky; top: 0; z-index: 10; }
         .top-left-group { display: flex; align-items: center; gap: 10px; }
 
-        .hamburger {
-            display: none; width: 36px; height: 36px; flex: none;
-            border: 1px solid var(--border-color); background: #fff;
-            color: var(--text-main); border-radius: 10px; font-size: 1rem; cursor: pointer;
-            align-items: center; justify-content: center;
-        }
+        .hamburger { display: none; width: 36px; height: 36px; flex: none; border: 1px solid var(--border-color); background: #fff; color: var(--text-main); border-radius: 10px; font-size: 1rem; cursor: pointer; align-items: center; justify-content: center; }
         .hamburger:active { background: #f1f5f9; }
 
         .realtime-clock { text-align: left; }
         .realtime-clock .time { font-size: 1.1rem; font-weight: 800; letter-spacing: 1px; color: var(--sore-deep); }
         .realtime-clock .date { font-size: 0.7rem; opacity: 0.9; color: var(--text-muted); }
 
-        .prayer-times {
-            text-align: right; font-size: 0.65rem; line-height: 1.4;
-            background: rgba(255,255,255,0.8); padding: 6px 10px; border-radius: 10px;
-            border: 1px solid var(--border-color); max-width: 180px; color: var(--text-main);
-        }
+        .prayer-times { text-align: right; font-size: 0.65rem; line-height: 1.4; background: rgba(255,255,255,0.8); padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border-color); max-width: 180px; color: var(--text-main); }
         .prayer-times .loc { font-weight: 700; color: var(--sore-deep); margin-bottom: 2px; display: block; border-bottom: 1px solid var(--border-color); padding-bottom: 2px; }
         .prayer-times span { font-weight: 700; color: var(--sore-1); }
 
-        .sheet-header-data {
-            padding: 6px 12px; background: #f8fafc;
-            text-align: center; font-size: 0.65rem; line-height: 1.4; color: var(--text-muted);
-            border-bottom: 1px solid var(--border-color);
-            overflow-x: auto; white-space: nowrap;
-        }
+        .sheet-header-data { padding: 6px 12px; background: #f8fafc; text-align: center; font-size: 0.65rem; line-height: 1.4; color: var(--text-muted); border-bottom: 1px solid var(--border-color); overflow-x: auto; white-space: nowrap; }
         .sheet-header-data span { display: inline-block; margin: 0 6px; font-weight: 600; }
         .sheet-header-data b { color: var(--sore-deep); margin-left: 3px; }
 
@@ -119,49 +72,25 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .section-title { display: flex; align-items: center; gap: 10px; margin-top: 20px; margin-bottom: 10px; }
-        .section-title .icon-box {
-            width: 38px; height: 38px; background: #fff; color: var(--primary); border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
-            box-shadow: 4px 4px 8px rgba(13, 148, 136, 0.15), -3px -3px 8px rgba(255,255,255,0.8);
-        }
+        .section-title .icon-box { width: 38px; height: 38px; background: #fff; color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 4px 4px 8px rgba(13, 148, 136, 0.15), -3px -3px 8px rgba(255,255,255,0.8); }
         .section-title h2 { font-size: 1rem; margin: 0; color: var(--text-main); font-weight: 800; }
 
-        .main-title-3d {
-            background: var(--sunset-grad); border-radius: 16px; padding: 15px 18px;
-            box-shadow: 8px 8px 16px rgba(109, 40, 217, 0.2), -4px -4px 8px rgba(255,255,255,0.8), inset 0 2px 4px rgba(255,255,255,0.5);
-            border: 1px solid rgba(255,255,255,0.4); position: relative; overflow: hidden; margin-top: 5px;
-            display: flex; align-items: center; gap: 15px;
-        }
+        .main-title-3d { background: var(--sunset-grad); border-radius: 16px; padding: 15px 18px; box-shadow: 8px 8px 16px rgba(109, 40, 217, 0.2), -4px -4px 8px rgba(255,255,255,0.8), inset 0 2px 4px rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.4); position: relative; overflow: hidden; margin-top: 5px; display: flex; align-items: center; gap: 15px; }
         .main-title-3d .icon-box { background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #fff; box-shadow: none; }
         .main-title-3d h2 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); font-size: 1.15rem; font-weight: 900; letter-spacing: 0.5px; margin: 0; }
 
         label { display: block; font-weight: 600; margin-top: 10px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
 
-        input[type="text"], input[type="date"], input[type="number"], input[type="url"], textarea, select {
-            width: 100%; padding: 10px; border: 1.5px solid rgba(226, 232, 240, 0.8); border-radius: 10px; font-size: 0.85rem;
-            background: rgba(248, 250, 252, 0.8); transition: all 0.2s ease-in-out; font-family: inherit; color: var(--text-main);
-            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.03), inset -2px -2px 4px rgba(255,255,255,0.5);
-        }
-        input:focus, textarea:focus, select:focus {
-            border-color: var(--primary-light); background: #fff; outline: none;
-            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1), inset 2px 2px 4px rgba(0,0,0,0.02);
-        }
+        input[type="text"], input[type="date"], input[type="number"], input[type="url"], textarea, select { width: 100%; padding: 10px; border: 1.5px solid rgba(226, 232, 240, 0.8); border-radius: 10px; font-size: 0.85rem; background: rgba(248, 250, 252, 0.8); transition: all 0.2s ease-in-out; font-family: inherit; color: var(--text-main); box-shadow: inset 2px 2px 4px rgba(0,0,0,0.03), inset -2px -2px 4px rgba(255,255,255,0.5); }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary-light); background: #fff; outline: none; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1), inset 2px 2px 4px rgba(0,0,0,0.02); }
         textarea { min-height: 70px; resize: vertical; line-height: 1.4; }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
 
-        .member-card, .patient-card {
-            border: 1px solid rgba(255,255,255,0.6); border-radius: 12px; padding: 10px;
-            background: rgba(255, 255, 255, 0.6); margin-bottom: 8px;
-            box-shadow: 4px 4px 8px rgba(0,0,0,0.04), -3px -3px 8px rgba(255,255,255,0.8);
-        }
+        .member-card, .patient-card { border: 1px solid rgba(255,255,255,0.6); border-radius: 12px; padding: 10px; background: rgba(255, 255, 255, 0.6); margin-bottom: 8px; box-shadow: 4px 4px 8px rgba(0,0,0,0.04), -3px -3px 8px rgba(255,255,255,0.8); }
 
-        .section-card {
-            border-radius: 16px; padding: 15px; margin-top: 18px; margin-bottom: 10px;
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.05), -3px -3px 8px rgba(255,255,255,0.85);
-        }
+        .section-card { border-radius: 16px; padding: 15px; margin-top: 18px; margin-bottom: 10px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 4px 4px 10px rgba(0,0,0,0.05), -3px -3px 8px rgba(255,255,255,0.85); }
         .section-card .section-title { margin-top: 0; margin-bottom: 10px; }
 
         .section-card-green { background: linear-gradient(135deg, rgba(16, 185, 129, 0.20) 0%, rgba(240, 253, 244, 0.70) 100%); border: 1px solid rgba(16, 185, 129, 0.40); }
@@ -176,24 +105,13 @@
         .section-card-purple .icon-box { color: #9333ea !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-purple .section-title h2 { color: #581c87; }
 
-        .job-desk-wrapper {
-            position: relative; border-radius: 16px; overflow: hidden; margin-top: 18px; margin-bottom: 10px; padding: 15px;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12p);
-            box-shadow: 4px 4px 10px rgba(0,0,0,0.05), -3px -3px 8px rgba(255,255,255,0.85);
-            border: 1px solid rgba(59, 130, 246, 0.40);
-        }
+        .job-desk-wrapper { position: relative; border-radius: 16px; overflow: hidden; margin-top: 18px; margin-bottom: 10px; padding: 15px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%); backdrop-filter: blur(12px); box-shadow: 4px 4px 10px rgba(0,0,0,0.05), -3px -3px 8px rgba(255,255,255,0.85); border: 1px solid rgba(59, 130, 246, 0.40); }
         .job-desk-overlay { position: relative; padding: 0; background: transparent; backdrop-filter: none; border-radius: 0; }
         .job-desk-overlay .section-title { margin-top: 0; margin-bottom: 8px; }
         .job-desk-overlay .section-title h2 { color: #1e3a8a; }
         .job-desk-overlay .section-title .icon-box { color: #2563eb !important; background: rgba(255,255,255,0.95) !important; width: 34px; height: 34px; font-size: 1rem; }
-        .job-desk-overlay .job-box, .job-desk-overlay #padatkaryaBox {
-            background: transparent; border: none; border-bottom: 1px dashed rgba(59, 130, 246, 0.35);
-            box-shadow: none; padding: 6px 2px; margin-bottom: 4px;
-        }
-        .job-desk-overlay .job-box input[type="text"], .job-desk-overlay input[type="text"] {
-            background: rgba(255, 255, 255, 0.95); font-weight: 600; color: #0f172a; padding: 6px 8px; font-size: 0.8rem; border-radius: 8px;
-        }
+        .job-desk-overlay .job-box, .job-desk-overlay #padatkaryaBox { background: transparent; border: none; border-bottom: 1px dashed rgba(59, 130, 246, 0.35); box-shadow: none; padding: 6px 2px; margin-bottom: 4px; }
+        .job-desk-overlay .job-box input[type="text"], .job-desk-overlay input[type="text"] { background: rgba(255, 255, 255, 0.95); font-weight: 600; color: #0f172a; padding: 6px 8px; font-size: 0.8rem; border-radius: 8px; }
         .job-desk-overlay .check-item { background: rgba(255,255,255,0.85); border: 1px solid rgba(59,130,246,0.20); font-weight: 600; font-size: 0.65rem; padding: 2px 6px; color: #1e3a8a; }
         .job-desk-overlay .btn-add { background: rgba(255,255,255,0.85); border: 1.5px dashed #2563eb; color: #2563eb; box-shadow: none; margin-top: 2px; margin-bottom: 4px; padding: 4px; font-size: 0.75rem; }
         .job-desk-overlay .job-box .checkbox-group { margin-top: 4px; gap: 4px; }
@@ -203,7 +121,6 @@
         .small-stepper { flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 4px; background: transparent; border: none; padding: 2px 0; }
         .small-stepper .stepper-label { font-size: 0.6rem; font-weight: 600; margin-bottom: 0; color: #1e3a8a; white-space: nowrap; }
         .small-stepper .stepper-controls { display: flex; align-items: center; gap: 3px; }
-
         .stepper-btn { width: 20px; height: 20px; border: none; background: #2563eb; color: #fff; border-radius: 5px; font-size: 0.65rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 0 #1e40af; }
         .stepper-btn:active { transform: translateY(2px); box-shadow: none; }
         .stepper-input { width: 30px; text-align: center; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 0.7rem; padding: 1px 0; background: #fff; font-weight: 700; color: #0f172a; }
@@ -217,21 +134,14 @@
         .btn-group-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 25px; }
         @media (max-width: 480px) { .btn-group-3 { grid-template-columns: 1fr; } }
 
-        .btn {
-            border: none; padding: 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: flex;
-            align-items: center; justify-content: center; gap: 8px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 0 rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.1);
-            text-decoration: none; font-family: inherit;
-        }
+        .btn { border: none; padding: 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 0 rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.1); text-decoration: none; font-family: inherit; }
         .btn:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1); }
-
         .btn-wa { background: var(--primary); color: #fff; box-shadow: 0 4px 0 #0f766e, 0 6px 12px rgba(13, 148, 136, 0.3); }
         .btn-wa:hover { background: var(--primary-light); }
         .btn-pdf { background: #fff; color: var(--secondary); border: 1.5px solid var(--secondary); box-shadow: 0 4px 0 #0284c7; }
         .btn-pdf:hover { background: #f0f9ff; }
         .btn-drive { background: var(--drive-blue); color: #fff; box-shadow: 0 4px 0 #3367D6, 0 6px 12px rgba(66, 133, 244, 0.3); }
         .btn-drive:hover { background: #3367D6; }
-
         .btn-add { background: rgba(240, 249, 255, 0.8); color: var(--secondary); border: 1.5px dashed var(--secondary); margin-bottom: 10px; width: 100%; padding: 8px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; font-size: 0.85rem; }
         .btn-add:hover { background: #e0f2fe; border-style: solid; }
         .btn-reset { background: rgba(255, 241, 242, 0.8); color: var(--accent); margin-top: 10px; width: 100%; padding: 8px; border: 1px solid #fecdd3; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; font-size: 0.85rem; }
@@ -246,6 +156,8 @@
         .monitoring-table td { border: 1px solid var(--border-color); padding: 0; background: rgba(255,255,255,0.5); }
         .monitoring-table input, .monitoring-table select { width: 100%; border: none; background: transparent; padding: 6px 4px; font-size: 0.75rem; text-align: center; font-family: inherit; color: var(--text-main); box-shadow: none; }
         .monitoring-table input:focus, .monitoring-table select:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
+        .monitoring-table textarea { width: 100%; border: none; background: transparent; padding: 6px 4px; font-size: 0.75rem; text-align: left; font-family: inherit; color: var(--text-main); box-shadow: none; min-height: 50px; resize: vertical; }
+        .monitoring-table textarea:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
         .row-del { border: none; background: transparent; color: var(--accent); cursor: pointer; font-size: 0.85rem; padding: 2px 4px; }
 
         .dialyzer-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 8px; }
@@ -282,10 +194,6 @@
         .role-notice { margin-top: 12px; padding: 10px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; line-height: 1.5; background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(255,255,255,0.75)); border: 1px dashed rgba(37,99,235,0.5); color: #1e3a8a; }
         .role-notice.katim { background: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(255,255,255,0.75)); border-color: rgba(13,148,136,0.5); color: #0f766e; }
 
-        .section-locked { position: relative; overflow: hidden; }
-        .lock-overlay { position: absolute; top:0; left:0; right:0; bottom:0; z-index: 30; border-radius: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 15px; cursor: not-allowed; background: rgba(248,250,252,0.88); backdrop-filter: blur(3px); }
-        .lock-overlay .lock-icon { font-size: 2rem; }
-        .lock-overlay .lock-text { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
         .field-locked > label::after { content: " 🔒"; font-size: 0.7rem; }
         .field-locked > select, .field-locked > input { opacity: 0.5; pointer-events: none; background: #f1f5f9; }
 
@@ -300,41 +208,31 @@
         .btn-secondary { border: none; padding: 10px; border-radius: 10px; background: #f1f5f9; color: var(--text-muted); font-weight: 700; cursor: pointer; font-family: inherit; }
         .btn-sendwa { border: none; padding: 10px; border-radius: 10px; background: #25D366; color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
 
-        /* Sidebar Mobile */
         .sidebar-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15,23,42,0.5); z-index: 190; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .sidebar-overlay.show { opacity: 1; pointer-events: auto; }
-        .mobile-sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 250px; max-width: 80vw; background: #fff; z-index: 200; display: none; flex-direction: column; transform: translateX(-105%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 8px 0 20px rgba(0,0,0,0.15); }
+        .mobile-sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 250px; max-width: 80vw; background: #0d9488; z-index: 200; display: none; flex-direction: column; transform: translateX(-105%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 8px 0 20px rgba(0,0,0,0.15); }
         .mobile-sidebar.open { transform: translateX(0); }
-        .sidebar-top { display: flex; justify-content: space-between; align-items: center; padding: 15px 12px; background: var(--sunset-grad); color: #fff; }
+        .sidebar-top { display: flex; justify-content: space-between; align-items: center; padding: 15px 12px; background: #0f766e; color: #fff; }
         .sidebar-brand { font-weight: 800; font-size: 0.85rem; letter-spacing: 0.5px; }
         .sidebar-close { background: rgba(255,255,255,0.2); border: none; color: #fff; width: 28px; height: 28px; border-radius: 6px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .sidebar-menu { flex: 1; overflow-y: auto; padding: 8px 6px; display: flex; flex-direction: column; gap: 2px; }
-        .side-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 12px; background: transparent; border: none; font-weight: 600; color: var(--text-muted); cursor: pointer; font-size: 0.9rem; font-family: inherit; text-align: left; transition: all 0.15s; }
+        .side-item { display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 12px; background: transparent; border: none; font-weight: 600; color: rgba(255, 255, 255, 0.85); cursor: pointer; font-size: 0.9rem; font-family: inherit; text-align: left; transition: all 0.15s; }
         .side-item i { width: 20px; text-align: center; font-size: 1rem; }
-        .side-item:hover { background: #f1f5f9; color: var(--text-main); }
-        .side-item.active { background: var(--sunset-grad); color: #fff; box-shadow: 4px 4px 10px rgba(109,40,217,0.2); }
+        .side-item:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+        .side-item.active { background: #ffffff; color: #0d9488; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        /* Home Slide Styles */
-        .home-banner-img {
-            width: 100%; height: auto; display: block;
-            border-radius: 16px; margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.15);
-        }
+        .home-banner-img { width: 100%; height: auto; display: block; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(109, 40, 217, 0.15); }
         .home-content { padding: 10px; }
-        .home-title {
-            text-align: center; font-size: 1.8rem; font-weight: 800; margin: 10px 0 25px 0;
-            background: var(--sunset-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .home-card {
-            background: rgba(255, 255, 255, 0.85); border: 1px solid var(--border-color);
-            border-left: 5px solid var(--primary); padding: 20px; border-radius: 16px; margin-bottom: 15px;
-            box-shadow: 4px 4px 15px rgba(0,0,0,0.05);
-        }
+        .home-title { text-align: center; font-size: 1.8rem; font-weight: 800; margin: 10px 0 25px 0; background: var(--sunset-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .home-card { background: rgba(255, 255, 255, 0.85); border: 1px solid var(--border-color); border-left: 5px solid var(--primary); padding: 20px; border-radius: 16px; margin-bottom: 15px; box-shadow: 4px 4px 15px rgba(0,0,0,0.05); }
         .home-card h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
         .home-card p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--text-main); }
         .home-card.critik-box { border-left-color: var(--accent); }
         .home-card.critik-box h3 { color: var(--accent); }
         .version-tag { display: inline-block; margin-top: 10px; background: var(--sore-deep); color: #fff; padding: 5px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
+
+        /* Kelas untuk menyembunyikan section rapat ke atas */
+        .section-hidden { display: none !important; }
 
         @media (max-width: 991px) {
             .app-container { flex-direction: column; max-width: 720px; }
@@ -343,7 +241,6 @@
             .mobile-sidebar { display: flex; }
             .page-container { padding: 20px; }
         }
-
         @media (min-width: 992px) {
             .hamburger { display: none; }
             .mobile-sidebar, .sidebar-overlay { display: none !important; }
@@ -366,7 +263,6 @@
         <option value="Tidak">
     </datalist>
 
-    <!-- Sidebar for PC -->
     <aside class="pc-sidebar">
         <div class="sidebar-brand">Laporan Digital</div>
         <nav class="sidebar-nav">
@@ -380,7 +276,6 @@
         <div class="sidebar-footer">Gala-w versi 4.5</div>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-wrapper">
         <div class="top-bar">
             <div class="top-left-group">
@@ -420,23 +315,17 @@
 
                     <div class="home-card">
                         <h3><i class="fa-solid fa-bullseye"></i> Tujuan</h3>
-                        <p>
-                            Bertujuan untuk menyatukan rekapitulasi data monitoring pasien, laporan mutu, evaluasi Kt/V, hingga penjadwalan dalam satu platform yang terintegrasi dengan Google Spreadsheet secara real-time.
-                        </p>
+                        <p>Bertujuan untuk menyatukan rekapitulasi data monitoring pasien, laporan mutu, evaluasi Kt/V, hingga penjadwalan dalam satu platform yang terintegrasi dengan Google Spreadsheet secara real-time.</p>
                     </div>
 
                     <div class="home-card">
                         <h3><i class="fa-solid fa-heart"></i> Manfaat untuk Perawat</h3>
-                        <p>
-                            Memudahkan perawat pelaksana maupun KATIM dalam menginput data 20 kolom monitoring (Pre, Intra, Post HD). Data statik pasien (JK, TB, BB, Gol Darah, Akses, QB, QD) akan <b>terisi otomatis</b> dari database. Selain itu, laporan dapat langsung dikirim via WhatsApp atau disimpan menjadi PDF tanpa perlu mengetik manual di pesan teks.
-                        </p>
+                        <p>Memudahkan perawat pelaksana maupun KATIM dalam menginput data 20 kolom monitoring (Pre, Intra, Post HD). Data statik pasien (JK, TB, BB, Gol Darah, Akses, QB, QD) akan <b>terisi otomatis</b> dari database. Selain itu, laporan dapat langsung dikirim via WhatsApp atau disimpan menjadi PDF tanpa perlu mengetik manual di pesan teks.</p>
                     </div>
 
                     <div class="home-card">
                         <h3><i class="fa-solid fa-star"></i> Harapan</h3>
-                        <p>
-                            Semoga dengan adanya aplikasi ini, beban administratif perawat dapat berkurang, pelaporan kebijakan (MUTU) menjadi lebih cepat dan akurat, serta pelayanan ke pasien hemodialisis dapat terus meningkatkan kualitasnya.
-                        </p>
+                        <p>Semoga dengan adanya aplikasi ini, beban administratif perawat dapat berkurang, pelaporan kebijakan (MUTU) menjadi lebih cepat dan akurat, serta pelayanan ke pasien hemodialisis dapat terus meningkatkan kualitasnya.</p>
                     </div>
 
                     <div class="home-card critik-box">
@@ -537,27 +426,7 @@
                         <table class="monitoring-table" id="monitoringTable">
                             <thead>
                                 <tr>
-                                    <th>Bed</th>
-                                    <th>Nama</th>
-                                    <th>JK</th>
-                                    <th>TD PRE_HD</th>
-                                    <th>TD INTRA_HD</th>
-                                    <th>TD POST_HD</th>
-                                    <th>Gol Darah</th>
-                                    <th>TB</th>
-                                    <th>BB</th>
-                                    <th>AKSES</th>
-                                    <th>UFG (liter)</th>
-                                    <th>QB</th>
-                                    <th>QD</th>
-                                    <th>Heparin</th>
-                                    <th>EPO/FE</th>
-                                    <th>Kt/V</th>
-                                    <th>Transfusi</th>
-                                    <th>Keterangan</th>
-                                    <th>Penyerah</th>
-                                    <th>Penerima</th>
-                                    <th>Aksi</th>
+                                    <th>Bed</th><th>Nama</th><th>JK</th><th>TD PRE_HD</th><th>TD INTRA_HD</th><th>TD POST_HD</th><th>Gol Darah</th><th>TB</th><th>BB</th><th>AKSES</th><th>UFG (liter)</th><th>QB</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>Transfusi</th><th>Keterangan</th><th>Penyerah</th><th>Penerima</th><th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="monitoringBody"></tbody>
@@ -579,10 +448,8 @@
                         <div><label>Masalah Pasien</label><textarea id="masalahPasien" style="min-height: 70px;"></textarea></div>
                         <div><label>Masalah Mesin / Alat</label><textarea id="masalahMesin" style="min-height: 70px;"></textarea></div>
                     </div>
-
                     <label>Sisa Dialyzer (HF)</label>
                     <div class="dialyzer-grid" id="dialyzerContainer"></div>
-
                     <div class="grid-2" style="margin-top: 10px;">
                         <div><label>Sisa GD Stick</label><input type="text" id="gdStick" placeholder="Contoh: 12 pcs"></div>
                         <div><label>BOR / Sisa Bed Kosong</label><input type="text" id="sisaBed" placeholder="Contoh: 1 bed (44)"></div>
@@ -595,7 +462,6 @@
                         <h2>Identitas Pengirim</h2>
                     </div>
                     <input type="text" id="pengirim1" placeholder="Nama Anda (Wajib diisi untuk Laporan)">
-
                     <div class="btn-group-3">
                         <button class="btn btn-wa" onclick="kirimWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
                         <button class="btn btn-drive" onclick="uploadToDrive()"><i class="fa-brands fa-google-drive"></i> Upload Drive</button>
@@ -612,34 +478,15 @@
                     <h2>MUTU</h2>
                 </div>
                 <p style="color: var(--text-muted); text-align: center; margin-top: 15px; line-height: 1.6; font-size: 0.85rem;">
-                    Analisis data dari sheet <b>REKAP_HARIAN</b> per rentang tanggal.<br>
-                    Menampilkan jumlah murni (tanpa persentase) untuk Kt/V, Akses Vaskular, Jenis Kelamin, dan Transfusi per shift.
+                    Analisis data dari sheet <b>REKAP_HARIAN</b> per rentang tanggal.<br>Menampilkan jumlah murni (tanpa persentase) untuk Kt/V, Akses Vaskular, Jenis Kelamin, dan Transfusi per shift.
                 </p>
-
                 <div class="grid-2" style="margin-top: 15px;">
-                    <div>
-                        <label>Tanggal Awal</label>
-                        <input type="date" id="ft_start_date">
-                    </div>
-                    <div>
-                        <label>Tanggal Akhir</label>
-                        <input type="date" id="ft_end_date">
-                    </div>
+                    <div><label>Tanggal Awal</label><input type="date" id="ft_start_date"></div>
+                    <div><label>Tanggal Akhir</label><input type="date" id="ft_end_date"></div>
                 </div>
-
-                <div style="margin-top: 10px;">
-                    <label>Nama Pengirim (Wajib diisi untuk Share/PDF)</label>
-                    <input type="text" id="pengirim2" placeholder="Nama Anda">
-                </div>
-
-                <button class="btn btn-wa" onclick="searchFastTrack()" style="width: 100%; margin-top: 12px;">
-                    <i class="fa-solid fa-search"></i> Cari &amp; Analisis Data
-                </button>
-
-                <div id="fastTrackResult" style="margin-top: 20px;">
-                    <div class="stat-loading">Hasil pencarian akan muncul di sini.</div>
-                </div>
-
+                <div style="margin-top: 10px;"><label>Nama Pengirim (Wajib diisi untuk Share/PDF)</label><input type="text" id="pengirim2" placeholder="Nama Anda"></div>
+                <button class="btn btn-wa" onclick="searchFastTrack()" style="width: 100%; margin-top: 12px;"><i class="fa-solid fa-search"></i> Cari &amp; Analisis Data</button>
+                <div id="fastTrackResult" style="margin-top: 20px;"><div class="stat-loading">Hasil pencarian akan muncul di sini.</div></div>
                 <div class="btn-group-3" style="margin-top: 20px; display: none;" id="analitikActions">
                     <button class="btn btn-wa" onclick="shareAnalitikWA()"><i class="fa-brands fa-whatsapp"></i> Share WA</button>
                     <button class="btn btn-drive" onclick="saveAnalitikPDF()"><i class="fa-solid fa-file-pdf"></i> Simpan PDF</button>
@@ -654,9 +501,7 @@
                     <h2>Pencarian Pasien</h2>
                 </div>
                 <div style="text-align: center; margin-top: 40px;">
-                    <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">
-                        Klik tombol di bawah untuk membuka halaman pencarian pasien Hemodialisa.
-                    </p>
+                    <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Klik tombol di bawah untuk membuka halaman pencarian pasien Hemodialisa.</p>
                     <a href="https://bumimadinahdb26-cloud.github.io/pencarianHD/" target="_blank" class="btn btn-wa" style="display: inline-flex; text-decoration: none; padding: 12px 30px; font-size: 1rem;">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Halaman Pencarian
                     </a>
@@ -669,7 +514,6 @@
                     <div class="icon-box">📅</div>
                     <h2>Jadwal Pasien Hemodialisis</h2>
                 </div>
-
                 <div class="section-card section-card-blue">
                     <div class="section-title">
                         <div class="icon-box">👁️</div>
@@ -682,16 +526,10 @@
                         </div>
                         <iframe id="jadwalFrame" title="Jadwal Pasien Hemodialisis" allowfullscreen></iframe>
                     </div>
-                    <p style="font-size:0.7rem; color:var(--text-muted); margin:8px 0 0; text-align:center;">
-                        <i class="fa-solid fa-circle-info"></i> Jika pratinjau tidak muncul, tekan <b>Muat Ulang</b> atau buka spreadsheet lewat tombol di bawah.
-                    </p>
+                    <p style="font-size:0.7rem; color:var(--text-muted); margin:8px 0 0; text-align:center;"><i class="fa-solid fa-circle-info"></i> Jika pratinjau tidak muncul, tekan <b>Muat Ulang</b> atau buka spreadsheet lewat tombol di bawah.</p>
                 </div>
-
                 <div class="btn-group-3">
-                    <a href="https://docs.google.com/spreadsheets/d/1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0/edit?gid=1100922958#gid=1100922958"
-                       target="_blank" rel="noopener" class="btn btn-drive" style="text-decoration:none;">
-                        <i class="fa-solid fa-table-list"></i> Buka Spreadsheet
-                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0/edit?gid=1100922958#gid=1100922958" target="_blank" rel="noopener" class="btn btn-drive" style="text-decoration:none;"><i class="fa-solid fa-table-list"></i> Buka Spreadsheet</a>
                     <button class="btn btn-pdf" onclick="loadJadwal(true)"><i class="fa-solid fa-rotate-right"></i> Muat Ulang</button>
                     <button class="btn btn-wa" onclick="toggleJadwalSize(this)"><i class="fa-solid fa-expand"></i> Perbesar</button>
                 </div>
@@ -706,33 +544,23 @@
                 <p style="color: var(--text-muted); text-align: center; margin: 15px 0; font-size: 0.85rem;">
                     Daftar dokumen atau laporan khusus beserta bukti link. Data tersimpan di Spreadsheet dan dapat dilihat semua pengguna.
                 </p>
-
                 <div class="section-card section-card-green">
                     <div class="section-title">
                         <div class="icon-box">🔗</div>
                         <h2>Tambah Dokumen / Link</h2>
                     </div>
                     <div class="grid-2">
-                        <div>
-                            <label>Nama Dokumen / Laporan</label>
-                            <input type="text" id="specialName" placeholder="Contoh: Laporan Insiden Bulan Mei">
-                        </div>
-                        <div>
-                            <label>Bukti Link (URL)</label>
-                            <input type="url" id="specialUrl" placeholder="https://drive.google.com/...">
-                        </div>
+                        <div><label>Nama Dokumen / Laporan</label><input type="text" id="specialName" placeholder="Contoh: Laporan Insiden Bulan Mei"></div>
+                        <div><label>Bukti Link (URL)</label><input type="url" id="specialUrl" placeholder="https://drive.google.com/..."></div>
                     </div>
-                    <button class="btn btn-wa" onclick="addSpecialLink()" style="width: 100%; margin-top: 12px;">
-                        <i class="fa-solid fa-plus"></i> Simpan ke Server
-                    </button>
+                    <button class="btn btn-wa" onclick="addSpecialLink()" style="width: 100%; margin-top: 12px;"><i class="fa-solid fa-plus"></i> Simpan ke Server</button>
                 </div>
-
                 <div class="section-card section-card-blue">
                     <div class="section-title">
                         <div class="icon-box">📂</div>
                         <h2>Daftar Dokumen Tersimpan</h2>
                     </div>
-                    <div id="specialListContainer" class="special-list" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div id="specialListContainer" style="display: flex; flex-direction: column; gap: 8px;">
                         <div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Memuat data dari server...</div>
                     </div>
                 </div>
@@ -741,7 +569,6 @@
     </div>
 </div>
 
-<!-- Sidebar Mobile -->
 <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 <aside id="mobileSidebar" class="mobile-sidebar">
     <div class="sidebar-top">
@@ -758,7 +585,6 @@
     </div>
 </aside>
 
-<!-- Popup Preview Laporan -->
 <div id="reportModal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
         <div class="modal-header">
@@ -786,7 +612,11 @@ var JADWAL_SHEET_ID = "1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0";
 var JADWAL_GID = "1100922958";
 var WA_NUMBER = ""; 
 var DIVIDER = "━━━━━━━━━━━━━━━━━";
+
+// URL Apps Script khusus untuk Laporan Khusus (Sheet link)
 var SPECIAL_API_URL = "https://script.google.com/macros/s/AKfycbwW4U1VoES7npwCOT0fC_9_DzjjVFgjISUzd3fExR5IWj6pQ8GsJJxcbq9TXfSDjy-c/exec"; 
+var SPECIAL_SHEET_ID = "1MTojgwzDM8hfUIgGP2G_QaS75QOjLFc8gXtoQSUi_Xs";
+var SPECIAL_GID = "0";
 
 var patientData = [];
 var specialLinks = [];
@@ -805,64 +635,44 @@ setInterval(updateClock, 1000); updateClock();
 async function fetchPrayerTimes() {
     try {
         var response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Malang&country=Indonesia&method=20');
-        var data = await response.json();
-        var t = data.data.timings;
-        var fmt = function (x) { return x.substring(0, 5); };
-        document.getElementById('prayerTimes').innerHTML =
-            '<span class="loc">📍 Malang</span>Subuh: <span>' + fmt(t.Fajr) + '</span> | Dzuhur: <span>' + fmt(t.Dhuhr) + '</span><br>' +
-            'Ashar: <span>' + fmt(t.Asr) + '</span> | Magrib: <span>' + fmt(t.Maghrib) + '</span> | Isya: <span>' + fmt(t.Isha) + '</span>';
+        var data = await response.json(); var t = data.data.timings; var fmt = function (x) { return x.substring(0, 5); };
+        document.getElementById('prayerTimes').innerHTML = '<span class="loc">📍 Malang</span>Subuh: <span>' + fmt(t.Fajr) + '</span> | Dzuhur: <span>' + fmt(t.Dhuhr) + '</span><br>Ashar: <span>' + fmt(t.Asr) + '</span> | Magrib: <span>' + fmt(t.Maghrib) + '</span> | Isya: <span>' + fmt(t.Isha) + '</span>';
     } catch (e) { }
 }
 fetchPrayerTimes();
 
 function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-
 function parseCSV(text) {
     var rows = [], row = [], inQuotes = false, cell = '';
     for (var i = 0; i < text.length; i++) {
         var char = text[i];
-        if (char === '"') {
-            if (inQuotes && text[i + 1] === '"') { cell += '"'; i++; }
-            else { inQuotes = !inQuotes; }
-        } else if (char === ',' && !inQuotes) {
-            row.push(cell); cell = '';
-        } else if ((char === '\n' || char === '\r') && !inQuotes) {
-            if (cell !== '' || row.length > 0) { row.push(cell); rows.push(row); row = []; cell = ''; }
-            if (char === '\r' && text[i + 1] === '\n') i++;
-        } else { cell += char; }
+        if (char === '"') { if (inQuotes && text[i + 1] === '"') { cell += '"'; i++; } else { inQuotes = !inQuotes; } }
+        else if (char === ',' && !inQuotes) { row.push(cell); cell = ''; }
+        else if ((char === '\n' || char === '\r') && !inQuotes) { if (cell !== '' || row.length > 0) { row.push(cell); rows.push(row); row = []; cell = ''; } if (char === '\r' && text[i + 1] === '\n') i++; }
+        else { cell += char; }
     }
     if (cell !== '' || row.length > 0) { row.push(cell); rows.push(row); }
     return rows;
 }
-
 function formatTanggalID(value) {
     if (!value) return '-';
-    var d = new Date(value + 'T00:00:00');
-    if (isNaN(d.getTime())) return value;
+    var d = new Date(value + 'T00:00:00'); if (isNaN(d.getTime())) return value;
     var hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][d.getDay()];
     var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][d.getMonth()];
     return hari + ', ' + d.getDate() + ' ' + bulan + ' ' + d.getFullYear();
 }
-
 var BULAN_ID = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7, september: 8, oktober: 9, november: 10, desember: 11 };
-
 function parseSheetDate(s) {
-    if (!s) return null; s = String(s).trim().toLowerCase();
-    if (!s || s === '-' || s === '—') return null;
-    var m = s.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/);
-    if (m && BULAN_ID[m[2]] !== undefined) return new Date(+m[3], BULAN_ID[m[2]], +m[1]);
-    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
-    m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
-    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+    if (!s) return null; s = String(s).trim().toLowerCase(); if (!s || s === '-' || s === '—') return null;
+    var m = s.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/); if (m && BULAN_ID[m[2]] !== undefined) return new Date(+m[3], BULAN_ID[m[2]], +m[1]);
+    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/); if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
     var d = new Date(s); return isNaN(d.getTime()) ? null : d;
 }
-
 async function fetchHeaderData() {
     try {
         var csvUrl = "https://docs.google.com/spreadsheets/d/1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0/export?format=csv&gid=432993966";
-        var response = await fetch(csvUrl);
-        var csvText = await response.text(); var rows = parseCSV(csvText);
+        var response = await fetch(csvUrl); var csvText = await response.text(); var rows = parseCSV(csvText);
         if (rows.length >= 2) {
             var headers = rows[0].slice(5, 22); var values = rows[1].slice(5, 22); var html = '';
             headers.forEach(function (h, i) { if (h && values[i] !== undefined) html += '<span>' + escapeHtml(String(h).trim()) + ': <b>' + escapeHtml(String(values[i]).trim()) + '</b></span>'; });
@@ -875,16 +685,9 @@ fetchHeaderData();
 function switchTab(n) {
     n = parseInt(n, 10);
     document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
-    var page = document.getElementById('slide' + n);
-    if (page) page.classList.add('active');
-    document.querySelectorAll('.nav-item, .side-item').forEach(function (b) {
-        var tab = parseInt(b.getAttribute('data-tab'), 10);
-        if (!isNaN(tab)) b.classList.toggle('active', tab === n);
-        else b.classList.remove('active');
-    });
-    closeSidebar();
-    if (n === 4) loadJadwal(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    var page = document.getElementById('slide' + n); if (page) page.classList.add('active');
+    document.querySelectorAll('.nav-item, .side-item').forEach(function (b) { var tab = parseInt(b.getAttribute('data-tab'), 10); if (!isNaN(tab)) b.classList.toggle('active', tab === n); else b.classList.remove('active'); });
+    closeSidebar(); if (n === 4) loadJadwal(false); window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function openSidebar() { document.getElementById('mobileSidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('show'); }
 function closeSidebar() { document.getElementById('mobileSidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); }
@@ -905,21 +708,14 @@ var ROLE_SECTIONS = {
 function getRole() { return document.getElementById('roleSelect').value; }
 function getRoleLabel() { return getRole() === 'KATIM' ? 'KATIM' : 'Perawat Pelaksana'; }
 
+// Bagian Terkunci otomatis di-hidden (display: none) dan tertutup rapat ke atas
 function setSectionLocked(id, locked) {
     var el = document.getElementById(id);
     if (!el) return;
-    var ov = el.querySelector('.lock-overlay');
     if (locked) {
-        el.classList.add('section-locked');
-        if (!ov) { ov = document.createElement('div'); ov.className = 'lock-overlay'; ov.innerHTML = '<div class="lock-icon">🔒</div><div class="lock-text"></div>'; el.appendChild(ov); }
-        ov.querySelector('.lock-text').textContent = 'Terkunci — tidak berlaku & tidak masuk laporan untuk peran: ' + getRoleLabel();
-        el.querySelectorAll('input, textarea, select, button').forEach(function (x) { x.disabled = true; });
-        el.querySelectorAll('a').forEach(function (a) { a.style.pointerEvents = 'none'; });
+        el.classList.add('section-hidden'); // Sembunyikan total
     } else {
-        el.classList.remove('section-locked');
-        if (ov) ov.remove();
-        el.querySelectorAll('input, textarea, select, button').forEach(function (x) { x.disabled = false; });
-        el.querySelectorAll('a').forEach(function (a) { a.style.pointerEvents = ''; });
+        el.classList.remove('section-hidden'); // Tampilkan
     }
 }
 
@@ -927,9 +723,11 @@ function applyRoleRules() {
     var rules = ROLE_SECTIONS[getRole()];
     rules.aktif.forEach(function (id) { setSectionLocked(id, false); });
     rules.terkunci.forEach(function (id) { setSectionLocked(id, true); });
+
     var sf = document.getElementById('shiftField'), ss = document.getElementById('shift1');
     if (getRole() === 'KATIM') { sf.classList.add('field-locked'); ss.disabled = true; }
     else { sf.classList.remove('field-locked'); ss.disabled = false; }
+
     var notice = document.getElementById('roleNotice');
     if (getRole() === 'KATIM') {
         notice.className = 'role-notice katim';
@@ -948,9 +746,7 @@ function getReportTitle() {
 
 var memberCount = 0;
 function tambahAnggota(focusNew) {
-    memberCount++;
-    var card = document.createElement('div');
-    card.className = 'member-card'; card.id = 'memberBox-' + memberCount;
+    memberCount++; var card = document.createElement('div'); card.className = 'member-card'; card.id = 'memberBox-' + memberCount;
     card.style.display = 'flex'; card.style.alignItems = 'center'; card.style.gap = '8px'; card.style.padding = '8px 12px';
     card.innerHTML = '<input type="text" id="agt' + memberCount + '" placeholder="Nama Anggota Tim ' + memberCount + '" style="flex:1; margin:0;" onkeydown="handleEnterMember(event)"><button class="delete-pasien" onclick="hapusAnggota(' + memberCount + ')" style="font-size:1.3rem;"><i class="fa-solid fa-circle-xmark"></i></button>';
     document.getElementById('memberContainer').appendChild(card);
@@ -961,9 +757,7 @@ function handleEnterMember(event) { if (event.key === "Enter") { event.preventDe
 
 (function initDialyzer() {
     var html = '';
-    [70, 90, 110, 130, 150, 170].forEach(function (size) {
-        html += '<div class="dialyzer-item"><label>HF ' + size + '</label><div class="controls"><button type="button" onclick="adjustVal(\'hf' + size + '\', -1)">-</button><input type="number" id="hf' + size + '" value="0"><button type="button" onclick="adjustVal(\'hf' + size + '\', 1)">+</button></div></div>';
-    });
+    [70, 90, 110, 130, 150, 170].forEach(function (size) { html += '<div class="dialyzer-item"><label>HF ' + size + '</label><div class="controls"><button type="button" onclick="adjustVal(\'hf' + size + '\', -1)">-</button><input type="number" id="hf' + size + '" value="0"><button type="button" onclick="adjustVal(\'hf' + size + '\', 1)">+</button></div></div>'; });
     document.getElementById('dialyzerContainer').innerHTML = html;
 })();
 function adjustVal(id, delta) { var el = document.getElementById(id); if (!el) return; var v = parseInt(el.value, 10) || 0; v += delta; if (v < 0) v = 0; el.value = v; }
@@ -971,13 +765,10 @@ function adjustVal(id, delta) { var el = document.getElementById(id); if (!el) r
 var jobList = ["kendali DL", "spreadsheet", "Laporan", "simrs", "verif box", "perawatan mesin", "DL lock", "persiapan priming", "scan upload", "kendali obat", "verif monitoring", "cek stok Order", "HF"];
 var perawatCount = 0;
 function tambahPerawat() {
-    perawatCount++;
-    var card = document.createElement('div'); card.className = 'job-box'; card.id = 'perawatBox-' + perawatCount;
-    var checkboxHTML = '';
-    jobList.forEach(function (job) { checkboxHTML += '<label class="check-item"><input type="checkbox" value="' + escapeHtml(job) + '"> ' + escapeHtml(job) + '</label>'; });
+    perawatCount++; var card = document.createElement('div'); card.className = 'job-box'; card.id = 'perawatBox-' + perawatCount;
+    var checkboxHTML = ''; jobList.forEach(function (job) { checkboxHTML += '<label class="check-item"><input type="checkbox" value="' + escapeHtml(job) + '"> ' + escapeHtml(job) + '</label>'; });
     card.innerHTML = '<div style="display:flex; gap:8px; align-items:center; margin-bottom:4px;"><input type="text" id="perawat' + perawatCount + '" placeholder="Nama Perawat ' + perawatCount + '" style="flex:1; margin:0;"><button class="delete-pasien" onclick="hapusPerawat(' + perawatCount + ')" style="font-size:1.3rem;"><i class="fa-solid fa-circle-xmark"></i></button></div><div class="bed-range"><div class="small-stepper"><span class="stepper-label">Bed Dari</span><div class="stepper-controls"><button type="button" class="stepper-btn" onclick="adjustVal(\'p_bed' + perawatCount + '_start\', -1)">-</button><input type="number" id="p_bed' + perawatCount + '_start" value="0" class="stepper-input"><button type="button" class="stepper-btn" onclick="adjustVal(\'p_bed' + perawatCount + '_start\', 1)">+</button></div></div><div class="small-stepper"><span class="stepper-label">Bed Sampai</span><div class="stepper-controls"><button type="button" class="stepper-btn" onclick="adjustVal(\'p_bed' + perawatCount + '_end\', -1)">-</button><input type="number" id="p_bed' + perawatCount + '_end" value="0" class="stepper-input"><button type="button" class="stepper-btn" onclick="adjustVal(\'p_bed' + perawatCount + '_end\', 1)">+</button></div></div></div><div class="checkbox-group" style="margin-top:4px;">' + checkboxHTML + '</div>';
-    document.getElementById('perawatContainer').appendChild(card);
-    var namaInput = document.getElementById('perawat' + perawatCount); if (namaInput) namaInput.focus();
+    document.getElementById('perawatContainer').appendChild(card); var namaInput = document.getElementById('perawat' + perawatCount); if (namaInput) namaInput.focus();
 }
 function hapusPerawat(id) { var el = document.getElementById('perawatBox-' + id); if (el) el.remove(); }
 
@@ -985,6 +776,7 @@ function markMonitoringUnsaved() { monitoringSheetSaved = false; }
 function addMonitorRow() {
     markMonitoringUnsaved();
     var tr = document.createElement('tr');
+    var ketTemplate = "Keluhan pre : \nKeluhan intra : \nKeluhan post : ";
     tr.innerHTML =
         '<td><input type="text" placeholder="Bed" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><div style="display:flex; align-items:center; gap:2px;"><input type="text" list="patientList" placeholder="Nama Pasien" oninput="autoFillPasien(this)" onchange="autoFillPasien(this)" style="padding:4px; font-size:0.75rem;"><button type="button" class="row-del" onclick="markMonitoringUnsaved(); this.closest(\'tr\').remove()" title="Hapus baris"><i class="fa-solid fa-circle-xmark"></i></button></div></td>' +
@@ -1003,7 +795,7 @@ function addMonitorRow() {
         '<td><input type="text" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" list="transfusiList" placeholder="Ada/Tidak" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
-        '<td><input type="text" placeholder="Ket..." style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
+        '<td><textarea oninput="markMonitoringUnsaved()" style="padding:4px; font-size:0.7rem; min-height:45px; width:100%; text-align:left;">' + ketTemplate + '</textarea></td>' +
         '<td><input type="text" placeholder="Penyerah" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="Penerima" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>';
     document.getElementById('monitoringBody').appendChild(tr);
@@ -1031,8 +823,9 @@ function autoFillPasien(inputEl) {
 function getMonitoringRows() {
     var rows = [];
     document.querySelectorAll('#monitoringBody tr').forEach(function (tr) {
-        var inputs = tr.querySelectorAll('input'); var fields = [];
-        inputs.forEach(function (el) { fields.push(el.value.trim()); });
+        var inputs = tr.querySelectorAll('input'); var textareas = tr.querySelectorAll('textarea');
+        var fields = []; inputs.forEach(function (el) { fields.push(el.value.trim()); });
+        if(textareas.length > 0) { fields.splice(17, 0, textareas[0].value.trim()); }
         if (fields.length >= 20) rows.push(fields.slice(0, 20));
     }); return rows;
 }
@@ -1041,27 +834,25 @@ async function submitMonitoringSheet() {
     var rows = getMonitoringRows().filter(function (r) { return r[1] !== ''; });
     if (!rows.length) { alert('⚠️ Tidak ada baris pasien dengan nama terisi!'); return; }
     var payload = { action: 'saveMonitoring', role: getRole(), tanggal: document.getElementById('tanggal1').value, shift: document.getElementById('shift1').value, tim: document.getElementById('tim1').value, pengirim: document.getElementById('pengirim1').value.trim(), rows: rows };
-    try {
-        await fetch(MONITORING_API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
-        monitoringSheetSaved = true;
-        alert('✅ Data monitoring (20 kolom) sedang dikirim ke Spreadsheet.');
-    } catch (e) { alert('❌ Gagal mengirim data: ' + e.message); }
+    try { await fetch(MONITORING_API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) }); monitoringSheetSaved = true; alert('✅ Data monitoring (20 kolom) sedang dikirim ke Spreadsheet.'); } catch (e) { alert('❌ Gagal mengirim data: ' + e.message); }
 }
 
 function formatDaftarPasien() {
     var msg = '', idx = 0;
     document.querySelectorAll('#monitoringBody tr').forEach(function (tr) {
-        var inputs = tr.querySelectorAll('input'); var f = [];
-        inputs.forEach(function (el) { f.push(el.value.trim()); });
+        var inputs = tr.querySelectorAll('input'); var textareas = tr.querySelectorAll('textarea');
+        var f = []; inputs.forEach(function (el) { f.push(el.value.trim()); });
+        if(textareas.length > 0) { f.splice(17, 0, textareas[0].value.trim()); }
         if (f.length < 20) return; if (!f.some(function (x) { return x !== ''; })) return; idx++;
         msg += idx + '. *Bed ' + (f[0] || '-') + ' — ' + (f[1] || '-') + '*\n';
         msg += '   JK: ' + (f[2] || '-') + ' | Goldar: ' + (f[6] || '-') + ' | TB: ' + (f[7] || '-') + ' | BB: ' + (f[8] || '-') + '\n';
         msg += '   TD Pre: ' + (f[3] || '-') + ' | TD Intra: ' + (f[4] || '-') + ' | TD Post: ' + (f[5] || '-') + '\n';
         msg += '   Akses: ' + (f[9] || '-') + ' | UFG: ' + (f[10] || '-') + ' | QB: ' + (f[11] || '-') + ' | QD: ' + (f[12] || '-') + '\n';
         msg += '   Heparin: ' + (f[13] || '-') + ' | EPO/FE: ' + (f[14] || '-') + ' | Kt/V: ' + (f[15] || '-') + ' | Transfusi: ' + (f[16] || '-') + '\n';
-        if (f[17]) msg += '   Ket: ' + f[17] + '\n';
+        if (f[17] && f[17] !== 'Keluhan pre : \nKeluhan intra : \nKeluhan post : ') msg += '   Ket: ' + f[17] + '\n';
         msg += '   Penyerah: ' + (f[18] || '-') + ' | Penerima: ' + (f[19] || '-') + '\n';
-    }); return { text: msg, total: idx };
+    });
+    return { text: msg, total: idx };
 }
 
 function shareMonitoringWA() {
@@ -1117,10 +908,7 @@ function kirimWA() {
     if (!document.getElementById('tanggal1').value) { alert('⚠️ Tanggal wajib diisi!'); return; }
     if (getRole() === 'PERAWAT') {
         var hasPatientData = getMonitoringRows().some(function(r) { return r[1] !== ''; });
-        if (hasPatientData && !monitoringSheetSaved) {
-            alert('⚠️ PERHATIAN!\nData Monitoring belum disimpan ke Sheet.\nHarap klik tombol "Simpan ke Sheet" terlebih dahulu.');
-            document.getElementById('secPasien').scrollIntoView({ behavior: 'smooth' }); return;
-        }
+        if (hasPatientData && !monitoringSheetSaved) { alert('⚠️ PERHATIAN!\nData Monitoring belum disimpan ke Sheet.\nHarap klik tombol "Simpan ke Sheet" terlebih dahulu.'); document.getElementById('secPasien').scrollIntoView({ behavior: 'smooth' }); return; }
     }
     currentReportMessage = buildReportMessage();
     document.getElementById('modalTitle').textContent = getReportTitle();
@@ -1161,9 +949,8 @@ var analitikData = null; var AKSES_KEYS = ['CVC/CDL Temporer', 'CVC/CDL Permanen
 async function fetchSheetCSV(sheetId, gid) {
     var attempts = [{ url: 'https://docs.google.com/spreadsheets/d/' + sheetId + '/gviz/tq?tqx=out:csv&gid=' + gid, label: 'gviz CSV' }, { url: 'https://docs.google.com/spreadsheets/d/' + sheetId + '/export?format=csv&gid=' + gid, label: 'export CSV' }];
     var lastErr = null;
-    for (var i = 0; i < attempts.length; i++) {
-        try { var res = await fetch(attempts[i].url, { cache: 'no-store' }); var text = await res.text(); var t = text.trim(); if (t.length > 10 && t.charAt(0) !== '<') return { text: text, label: attempts[i].label }; lastErr = new Error('Server merespons halaman HTML.'); } catch (e) { lastErr = e; }
-    } throw new Error(lastErr ? lastErr.message : 'Gagal memuat.');
+    for (var i = 0; i < attempts.length; i++) { try { var res = await fetch(attempts[i].url, { cache: 'no-store' }); var text = await res.text(); var t = text.trim(); if (t.length > 10 && t.charAt(0) !== '<') return { text: text, label: attempts[i].label }; lastErr = new Error('Server merespons halaman HTML.'); } catch (e) { lastErr = e; } }
+    throw new Error(lastErr ? lastErr.message : 'Gagal memuat.');
 }
 
 async function searchFastTrack() {
@@ -1182,9 +969,7 @@ async function searchFastTrack() {
         var loaded = await fetchSheetCSV(REKAP_SHEET_ID, REKAP_GID); var rows = parseCSV(loaded.text);
         if (rows.length < 2) throw new Error('Sheet terbaca tetapi kosong.');
         analitikData = analyzeRowsCSV(rows, startStr, endStr, loaded.label); renderAnalitik(analitikData); document.getElementById('analitikActions').style.display = 'grid'; return;
-    } catch (e2) {
-        resultDiv.innerHTML = '<div class="stat-loading">❌ Gagal memuat data.<br><br><b>1) Apps Script API:</b> ' + escapeHtml(errAPI ? errAPI.message : '-') + '<br><b>2) CSV langsung:</b> ' + escapeHtml(e2.message) + '<br><br>Pastikan <b>Code.gs baru sudah di-deploy ulang</b> (Deploy → Manage deployments → Edit → Version: New version) dan akses "Anyone".</div>';
-    }
+    } catch (e2) { resultDiv.innerHTML = '<div class="stat-loading">❌ Gagal memuat data.<br><br><b>1) Apps Script API:</b> ' + escapeHtml(errAPI ? errAPI.message : '-') + '<br><b>2) CSV langsung:</b> ' + escapeHtml(e2.message) + '<br><br>Pastikan <b>Code.gs baru sudah di-deploy ulang</b> (Deploy → Manage deployments → Edit → Version: New version) dan akses "Anyone".</div>'; }
 }
 
 function buildAnalitikFromAPI(d, startStr, endStr) {
@@ -1201,10 +986,8 @@ function buildAnalitikFromAPI(d, startStr, endStr) {
 
 function detectHeaderRow(rows) {
     var limit = Math.min(rows.length, 12), fallback = -1;
-    for (var i = 0; i < limit; i++) {
-        var joined = (rows[i] || []).join('|').toLowerCase(); var hasNama = joined.indexOf('nama') !== -1; var hasTgl = joined.indexOf('tanggal') !== -1 || joined.indexOf('timestamp') !== -1 || joined.indexOf('tgl') !== -1;
-        if (hasNama && hasTgl) return i; if (hasNama && fallback === -1) fallback = i;
-    } return fallback !== -1 ? fallback : 0;
+    for (var i = 0; i < limit; i++) { var joined = (rows[i] || []).join('|').toLowerCase(); var hasNama = joined.indexOf('nama') !== -1; var hasTgl = joined.indexOf('tanggal') !== -1 || joined.indexOf('timestamp') !== -1 || joined.indexOf('tgl') !== -1; if (hasNama && hasTgl) return i; if (hasNama && fallback === -1) fallback = i; }
+    return fallback !== -1 ? fallback : 0;
 }
 function findCol(headers, keywords) { for (var i = 0; i < headers.length; i++) { var h = String(headers[i] || '').toLowerCase().trim(); if (!h) continue; for (var k = 0; k < keywords.length; k++) { if (h.indexOf(keywords[k]) !== -1) return i; } } return -1; }
 function parseShift(v) { var m = String(v || '').match(/(\d)/); if (!m) return 0; var n = parseInt(m[1], 10); return (n >= 1 && n <= 3) ? n : 0; }
@@ -1270,38 +1053,65 @@ function printAnalitik() { if (!analitikData) { alert('⚠️ Analisis data dulu
 async function populatePatientDatalist() {
     try {
         var res = await fetch(MONITORING_API_URL + '?action=getPatients&t=' + Date.now(), { cache: 'no-store' }); var j = await res.json();
-        if (j.status === 'success' && j.data && j.data.length) {
-            patientData = j.data; document.getElementById('patientList').innerHTML = j.data.map(function (p) { return '<option value="' + escapeHtml(p.nama) + '"></option>'; }).join(''); return;
-        } throw new Error('kosong');
-    } catch (e) {
-        try { var loaded = await fetchSheetCSV(REKAP_SHEET_ID, REKAP_GID); var rows = parseCSV(loaded.text); var headerIdx = detectHeaderRow(rows); var cNama = findCol(rows[headerIdx] || [], ['nama', 'pasien']); if (cNama < 0) return; var names = {}; for (var i = headerIdx + 1; i < rows.length; i++) { var n = String((rows[i] || [])[cNama] || '').trim(); if (n) names[n] = true; } document.getElementById('patientList').innerHTML = Object.keys(names).sort().map(function (n) { return '<option value="' + escapeHtml(n) + '"></option>'; }).join(''); } catch (e2) { }
-    }
+        if (j.status === 'success' && j.data && j.data.length) { patientData = j.data; document.getElementById('patientList').innerHTML = j.data.map(function (p) { return '<option value="' + escapeHtml(p.nama) + '"></option>'; }).join(''); return; }
+        throw new Error('kosong');
+    } catch (e) { try { var loaded = await fetchSheetCSV(REKAP_SHEET_ID, REKAP_GID); var rows = parseCSV(loaded.text); var headerIdx = detectHeaderRow(rows); var cNama = findCol(rows[headerIdx] || [], ['nama', 'pasien']); if (cNama < 0) return; var names = {}; for (var i = headerIdx + 1; i < rows.length; i++) { var n = String((rows[i] || [])[cNama] || '').trim(); if (n) names[n] = true; } document.getElementById('patientList').innerHTML = Object.keys(names).sort().map(function (n) { return '<option value="' + escapeHtml(n) + '"></option>'; }).join(''); } catch (e2) { } }
 }
 
 var jadwalLoaded = false;
 function loadJadwal(force) { if (jadwalLoaded && !force) return; jadwalLoaded = true; var frame = document.getElementById('jadwalFrame'); var loading = document.getElementById('jadwalLoading'); loading.classList.remove('hidden'); frame.onload = function () { loading.classList.add('hidden'); }; frame.src = 'https://docs.google.com/spreadsheets/d/' + JADWAL_SHEET_ID + '/htmlembed?gid=' + JADWAL_GID + '&single=true'; }
 function toggleJadwalSize(btn) { var wrap = document.getElementById('scheduleWrap'); wrap.classList.toggle('expanded'); btn.innerHTML = wrap.classList.contains('expanded') ? '<i class="fa-solid fa-compress"></i> Perkecil' : '<i class="fa-solid fa-expand"></i> Perbesar'; }
 
+/* === LAPORAN KHUSUS === */
 async function loadSpecialLinks() {
     var c = document.getElementById('specialListContainer');
-    if (SPECIAL_API_URL === "MASUKKAN_URL_APPS_SCRIPT_DI_SINI") { c.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">⚠️ URL Apps Script belum dimasukkan ke dalam kode.</div>'; return; }
     c.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Memuat data dari server...</div>';
     try {
-        var res = await fetch(SPECIAL_API_URL + '?action=getSpecialLinks&t=' + Date.now(), { cache: 'no-store' }); var j = await res.json();
-        if (j.status === 'success') { specialLinks = j.data || []; renderSpecialLinks(); } else { throw new Error(j.message || 'Gagal memuat'); }
-    } catch (e) { c.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">❌ Gagal terhubung ke server.<br><small>Pastikan URL Apps Script sudah benar & di-deploy dengan akses "Anyone".</small></div>'; }
+        var res = await fetch(SPECIAL_API_URL + '?action=getSpecialLinks&t=' + Date.now(), { cache: 'no-store' });
+        var j = await res.json();
+        if (j.status === 'success') {
+            specialLinks = j.data || [];
+            renderSpecialLinks();
+        } else {
+            throw new Error(j.message || 'API Error');
+        }
+    } catch (e) {
+        // Fallback baca CSV langsung jika API gagal (misal deploy belum Anyone)
+        try {
+            var loaded = await fetchSheetCSV(SPECIAL_SHEET_ID, SPECIAL_GID);
+            var rows = parseCSV(loaded.text);
+            if (rows.length > 1) {
+                specialLinks = rows.slice(1).map(function(r) {
+                    return { id: r[3] || Date.now(), name: r[1], url: r[2] };
+                }).filter(l => l.name && l.url);
+                renderSpecialLinks();
+            } else {
+                c.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Belum ada dokumen ditambahkan.</div>';
+            }
+        } catch (err) {
+            c.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">❌ Gagal memuat. Pastikan Web App Apps Script sudah di-deploy dengan akses <b>Anyone</b>.</div>';
+        }
+    }
 }
+
 async function addSpecialLink() {
     var name = document.getElementById('specialName').value.trim(); var url = document.getElementById('specialUrl').value.trim();
-    if (!name || !url) { alert('Nama dan URL dokumen harus diisi!'); return; } if (!url.startsWith('http')) url = 'https://' + url;
+    if (!name || !url) { alert('Nama dan URL dokumen harus diisi!'); return; }
+    if (!url.startsWith('http')) url = 'https://' + url;
     var newId = Date.now(); var newLink = { id: newId, name: name, url: url };
-    specialLinks.push(newLink); renderSpecialLinks(); document.getElementById('specialName').value = ''; document.getElementById('specialUrl').value = ''; document.getElementById('specialName').focus();
-    try { await fetch(SPECIAL_API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'saveSpecialLink', id: String(newId), name: name, url: url }) }); } catch (e) { alert('❌ Gagal menyimpan ke server. Cek koneksi internet.'); }
+    specialLinks.push(newLink); renderSpecialLinks();
+    document.getElementById('specialName').value = ''; document.getElementById('specialUrl').value = ''; document.getElementById('specialName').focus();
+    try {
+        await fetch(SPECIAL_API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'saveSpecialLink', id: String(newId), name: name, url: url }) });
+    } catch (e) { alert('❌ Gagal menyimpan ke server. Cek koneksi internet.'); }
 }
+
 async function deleteSpecialLink(id) {
-    if (!confirm('Hapus dokumen ini dari daftar?')) return; specialLinks = specialLinks.filter(function(l) { return String(l.id) !== String(id); }); renderSpecialLinks();
+    if (!confirm('Hapus dokumen ini dari daftar?')) return;
+    specialLinks = specialLinks.filter(function(l) { return String(l.id) !== String(id); }); renderSpecialLinks();
     try { await fetch(SPECIAL_API_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'deleteSpecialLink', id: String(id) }) }); } catch (e) { }
 }
+
 function renderSpecialLinks() {
     var c = document.getElementById('specialListContainer'); if (!c) return;
     if (specialLinks.length === 0) { c.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Belum ada dokumen ditambahkan.</div>'; return; }
