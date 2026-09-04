@@ -14,7 +14,8 @@
             --primary-light: #14b8a6;
             --secondary: #0284c7;
             --accent: #f43f5e;
-            --bg-gradient: linear-gradient(135deg, #ffedd5 0%, #fff1f2 45%, #ede9fe 100%);
+            /* Background Gradient diubah ke Tosca */
+            --bg-gradient: linear-gradient(135deg, #ccfbf1 0%, #f0fdfa 45%, #ecfeff 100%);
             --card-bg: rgba(255, 255, 255, 0.9);
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -22,12 +23,13 @@
             --wa-green: #25D366;
             --drive-blue: #4285F4;
 
-            --sore-1: #f97316;
-            --sore-2: #fb923c;
-            --sore-3: #ec4899;
-            --sore-4: #8b5cf6;
-            --sore-deep: #6d28d9;
-            --sunset-grad: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #8b5cf6 100%);
+            /* Variabel Sore diganti Tosca */
+            --sore-1: #14b8a6;
+            --sore-2: #0d9488;
+            --sore-3: #0891b2;
+            --sore-4: #0e7490;
+            --sore-deep: #115e59;
+            --sunset-grad: linear-gradient(135deg, #14b8a6 0%, #0891b2 50%, #0d9488 100%);
         }
 
         * { box-sizing: border-box; font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -75,7 +77,7 @@
         .section-title .icon-box { width: 38px; height: 38px; background: #fff; color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 4px 4px 8px rgba(13, 148, 136, 0.15), -3px -3px 8px rgba(255,255,255,0.8); }
         .section-title h2 { font-size: 1rem; margin: 0; color: var(--text-main); font-weight: 800; }
 
-        .main-title-3d { background: var(--sunset-grad); border-radius: 16px; padding: 15px 18px; box-shadow: 8px 8px 16px rgba(109, 40, 217, 0.2), -4px -4px 8px rgba(255,255,255,0.8), inset 0 2px 4px rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.4); position: relative; overflow: hidden; margin-top: 5px; display: flex; align-items: center; gap: 15px; }
+        .main-title-3d { background: var(--sunset-grad); border-radius: 16px; padding: 15px 18px; box-shadow: 8px 8px 16px rgba(13, 148, 136, 0.2), -4px -4px 8px rgba(255,255,255,0.8), inset 0 2px 4px rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.4); position: relative; overflow: hidden; margin-top: 5px; display: flex; align-items: center; gap: 15px; }
         .main-title-3d .icon-box { background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #fff; box-shadow: none; }
         .main-title-3d h2 { color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); font-size: 1.15rem; font-weight: 900; letter-spacing: 0.5px; margin: 0; }
 
@@ -101,9 +103,9 @@
         .section-card-blue .icon-box { color: #2563eb !important; background: rgba(255,255,255,0.95) !important; }
         .section-card-blue .section-title h2 { color: #1e3a8a; }
 
-        .section-card-purple { background: linear-gradient(135deg, rgba(168, 85, 247, 0.20) 0%, rgba(245, 243, 255, 0.70) 100%); border: 1px solid rgba(168, 85, 247, 0.40); }
-        .section-card-purple .icon-box { color: #9333ea !important; background: rgba(255,255,255,0.95) !important; }
-        .section-card-purple .section-title h2 { color: #581c87; }
+        .section-card-purple { background: linear-gradient(135deg, rgba(20, 184, 166, 0.20) 0%, rgba(240, 253, 250, 0.70) 100%); border: 1px solid rgba(20, 184, 166, 0.40); }
+        .section-card-purple .icon-box { color: #0d9488 !important; background: rgba(255,255,255,0.95) !important; }
+        .section-card-purple .section-title h2 { color: #115e59; }
 
         .job-desk-wrapper { position: relative; border-radius: 16px; overflow: hidden; margin-top: 18px; margin-bottom: 10px; padding: 15px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.20) 0%, rgba(239, 246, 255, 0.70) 100%); backdrop-filter: blur(12px); box-shadow: 4px 4px 10px rgba(0,0,0,0.05), -3px -3px 8px rgba(255,255,255,0.85); border: 1px solid rgba(59, 130, 246, 0.40); }
         .job-desk-overlay { position: relative; padding: 0; background: transparent; backdrop-filter: none; border-radius: 0; }
@@ -150,14 +152,26 @@
         .delete-pasien { color: var(--accent); background: transparent; border: none; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s; }
         .delete-pasien:hover { transform: scale(1.2); }
 
+        /* Ukuran Kolom Tabel Monitoring */
         .table-container { overflow-x: auto; margin-top: 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.6); border-radius: 12px; background: rgba(255,255,255,0.6); box-shadow: 4px 4px 8px rgba(0,0,0,0.04), -3px -3px 8px rgba(255,255,255,0.8); }
-        .monitoring-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 2400px; }
+        .monitoring-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 1800px; }
         .monitoring-table th { background: var(--primary); color: #fff; padding: 8px 4px; font-weight: 700; border: 1px solid #0f766e; text-align: center; white-space: nowrap; position: sticky; top: 0; z-index: 5; font-size: 0.7rem; }
         .monitoring-table td { border: 1px solid var(--border-color); padding: 0; background: rgba(255,255,255,0.5); }
-        .monitoring-table input, .monitoring-table select { width: 100%; border: none; background: transparent; padding: 6px 4px; font-size: 0.75rem; text-align: center; font-family: inherit; color: var(--text-main); box-shadow: none; }
-        .monitoring-table input:focus, .monitoring-table select:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
-        .monitoring-table textarea { width: 100%; border: none; background: transparent; padding: 6px 4px; font-size: 0.75rem; text-align: left; font-family: inherit; color: var(--text-main); box-shadow: none; min-height: 50px; resize: vertical; }
-        .monitoring-table textarea:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
+        .monitoring-table input, .monitoring-table select, .monitoring-table textarea { width: 100%; border: none; background: transparent; padding: 6px 4px; font-size: 0.75rem; text-align: center; font-family: inherit; color: var(--text-main); box-shadow: none; min-width: 0; }
+        .monitoring-table input:focus, .monitoring-table select:focus, .monitoring-table textarea:focus { outline: 2px solid var(--primary-light); background: #f0fdfa; }
+        .monitoring-table textarea { text-align: left; min-height: 50px; resize: vertical; }
+        
+        /* Penyesuaian Lebar Kolom */
+        .monitoring-table th:nth-child(1), .monitoring-table td:nth-child(1) { width: 40px; } /* Bed */
+        .monitoring-table th:nth-child(2), .monitoring-table td:nth-child(2) { width: 160px; } /* Nama */
+        .monitoring-table th:nth-child(3), .monitoring-table td:nth-child(3) { width: 30px; } /* JK */
+        .monitoring-table th:nth-child(7), .monitoring-table td:nth-child(7) { width: 45px; } /* Gol Darah */
+        .monitoring-table th:nth-child(8), .monitoring-table td:nth-child(8) { width: 30px; } /* TB */
+        .monitoring-table th:nth-child(9), .monitoring-table td:nth-child(9) { width: 30px; } /* BB */
+        .monitoring-table th:nth-child(12), .monitoring-table td:nth-child(12) { width: 45px; } /* QB */
+        .monitoring-table th:nth-child(13), .monitoring-table td:nth-child(13) { width: 45px; } /* QD */
+        .monitoring-table th:nth-child(18), .monitoring-table td:nth-child(18) { width: 180px; } /* Keterangan */
+        
         .row-del { border: none; background: transparent; color: var(--accent); cursor: pointer; font-size: 0.85rem; padding: 2px 4px; }
 
         .dialyzer-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 8px; }
@@ -169,7 +183,7 @@
         @media (max-width: 480px) { .dialyzer-grid { grid-template-columns: repeat(3, 1fr); } }
 
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 15px; }
-        .stat-card { background: var(--sunset-grad); color: #fff; padding: 15px; border-radius: 14px; text-align: center; box-shadow: 6px 6px 12px rgba(109, 40, 217, 0.22), -3px -3px 8px rgba(255,255,255,0.8); }
+        .stat-card { background: var(--sunset-grad); color: #fff; padding: 15px; border-radius: 14px; text-align: center; box-shadow: 6px 6px 12px rgba(13, 148, 136, 0.22), -3px -3px 8px rgba(255,255,255,0.8); }
         .stat-value { font-size: 2rem; font-weight: 900; margin-bottom: 4px; line-height: 1; }
         .stat-label { font-size: 0.75rem; font-weight: 600; opacity: 0.95; }
         .stat-loading { text-align: center; color: var(--text-muted); padding: 30px 0; grid-column: 1/-1; }
@@ -188,7 +202,7 @@
         .schedule-frame-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
         .schedule-loading { position: absolute; top:0; left:0; right:0; bottom:0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: rgba(255,255,255,0.95); z-index: 2; }
         .schedule-loading.hidden { opacity: 0; pointer-events: none; }
-        .spinner { width: 40px; height: 40px; border: 4px solid rgba(139,92,246,0.18); border-top-color: var(--sore-4); border-radius: 50%; animation: spin 0.9s linear infinite; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(13, 148, 136, 0.18); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.9s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .role-notice { margin-top: 12px; padding: 10px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; line-height: 1.5; background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(255,255,255,0.75)); border: 1px dashed rgba(37,99,235,0.5); color: #1e3a8a; }
@@ -221,7 +235,7 @@
         .side-item:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
         .side-item.active { background: #ffffff; color: #0d9488; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        .home-banner-img { width: 100%; height: auto; display: block; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(109, 40, 217, 0.15); }
+        .home-banner-img { width: 100%; height: auto; display: block; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(13, 148, 136, 0.15); }
         .home-content { padding: 10px; }
         .home-title { text-align: center; font-size: 1.8rem; font-weight: 800; margin: 10px 0 25px 0; background: var(--sunset-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .home-card { background: rgba(255, 255, 255, 0.85); border: 1px solid var(--border-color); border-left: 5px solid var(--primary); padding: 20px; border-radius: 16px; margin-bottom: 15px; box-shadow: 4px 4px 15px rgba(0,0,0,0.05); }
@@ -231,7 +245,6 @@
         .home-card.critik-box h3 { color: var(--accent); }
         .version-tag { display: inline-block; margin-top: 10px; background: var(--sore-deep); color: #fff; padding: 5px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; }
 
-        /* Kelas untuk menyembunyikan section rapat ke atas */
         .section-hidden { display: none !important; }
 
         @media (max-width: 991px) {
@@ -299,7 +312,6 @@
             <!-- ================= SLIDE 0 : BERANDA ================= -->
             <div id="slide0" class="page active">
                 <img src="headergalaw.png" alt="Header Gala-w" class="home-banner-img">
-                <img src="header.png" alt="Header Aplikasi" class="home-banner-img">
                 
                 <div class="home-content">
                     <h1 class="home-title">Selamat Datang di Laporan Digital</h1>
@@ -522,7 +534,7 @@
                     <div class="schedule-frame-wrap" id="scheduleWrap">
                         <div class="schedule-loading" id="jadwalLoading">
                             <div class="spinner"></div>
-                            <p style="margin:0; color:#6d28d9; font-weight:600; font-size:0.8rem;">Memuat jadwal pasien...</p>
+                            <p style="margin:0; color:#115e59; font-weight:600; font-size:0.8rem;">Memuat jadwal pasien...</p>
                         </div>
                         <iframe id="jadwalFrame" title="Jadwal Pasien Hemodialisis" allowfullscreen></iframe>
                     </div>
@@ -605,7 +617,7 @@
 </div>
 
 <script>
-var MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwWCP7nMRpslFuxeV8bkYFDmI5OK-fIR4yhvBJp45kRq9Om9RFMMJUHdB35PbDn8z9Fyw/exec";
+var MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbwWCP7nMRpslFuxeV8bkYFDmI5OK-fIR4yhvBJp45kRq9Om9RFMMJUHdB35PbDn8z9Fyw.exec";
 var REKAP_SHEET_ID = "1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c";
 var REKAP_GID = "652284391";
 var JADWAL_SHEET_ID = "1bNTq4ImrP-4bE7WPqYiWPLCGQVrM1fgGe7TI_3vv9a0";
@@ -613,7 +625,6 @@ var JADWAL_GID = "1100922958";
 var WA_NUMBER = ""; 
 var DIVIDER = "━━━━━━━━━━━━━━━━━";
 
-// URL Apps Script khusus untuk Laporan Khusus (Sheet link)
 var SPECIAL_API_URL = "https://script.google.com/macros/s/AKfycbwW4U1VoES7npwCOT0fC_9_DzjjVFgjISUzd3fExR5IWj6pQ8GsJJxcbq9TXfSDjy-c/exec"; 
 var SPECIAL_SHEET_ID = "1MTojgwzDM8hfUIgGP2G_QaS75QOjLFc8gXtoQSUi_Xs";
 var SPECIAL_GID = "0";
@@ -708,15 +719,10 @@ var ROLE_SECTIONS = {
 function getRole() { return document.getElementById('roleSelect').value; }
 function getRoleLabel() { return getRole() === 'KATIM' ? 'KATIM' : 'Perawat Pelaksana'; }
 
-// Bagian Terkunci otomatis di-hidden (display: none) dan tertutup rapat ke atas
 function setSectionLocked(id, locked) {
     var el = document.getElementById(id);
     if (!el) return;
-    if (locked) {
-        el.classList.add('section-hidden'); // Sembunyikan total
-    } else {
-        el.classList.remove('section-hidden'); // Tampilkan
-    }
+    if (locked) { el.classList.add('section-hidden'); } else { el.classList.remove('section-hidden'); }
 }
 
 function applyRoleRules() {
@@ -1076,7 +1082,6 @@ async function loadSpecialLinks() {
             throw new Error(j.message || 'API Error');
         }
     } catch (e) {
-        // Fallback baca CSV langsung jika API gagal (misal deploy belum Anyone)
         try {
             var loaded = await fetchSheetCSV(SPECIAL_SHEET_ID, SPECIAL_GID);
             var rows = parseCSV(loaded.text);
