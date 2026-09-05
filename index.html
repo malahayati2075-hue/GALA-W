@@ -224,7 +224,7 @@
         .modal-header h3 { margin: 0; font-size: 0.9rem; }
         .modal-header button { background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; }
         .modal-body { padding: 12px; overflow-y: auto; }
-        .modal-body pre { white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.78rem; line-height: 1.6; background: #f8fafc; border: 1px solid var(--border-color); borderRadius: 10px; padding: 12px; margin: 0; }
+        .modal-body pre { white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.78rem; line-height: 1.6; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin: 0; }
         .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--border-color); }
         .btn-secondary { border: none; padding: 10px; border-radius: 10px; background: #f1f5f9; color: var(--text-muted); font-weight: 700; cursor: pointer; font-family: inherit; }
         .btn-sendwa { border: none; padding: 10px; border-radius: 10px; background: #25D366; color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
@@ -621,9 +621,31 @@
     </div>
 </div>
 
+<!-- Area Cetak PDF dengan blok tanda tangan resmi -->
 <div class="print-area" id="printArea">
-    <h1>LAPORAN HARIAN HEMODIALISIS</h1>
+    <h1 id="printTitle">LAPORAN HARIAN HEMODIALISIS</h1>
     <pre id="printContent"></pre>
+    
+    <!-- BLOK TANDA TANGAN UNTUK PDF -->
+    <div style="margin-top: 50px; display: flex; justify-content: space-between; text-align: center; font-family: Arial, sans-serif; width: 100%;">
+        <div style="width: 30%;">
+            <p style="margin:0; font-size: 12px;">Pelapor,</p>
+            <div style="height: 80px;"></div>
+            <p style="margin:0; font-weight: bold; text-decoration: underline;" id="sigPelapor">Nama Pelapor</p>
+        </div>
+        <div style="width: 30%;">
+            <p style="margin:0; font-size: 12px;">Penerima Laporan,</p>
+            <div style="height: 80px;"></div>
+            <p style="margin:0; font-weight: bold; text-decoration: underline;">(...........................)</p>
+        </div>
+        <div style="width: 30%;">
+            <p style="margin:0; font-size: 12px;">Penanggung Jawab,</p>
+            <!-- Gambar Tanda Tangan dari URL yang diberikan -->
+            <img src="https://z-cdn-media.chatglm.cn/files/4044d773-1553-4732-a070-c18837b25ca8.png?auth_key=1888635228-3540c5d3e64647769f1bc1624240207c-0-31687077d9402cc72683a37c4b0c22a3" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
+            <p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p>
+            <p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -838,7 +860,6 @@ function addMonitorRow(focusCol) {
     }
 }
 
-// === KEYBOARD NAVIGATION untuk Monitoring Table ===
 (function setupMonitoringKeyboardNav() {
     var tbody = document.getElementById('monitoringBody');
     if (!tbody) return;
@@ -899,7 +920,6 @@ function addMonitorRow(focusCol) {
     }
 })();
 
-// === RECALL DATA MONITORING ===
 async function recallMonitoring() {
     var tanggal = document.getElementById('tanggal1').value;
     var shift = document.getElementById('shift1').value;
@@ -1125,7 +1145,16 @@ function kirimWA() {
         var hasPatientData = getMonitoringRows().some(function(r) { return r[1] !== ''; });
         if (hasPatientData && !monitoringSheetSaved) { alert('⚠️ PERHATIAN!\nData Monitoring belum disimpan ke Sheet.\nHarap klik tombol "Simpan ke Sheet" terlebih dahulu.'); document.getElementById('secPasien').scrollIntoView({ behavior: 'smooth' }); return; }
     }
-    currentReportMessage = buildReportMessage();
+    
+    // Tambahkan Blok Tanda Tangan ke pesan WhatsApp
+    var pName = pengirim.length > 20 ? pengirim.substring(0, 20) + '...' : pengirim;
+    var waSig = '\n\n' + DIVIDER + '\n*Tanda Tangan:*\n\n```\n' +
+                'Pelapor,             Penerima Laporan,           Penanggung Jawab,\n\n\n' +
+                pName.padEnd(22) + '(..................)     Wahyu Wulandari, S.Kep. Ners\n' +
+                '                                                   NIP. 198102202008012009\n```';
+                
+    currentReportMessage = buildReportMessage() + waSig;
+
     document.getElementById('modalTitle').textContent = getReportTitle();
     document.getElementById('modalMessage').textContent = currentReportMessage;
     document.getElementById('reportModal').style.display = 'flex';
@@ -1138,10 +1167,11 @@ function sendReportWA() {
 document.getElementById('reportModal').addEventListener('click', function (e) { if (e.target === this) closeReportModal(); });
 
 function buatPDFLaporan() {
-    currentReportMessage = buildReportMessage(); var judul = getReportTitle();
-    document.querySelector('#printArea h1').textContent = judul;
-    document.getElementById('printContent').textContent = currentReportMessage;
-    return html2pdf().set({ margin: [10, 10, 10, 10], filename: judul.replace(/[^a-z0-9]+/gi, '_') + '.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(document.getElementById('printArea')).save();
+    var pengirim = document.getElementById('pengirim1').value.trim() || '(Nama Pelapor)';
+    document.getElementById('sigPelapor').innerText = pengirim; // Masukkan nama pelapor ke PDF
+    document.getElementById('printTitle').textContent = getReportTitle();
+    document.getElementById('printContent').textContent = buildReportMessage(); // Gunakan pesan tanpa blok WA sig karena PDF punya blok sendiri
+    return html2pdf().set({ margin: [10, 10, 10, 10], filename: getReportTitle().replace(/[^a-z0-9]+/gi, '_') + '.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(document.getElementById('printArea')).save();
 }
 function cetakPDF() { if (!document.getElementById('pengirim1').value.trim()) { alert('⚠️ Nama pengirim wajib diisi!'); return; } buatPDFLaporan(); }
 async function uploadToDrive() { if (!document.getElementById('pengirim1').value.trim()) { alert('⚠️ Nama pengirim wajib diisi!'); return; } alert('📄 PDF laporan akan diunduh.\nSetelah selesai, silakan upload file tersebut ke Google Drive Anda.'); try { await buatPDFLaporan(); window.open('https://drive.google.com/drive/my-drive', '_blank'); } catch (e) { alert('❌ Gagal membuat PDF: ' + e.message); } }
