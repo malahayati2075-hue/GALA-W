@@ -224,7 +224,7 @@
         .modal-header h3 { margin: 0; font-size: 0.9rem; }
         .modal-header button { background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; }
         .modal-body { padding: 12px; overflow-y: auto; }
-        .modal-body pre { white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.78rem; line-height: 1.6; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; margin: 0; }
+        .modal-body pre { white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 0.78rem; line-height: 1.6; background: #f8fafc; border: 1px solid var(--border-color); borderRadius: 10px; padding: 12px; margin: 0; }
         .modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--border-color); }
         .btn-secondary { border: none; padding: 10px; border-radius: 10px; background: #f1f5f9; color: var(--text-muted); font-weight: 700; cursor: pointer; font-family: inherit; }
         .btn-sendwa { border: none; padding: 10px; border-radius: 10px; background: #25D366; color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
@@ -440,7 +440,10 @@
                     <p style="font-size:0.72rem; color:var(--text-muted); margin:0 0 8px;">
                         <i class="fa-solid fa-circle-info"></i> Ketik/pilih <b>Nama Pasien</b> → kolom <b>JK, Gol Darah, TB, BB, Akses, QB, QD</b> terisi otomatis dari database. Jika pasien tidak ada, data bisa diketik manual.
                     </p>
-                    <button class="btn-add" onclick="addMonitorRow()" style="margin-bottom: 10px;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Monitoring</button>
+                    <div style="display:flex; gap:10px; margin-bottom:10px; flex-wrap: wrap;">
+                        <button class="btn-add" onclick="addMonitorRow()" style="margin:0; width:auto; flex:1;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Monitoring</button>
+                        <button class="btn-add" onclick="recallMonitoring()" style="margin:0; width:auto; flex:1; border-color: #7e22ce; color: #7e22ce;"><i class="fa-solid fa-rotate-left"></i> Recall Data (Tanggal/Shift/Tim)</button>
+                    </div>
                     <div class="table-container">
                         <table class="monitoring-table" id="monitoringTable">
                             <thead>
@@ -679,6 +682,10 @@ function formatTanggalID(value) {
     var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][d.getMonth()];
     return hari + ', ' + d.getDate() + ' ' + bulan + ' ' + d.getFullYear();
 }
+function getLocalISODate(d) {
+    if (!d) return '';
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
 var BULAN_ID = { januari: 0, februari: 1, maret: 2, april: 3, mei: 4, juni: 5, juli: 6, agustus: 7, september: 8, oktober: 9, november: 10, desember: 11 };
 function parseSheetDate(s) {
     if (!s) return null; s = String(s).trim().toLowerCase(); if (!s || s === '-' || s === '—') return null;
@@ -818,7 +825,6 @@ function addMonitorRow(focusCol) {
         '<td><input type="text" placeholder="Penerima" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>';
     document.getElementById('monitoringBody').appendChild(tr);
     
-    // === Logika fokus: skip jika focusCol === false ===
     if (focusCol === false) return;
     
     var focusIdx = (typeof focusCol === 'number') ? focusCol : 0;
@@ -833,9 +839,6 @@ function addMonitorRow(focusCol) {
 }
 
 // === KEYBOARD NAVIGATION untuk Monitoring Table ===
-// Enter / ArrowDown → pindah ke baris bawah (kolom sama)
-// ArrowUp → pindah ke baris atas (kolom sama)
-// Jika di baris terakhir tekan Enter/↓ → otomatis tambah baris baru
 (function setupMonitoringKeyboardNav() {
     var tbody = document.getElementById('monitoringBody');
     if (!tbody) return;
@@ -855,17 +858,12 @@ function addMonitorRow(focusCol) {
         if (!td) return;
         
         var colIndex = Array.prototype.indexOf.call(tr.children, td);
-        // Hanya kolom 0-16 (Bed s/d Transfusi)
         if (colIndex > 16) return;
         
-        // Jangan intercept Enter di textarea (Keterangan) — biarkan newline
         if (tag === 'TEXTAREA' && key === 'Enter') return;
         
         var hasList = (tag === 'INPUT') && target.hasAttribute('list');
         
-        // Untuk input dengan datalist (Nama, AKSES, Transfusi):
-        // Jangan preventDefault agar browser bisa pilih suggestion dulu,
-        // lalu pindah fokus setelah suggestion terpilih (autofill tetap jalan).
         if (key === 'Enter' && hasList) {
             setTimeout(function() {
                 moveToRow(tr, colIndex, 1);
@@ -885,7 +883,6 @@ function addMonitorRow(focusCol) {
     function moveToRow(tr, colIndex, direction) {
         var nextRow = (direction > 0) ? tr.nextElementSibling : tr.previousElementSibling;
         if (!nextRow) {
-            // Tambah baris baru otomatis jika di baris terakhir dan tekan Enter/↓
             if (direction > 0) {
                 addMonitorRow(colIndex);
             }
@@ -901,6 +898,119 @@ function addMonitorRow(focusCol) {
         }
     }
 })();
+
+// === RECALL DATA MONITORING ===
+async function recallMonitoring() {
+    var tanggal = document.getElementById('tanggal1').value;
+    var shift = document.getElementById('shift1').value;
+    var tim = document.getElementById('tim1').value;
+    
+    if (!tanggal) { alert('⚠️ Pilih Tanggal Laporan terlebih dahulu!'); return; }
+    
+    var hasData = getMonitoringRows().some(function(r) { return r[1] !== ''; });
+    if (hasData) {
+        if (!confirm('⚠️ Memuat data Recall akan menghapus data monitoring yang sedang Anda isi di tabel saat ini.\n\nLanjutkan me-recall data?')) return;
+    }
+    
+    var tbody = document.getElementById('monitoringBody');
+    tbody.innerHTML = '<tr><td colspan="21" style="text-align:center; padding:20px;">⏳ Memuat data recall dari Spreadsheet...</td></tr>';
+    
+    try {
+        var loaded = await fetchSheetCSV(REKAP_SHEET_ID, REKAP_GID);
+        var rows = parseCSV(loaded.text);
+        var headerIdx = detectHeaderRow(rows);
+        var headers = rows[headerIdx] || [];
+        
+        var cTgl = findCol(headers, ['tanggal', 'tgl', 'date']);
+        var cShift = findCol(headers, ['shift']);
+        var cTim = findCol(headers, ['tim', 'team']);
+        var cBed = findCol(headers, ['bed']);
+        var cNama = findCol(headers, ['nama', 'pasien']);
+        var cJK = findCol(headers, ['jenis kelamin', 'kelamin', 'jk', 'gender', 'sex']);
+        var cPre = findCol(headers, ['td pre', 'td_pre', 'pre hd', 'pre']);
+        var cIntra = findCol(headers, ['td intra', 'td_intra', 'intra hd', 'intra']);
+        var cPost = findCol(headers, ['td post', 'td_post', 'post hd', 'post']);
+        var cGoldar = findCol(headers, ['gol darah', 'goldar', 'golongan darah']);
+        var cTB = findCol(headers, ['tb', 'tinggi badan']);
+        var cBB = findCol(headers, ['bb', 'berat badan']);
+        var cAkses = findCol(headers, ['akses', 'vaskular']);
+        var cUFG = findCol(headers, ['ufg', 'ufg (liter)']);
+        var cQB = findCol(headers, ['qb']);
+        var cQD = findCol(headers, ['qd']);
+        var cHeparin = findCol(headers, ['heparin']);
+        var cEPO = findCol(headers, ['epo/fe', 'epo', 'fe']);
+        var cKtV = findCol(headers, ['kt/v', 'ktv', 'kt']);
+        var cTrans = findCol(headers, ['transfusi']);
+        var cKet = findCol(headers, ['keterangan', 'ket']);
+        var cPenyerah = findCol(headers, ['penyerah']);
+        var cPenerima = findCol(headers, ['penerima']);
+        
+        var matchedRows = [];
+        
+        for (var i = headerIdx + 1; i < rows.length; i++) {
+            var r = rows[i];
+            if (!r || r.length === 0) continue;
+            
+            var rowTglStr = cTgl >= 0 ? String(r[cTgl] || '').trim() : '';
+            var parsedDate = parseSheetDate(rowTglStr);
+            var formattedRowDate = parsedDate ? getLocalISODate(parsedDate) : rowTglStr;
+            var matchTanggal = (formattedRowDate === tanggal);
+            
+            var rowShift = cShift >= 0 ? String(r[cShift] || '').trim() : '';
+            var matchShift = (rowShift === shift || rowShift === 'Shift ' + shift || rowShift === 'Shift ' + parseInt(shift));
+            
+            var rowTim = cTim >= 0 ? String(r[cTim] || '').trim() : '';
+            var matchTim = (rowTim === tim || rowTim === 'Tim ' + tim || rowTim === 'Tim ' + parseInt(tim));
+            
+            if (matchTanggal && matchShift && matchTim) {
+                matchedRows.push(r);
+            }
+        }
+        
+        tbody.innerHTML = '';
+        
+        if (matchedRows.length === 0) {
+            alert('❌ Data monitoring tidak ditemukan untuk Tanggal, Shift, dan Tim yang dipilih.');
+            addMonitorRow();
+            return;
+        }
+        
+        matchedRows.forEach(function(r) {
+            addMonitorRow(false);
+            var tr = tbody.lastElementChild;
+            var inputs = tr.querySelectorAll('input, textarea');
+            
+            if (cBed >= 0) inputs[0].value = r[cBed] || '';
+            if (cNama >= 0) inputs[1].value = r[cNama] || '';
+            if (cJK >= 0) inputs[2].value = r[cJK] || '';
+            if (cPre >= 0) inputs[3].value = r[cPre] || '';
+            if (cIntra >= 0) inputs[4].value = r[cIntra] || '';
+            if (cPost >= 0) inputs[5].value = r[cPost] || '';
+            if (cGoldar >= 0) inputs[6].value = r[cGoldar] || '';
+            if (cTB >= 0) inputs[7].value = r[cTB] || '';
+            if (cBB >= 0) inputs[8].value = r[cBB] || '';
+            if (cAkses >= 0) inputs[9].value = r[cAkses] || '';
+            if (cUFG >= 0) inputs[10].value = r[cUFG] || '';
+            if (cQB >= 0) inputs[11].value = r[cQB] || '';
+            if (cQD >= 0) inputs[12].value = r[cQD] || '';
+            if (cHeparin >= 0) inputs[13].value = r[cHeparin] || '';
+            if (cEPO >= 0) inputs[14].value = r[cEPO] || '';
+            if (cKtV >= 0) inputs[15].value = r[cKtV] || '';
+            if (cTrans >= 0) inputs[16].value = r[cTrans] || '';
+            if (cKet >= 0) inputs[17].value = r[cKet] || '';
+            if (cPenyerah >= 0) inputs[18].value = r[cPenyerah] || '';
+            if (cPenerima >= 0) inputs[19].value = r[cPenerima] || '';
+        });
+        
+        monitoringSheetSaved = true;
+        alert('✅ Berhasil me-recall ' + matchedRows.length + ' baris data monitoring!');
+        
+    } catch (e) {
+        tbody.innerHTML = '';
+        addMonitorRow();
+        alert('❌ Gagal me-recall data: ' + e.message);
+    }
+}
 
 function autoFillPasien(inputEl) {
     markMonitoringUnsaved();
@@ -1041,7 +1151,6 @@ function resetData() {
     document.getElementById('memberContainer').innerHTML = ''; document.getElementById('perawatContainer').innerHTML = ''; document.getElementById('monitoringBody').innerHTML = '';
     memberCount = 0; perawatCount = 0; monitoringSheetSaved = false;
     tambahAnggota(false); tambahPerawat();
-    // === Reset juga mulai dari 15 baris monitoring ===
     for (var i = 0; i < 15; i++) {
         addMonitorRow(false);
     }
@@ -1121,7 +1230,7 @@ function analyzeRowsCSV(rows, startStr, endStr, sourceLabel) {
         if (cKtV >= 0) { var kv = parseFloat(String(r[cKtV] || '').replace(',', '.').replace(/[^0-9.]/g, '')); if (!isNaN(kv) && kv > 0) { ktv.valid++; if (kv >= 1.4) ktv.hi++; else ktv.lo++; } }
     }
     var text = susunTeksMutu({ S: S, total: total, ktv: ktv, startStr: startStr, endStr: endStr });
-    var dateRangeText = minD ? (minD.toISOString().substring(0, 10) + ' s/d ' + maxD.toISOString().substring(0, 10)) : 'tidak ada tanggal yang terbaca';
+    var dateRangeText = minD ? (getLocalISODate(minD) + ' s/d ' + getLocalISODate(maxD)) : 'tidak ada tanggal yang terbaca';
     var ci = function (i) { return i >= 0 ? 'kolom ' + (i + 1) + ' ("' + String(headers[i] || '').trim() + '")' : 'TIDAK DITEMUKAN'; };
     var diagText = 'Sumber data : CSV langsung (' + sourceLabel + ')\nHeader di baris ke-' + (headerIdx + 1) + ' : ' + headers.join(' | ') + '\nBaris data berisi nama : ' + dataRows + ' | Tanggal gagal dibaca : ' + unparsed + '\nTanggal=' + ci(cTgl) + ' | Shift=' + ci(cShift) + ' | Nama=' + ci(cNama) + ' | JK=' + ci(cJK) + '\nAkses=' + ci(cAkses) + ' | Kt/V=' + ci(cKtV) + ' | Transfusi=' + ci(cTrans) + '\nRentang tanggal di data : ' + dateRangeText + '\nBaris sesuai rentang : ' + total;
     return { total: total, unique: 0, ktvHi: ktv.hi, ktvLo: ktv.lo, ktvValid: ktv.valid, transfusiTotal: (S[1].transfusi + S[2].transfusi + S[3].transfusi + S[0].transfusi), filteredCount: total, dateRangeText: dateRangeText, text: text, diag: diagText };
@@ -1234,7 +1343,6 @@ function renderSpecialLinks() {
     var t30 = new Date(); t30.setDate(t30.getDate() - 30); document.getElementById('ft_start_date').valueAsDate = t30;
     document.getElementById('ft_end_date').valueAsDate = new Date();
     tambahAnggota(false); tambahPerawat();
-    // === Tambah 15 baris monitoring di awal ===
     for (var i = 0; i < 15; i++) {
         addMonitorRow(false);
     }
