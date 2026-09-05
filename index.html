@@ -920,6 +920,7 @@ function addMonitorRow(focusCol) {
     }
 })();
 
+// === RECALL DATA MONITORING (Via API Code.gs) ===
 async function recallMonitoring() {
     var tanggal = document.getElementById('tanggal1').value;
     var shift = document.getElementById('shift1').value;
@@ -933,11 +934,17 @@ async function recallMonitoring() {
     }
     
     var tbody = document.getElementById('monitoringBody');
-    tbody.innerHTML = '<tr><td colspan="21" style="text-align:center; padding:20px;">⏳ Memuat data recall dari Spreadsheet...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="21" style="text-align:center; padding:20px;">⏳ Memuat data recall dari Server...</td></tr>';
     
     try {
-        var loaded = await fetchSheetCSV(REKAP_SHEET_ID, REKAP_GID);
-        var rows = parseCSV(loaded.text);
+        // Panggil API Code.gs
+        var url = MONITORING_API_URL + '?action=getRawMonitoring&t=' + Date.now();
+        var res = await fetch(url, { cache: 'no-store' });
+        var j = await res.json();
+        
+        if (j.status !== 'success') throw new Error(j.message || 'Gagal mengambil data dari API');
+        
+        var rows = j.data; // Data 2D langsung dari Spreadsheet
         var headerIdx = detectHeaderRow(rows);
         var headers = rows[headerIdx] || [];
         
@@ -1031,7 +1038,8 @@ async function recallMonitoring() {
         alert('❌ Gagal me-recall data: ' + e.message);
     }
 }
-
+        
+       
 function autoFillPasien(inputEl) {
     markMonitoringUnsaved();
     var val = inputEl.value.trim().toLowerCase(); var tr = inputEl.closest('tr'); if (!tr) return; var inputs = tr.querySelectorAll('input');
