@@ -157,6 +157,28 @@
         .monitoring-table th:nth-child(13), .monitoring-table td:nth-child(13) { width: 45px; } 
         .monitoring-table th:nth-child(18), .monitoring-table td:nth-child(18) { width: 180px; } 
         
+        /* === FREEZE Bed & Nama COLUMNS === */
+        .monitoring-table th:nth-child(1),
+        .monitoring-table td:nth-child(1) {
+            position: sticky;
+            left: 0;
+            z-index: 6;
+        }
+        .monitoring-table th:nth-child(1) { z-index: 7; }
+        .monitoring-table td:nth-child(1) { background: rgba(255, 255, 255, 0.97); }
+
+        .monitoring-table th:nth-child(2),
+        .monitoring-table td:nth-child(2) {
+            position: sticky;
+            left: 40px;
+            z-index: 6;
+        }
+        .monitoring-table th:nth-child(2) { z-index: 7; }
+        .monitoring-table td:nth-child(2) {
+            background: rgba(255, 255, 255, 0.97);
+            box-shadow: 4px 0 6px -3px rgba(0,0,0,0.15);
+        }
+        
         .row-del { border: none; background: transparent; color: var(--accent); cursor: pointer; font-size: 0.85rem; padding: 2px 4px; }
 
         .dialyzer-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 8px; }
@@ -764,7 +786,8 @@ function tambahPerawat() {
 function hapusPerawat(id) { var el = document.getElementById('perawatBox-' + id); if (el) el.remove(); }
 
 function markMonitoringUnsaved() { monitoringSheetSaved = false; }
-function addMonitorRow() {
+
+function addMonitorRow(focusCol) {
     markMonitoringUnsaved();
     var tr = document.createElement('tr');
     var ketTemplate = "Keluhan pre : \nKeluhan intra : \nKeluhan post : ";
@@ -794,8 +817,90 @@ function addMonitorRow() {
         '<td><input type="text" placeholder="Penyerah" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="Penerima" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>';
     document.getElementById('monitoringBody').appendChild(tr);
-    var firstInput = tr.querySelector('input[type="text"]'); if (firstInput) firstInput.focus();
+    
+    // === Logika fokus: skip jika focusCol === false ===
+    if (focusCol === false) return;
+    
+    var focusIdx = (typeof focusCol === 'number') ? focusCol : 0;
+    var targetTd = tr.children[focusIdx];
+    if (targetTd) {
+        var targetInput = targetTd.querySelector('input, textarea, select');
+        if (targetInput) {
+            targetInput.focus();
+            if (targetInput.select) targetInput.select();
+        }
+    }
 }
+
+// === KEYBOARD NAVIGATION untuk Monitoring Table ===
+// Enter / ArrowDown → pindah ke baris bawah (kolom sama)
+// ArrowUp → pindah ke baris atas (kolom sama)
+// Jika di baris terakhir tekan Enter/↓ → otomatis tambah baris baru
+(function setupMonitoringKeyboardNav() {
+    var tbody = document.getElementById('monitoringBody');
+    if (!tbody) return;
+    
+    tbody.addEventListener('keydown', function(e) {
+        var key = e.key;
+        if (key !== 'Enter' && key !== 'ArrowDown' && key !== 'ArrowUp') return;
+        
+        var target = e.target;
+        var tag = target.tagName;
+        if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') return;
+        
+        var tr = target.closest('tr');
+        if (!tr || tr.parentElement !== tbody) return;
+        
+        var td = target.closest('td');
+        if (!td) return;
+        
+        var colIndex = Array.prototype.indexOf.call(tr.children, td);
+        // Hanya kolom 0-16 (Bed s/d Transfusi)
+        if (colIndex > 16) return;
+        
+        // Jangan intercept Enter di textarea (Keterangan) — biarkan newline
+        if (tag === 'TEXTAREA' && key === 'Enter') return;
+        
+        var hasList = (tag === 'INPUT') && target.hasAttribute('list');
+        
+        // Untuk input dengan datalist (Nama, AKSES, Transfusi):
+        // Jangan preventDefault agar browser bisa pilih suggestion dulu,
+        // lalu pindah fokus setelah suggestion terpilih (autofill tetap jalan).
+        if (key === 'Enter' && hasList) {
+            setTimeout(function() {
+                moveToRow(tr, colIndex, 1);
+            }, 0);
+            return;
+        }
+        
+        e.preventDefault();
+        
+        if (key === 'ArrowUp') {
+            moveToRow(tr, colIndex, -1);
+        } else {
+            moveToRow(tr, colIndex, 1);
+        }
+    });
+    
+    function moveToRow(tr, colIndex, direction) {
+        var nextRow = (direction > 0) ? tr.nextElementSibling : tr.previousElementSibling;
+        if (!nextRow) {
+            // Tambah baris baru otomatis jika di baris terakhir dan tekan Enter/↓
+            if (direction > 0) {
+                addMonitorRow(colIndex);
+            }
+            return;
+        }
+        var nextTd = nextRow.children[colIndex];
+        if (nextTd) {
+            var nextInput = nextTd.querySelector('input, textarea, select');
+            if (nextInput) {
+                nextInput.focus();
+                if (nextInput.select) nextInput.select();
+            }
+        }
+    }
+})();
 
 function autoFillPasien(inputEl) {
     markMonitoringUnsaved();
@@ -935,7 +1040,11 @@ function resetData() {
     if (!confirm('⚠️ Yakin ingin mengreset SEMUA data laporan?\nTindakan ini tidak bisa dibatalkan.')) return;
     document.getElementById('memberContainer').innerHTML = ''; document.getElementById('perawatContainer').innerHTML = ''; document.getElementById('monitoringBody').innerHTML = '';
     memberCount = 0; perawatCount = 0; monitoringSheetSaved = false;
-    tambahAnggota(false); tambahPerawat(); addMonitorRow();
+    tambahAnggota(false); tambahPerawat();
+    // === Reset juga mulai dari 15 baris monitoring ===
+    for (var i = 0; i < 15; i++) {
+        addMonitorRow(false);
+    }
     document.getElementById('rencanaTindakan').value = ''; document.getElementById('namaPadatkarya').value = '';
     document.querySelectorAll('#padatkaryaBox input[type="checkbox"]').forEach(function (c) { c.checked = false; });
     document.getElementById('masalahPasien').value = ''; document.getElementById('masalahMesin').value = '';
@@ -1124,7 +1233,12 @@ function renderSpecialLinks() {
     document.getElementById('tanggal1').valueAsDate = new Date();
     var t30 = new Date(); t30.setDate(t30.getDate() - 30); document.getElementById('ft_start_date').valueAsDate = t30;
     document.getElementById('ft_end_date').valueAsDate = new Date();
-    tambahAnggota(false); tambahPerawat(); addMonitorRow(); applyRoleRules(); populatePatientDatalist(); loadSpecialLinks();
+    tambahAnggota(false); tambahPerawat();
+    // === Tambah 15 baris monitoring di awal ===
+    for (var i = 0; i < 15; i++) {
+        addMonitorRow(false);
+    }
+    applyRoleRules(); populatePatientDatalist(); loadSpecialLinks();
 })();
 </script>
 </body>
