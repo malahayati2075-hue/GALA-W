@@ -201,8 +201,12 @@
         .diag-box summary { cursor: pointer; font-weight: 700; color: var(--text-main); }
         pre.diag-text { white-space: pre-wrap; font-family: inherit; font-size: 0.7rem; margin: 6px 0 0; line-height: 1.5; }
 
-        .print-area { display: none; padding: 40px; }
-        @media print { body { background: #fff; } .app-container, .modal-overlay, .mobile-sidebar, .sidebar-overlay { display: none !important; } .print-area { display: block; } }
+        .print-area { display: none; }
+        @media print {
+            body { background: #fff; }
+            .app-container, .modal-overlay, .mobile-sidebar, .sidebar-overlay { display: none !important; }
+            .print-area { display: block; padding: 40px; position: absolute; left: 0; top: 0; width: 100%; }
+        }
 
         .schedule-frame-wrap { position: relative; width: 100%; height: 55vh; min-height: 380px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(59,130,246,0.35); background: #fff; box-shadow: inset 0 2px 6px rgba(0,0,0,0.06); }
         .schedule-frame-wrap.expanded { height: 80vh; }
@@ -481,7 +485,7 @@
                 <div class="section-card section-card-blue" id="secIdentitas">
                     <div class="section-title">
                         <div class="icon-box">🪪</div>
-                        <h2>Identitas Pengirim</h2>
+                        <h2>Pelapor</h2>
                     </div>
                     <input type="text" id="pengirim1" placeholder="Nama Anda (Wajib diisi untuk Laporan)">
                     <div class="btn-group-3">
@@ -607,6 +611,7 @@
     </div>
 </aside>
 
+<!-- MODAL WHATSAPP -->
 <div id="reportModal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
         <div class="modal-header">
@@ -621,26 +626,40 @@
     </div>
 </div>
 
-<!-- Area Cetak PDF dengan blok tanda tangan resmi -->
+<!-- MODAL PRATINJU PDF -->
+<div id="pdfModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box" style="max-width: 800px; width: 95%;">
+        <div class="modal-header">
+            <h3>Pratinjau Cetak PDF</h3>
+            <button onclick="closePdfModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body" style="max-height: 70vh; overflow-y: auto; background: #e2e8f0; padding: 20px;">
+            <div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h1 id="pdfPreviewTitle" style="text-align:center; font-size: 1.2rem; margin-bottom: 20px; font-family: Arial, sans-serif;"></h1>
+                <pre id="pdfPreviewContent" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; line-height: 1.5;"></pre>
+                <div style="margin-top: 60px; display: flex; justify-content: flex-end; text-align: center; font-family: Arial, sans-serif; width: 100%;">
+                    <div style="width: 40%;">
+                        <p style="margin:0; font-size: 12px; font-weight: 600;">Penanggung Jawab,</p>
+                        <img src="https://z-cdn-media.chatglm.cn/files/4044d773-1553-4732-a070-c18837b25ca8.png?auth_key=1888635228-3540c5d3e64647769f1bc1624240207c-0-31687077d9402cc72683a37c4b0c22a3" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
+                        <p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p>
+                        <p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-actions" style="grid-template-columns: 1fr;">
+            <button class="btn btn-pdf" onclick="triggerPrint()"><i class="fa-solid fa-print"></i> Cetak / Simpan sebagai PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- AREA UNTUK PRINT (AKAN DIBACA SAAT window.print() DIPANGGIL) -->
 <div class="print-area" id="printArea">
-    <h1 id="printTitle">LAPORAN HARIAN HEMODIALISIS</h1>
-    <pre id="printContent"></pre>
-    
-    <!-- BLOK TANDA TANGAN UNTUK PDF -->
-    <div style="margin-top: 50px; display: flex; justify-content: space-between; text-align: center; font-family: Arial, sans-serif; width: 100%;">
-        <div style="width: 30%;">
-            <p style="margin:0; font-size: 12px;">Pelapor,</p>
-            <div style="height: 80px;"></div>
-            <p style="margin:0; font-weight: bold; text-decoration: underline;" id="sigPelapor">Nama Pelapor</p>
-        </div>
-        <div style="width: 30%;">
-            <p style="margin:0; font-size: 12px;">Penerima Laporan,</p>
-            <div style="height: 80px;"></div>
-            <p style="margin:0; font-weight: bold; text-decoration: underline;">(...........................)</p>
-        </div>
-        <div style="width: 30%;">
+    <h1 id="printTitle" style="text-align:center; font-family: Arial;"></h1>
+    <pre id="printContent" style="font-family: monospace; white-space: pre-wrap;"></pre>
+    <div style="margin-top: 50px; display: flex; justify-content: flex-end; text-align: center; font-family: Arial, sans-serif; width: 100%;">
+        <div style="width: 40%;">
             <p style="margin:0; font-size: 12px;">Penanggung Jawab,</p>
-            <!-- Gambar Tanda Tangan dari URL yang diberikan -->
             <img src="https://z-cdn-media.chatglm.cn/files/4044d773-1553-4732-a070-c18837b25ca8.png?auth_key=1888635228-3540c5d3e64647769f1bc1624240207c-0-31687077d9402cc72683a37c4b0c22a3" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
             <p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p>
             <p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p>
@@ -738,12 +757,12 @@ function switchTab(n) {
 }
 function openSidebar() { document.getElementById('mobileSidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('show'); }
 function closeSidebar() { document.getElementById('mobileSidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); }
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeSidebar(); closeReportModal(); } });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeSidebar(); closeReportModal(); closePdfModal(); } });
 
 function sendKritikWA() {
     var msg = document.getElementById('kritikSaranInput').value.trim();
     if (!msg) { alert('Harap isi kritik atau saran terlebih dahulu!'); return; }
-    var pesan = '*KRITIK & SARAN APLIKASI LAPORAN DIGITAL*\n' + DIVIDER + '\nDetail:\n' + msg + '\n\n' + DIVIDER + '\n_Dikirim via Gala-w v4.5_';
+    var pesan = '*KRITIK & SARAN APLIKASI LAPORAN DIGITAL*\n' + DIVIDER + '\nDetail:\n' + msg;
     var url = WA_NUMBER ? 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(pesan) : 'https://wa.me/?text=' + encodeURIComponent(pesan);
     window.open(url, '_blank');
 }
@@ -773,10 +792,10 @@ function applyRoleRules() {
     var notice = document.getElementById('roleNotice');
     if (getRole() === 'KATIM') {
         notice.className = 'role-notice katim';
-        notice.innerHTML = '<b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Job Desk Petugas, Rencana Tindakan Umum, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b>.';
+        notice.innerHTML = '<b>MODE KATIM</b> — Laporan berisi: <b>Anggota Tim, Job Desk Petugas, Rencana Tindakan Umum, Pelapor</b>.<br>Judul WA: <b>LAPORAN KATIM 1 / LAPORAN KATIM 2</b>.';
     } else {
         notice.className = 'role-notice';
-        notice.innerHTML = '<b>MODE PERAWAT PELAKSANA</b> — Laporan berisi: <b>Anggota Tim, Monitoring (auto-isi 20 kolom), Masalah &amp; Inventaris, Identitas Pengirim</b>.<br>Judul WA: <b>LAPORAN PERAWAT PELAKSANA TIM x SHIFT y</b>.';
+        notice.innerHTML = '<b>MODE PERAWAT PELAKSANA</b> — Laporan berisi: <b>Anggota Tim, Monitoring (auto-isi 20 kolom), Masalah &amp; Inventaris, Pelapor</b>.<br>Judul WA: <b>LAPORAN PERAWAT PELAKSANA TIM x SHIFT y</b>.';
     }
 }
 
@@ -920,7 +939,6 @@ function addMonitorRow(focusCol) {
     }
 })();
 
-// === RECALL DATA MONITORING (Via API Code.gs) ===
 async function recallMonitoring() {
     var tanggal = document.getElementById('tanggal1').value;
     var shift = document.getElementById('shift1').value;
@@ -937,14 +955,13 @@ async function recallMonitoring() {
     tbody.innerHTML = '<tr><td colspan="21" style="text-align:center; padding:20px;">⏳ Memuat data recall dari Server...</td></tr>';
     
     try {
-        // Panggil API Code.gs
         var url = MONITORING_API_URL + '?action=getRawMonitoring&t=' + Date.now();
         var res = await fetch(url, { cache: 'no-store' });
         var j = await res.json();
         
         if (j.status !== 'success') throw new Error(j.message || 'Gagal mengambil data dari API');
         
-        var rows = j.data; // Data 2D langsung dari Spreadsheet
+        var rows = j.data;
         var headerIdx = detectHeaderRow(rows);
         var headers = rows[headerIdx] || [];
         
@@ -1039,7 +1056,6 @@ async function recallMonitoring() {
     }
 }
         
-       
 function autoFillPasien(inputEl) {
     markMonitoringUnsaved();
     var val = inputEl.value.trim().toLowerCase(); var tr = inputEl.closest('tr'); if (!tr) return; var inputs = tr.querySelectorAll('input');
@@ -1103,7 +1119,7 @@ function shareMonitoringWA() {
     if (!monitoringSheetSaved) { alert('⚠️ PERHATIAN!\nData Monitoring belum disimpan ke Sheet.\nHarap klik tombol "Simpan ke Sheet" terlebih dahulu.'); document.getElementById('secPasien').scrollIntoView({ behavior: 'smooth' }); return; }
     var msg = '*' + getReportTitle() + ' — MONITORING*\n' + DIVIDER + '\nTanggal: ' + formatTanggalID(document.getElementById('tanggal1').value) + '\nTim: ' + document.getElementById('tim1').value + '\n';
     if (getRole() === 'PERAWAT') msg += 'Shift: ' + document.getElementById('shift1').value + '\n';
-    msg += '\n' + DIVIDER + '\n*MONITORING*\n' + dp.text + 'Total pasien: ' + dp.total + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital_';
+    msg += '\n' + DIVIDER + '\n*MONITORING*\n' + dp.text + 'Total pasien: ' + dp.total + '\n' + DIVIDER;
     window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
@@ -1140,26 +1156,22 @@ function buildReportMessage() {
         msg += '• Sisa GD Stick    : ' + (document.getElementById('gdStick').value.trim() || '-') + '\n';
         msg += '• BOR / Bed Kosong : ' + (document.getElementById('sisaBed').value.trim() || '-') + '\n';
     }
-    msg += '\n' + DIVIDER + '\n*IDENTITAS PENGIRIM*\nNama: ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.5_';
+    msg += '\n' + DIVIDER + '\n*PELAPOR*\nNama: ' + pengirim + '\n' + DIVIDER;
     return msg;
 }
 
 var currentReportMessage = '';
 function kirimWA() {
     var pengirim = document.getElementById('pengirim1').value.trim();
-    if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); document.getElementById('pengirim1').focus(); return; }
+    if (!pengirim) { alert('⚠️ Nama Pelapor wajib diisi!'); document.getElementById('pengirim1').focus(); return; }
     if (!document.getElementById('tanggal1').value) { alert('⚠️ Tanggal wajib diisi!'); return; }
     if (getRole() === 'PERAWAT') {
         var hasPatientData = getMonitoringRows().some(function(r) { return r[1] !== ''; });
         if (hasPatientData && !monitoringSheetSaved) { alert('⚠️ PERHATIAN!\nData Monitoring belum disimpan ke Sheet.\nHarap klik tombol "Simpan ke Sheet" terlebih dahulu.'); document.getElementById('secPasien').scrollIntoView({ behavior: 'smooth' }); return; }
     }
     
-    // Tambahkan Blok Tanda Tangan ke pesan WhatsApp
-    var pName = pengirim.length > 20 ? pengirim.substring(0, 20) + '...' : pengirim;
-    var waSig = '\n\n' + DIVIDER + '\n*Tanda Tangan:*\n\n```\n' +
-                'Pelapor,             Penerima Laporan,           Penanggung Jawab,\n\n\n' +
-                pName.padEnd(22) + '(..................)     Wahyu Wulandari, S.Kep. Ners\n' +
-                '                                                   NIP. 198102202008012009\n```';
+    // Hanya tambahkan blok Penanggung Jawab di bawah
+    var waSig = '\n\n*Penanggung Jawab,*\n\n\nWahyu Wulandari, S.Kep. Ners\nNIP. 198102202008012009';
                 
     currentReportMessage = buildReportMessage() + waSig;
 
@@ -1174,15 +1186,39 @@ function sendReportWA() {
 }
 document.getElementById('reportModal').addEventListener('click', function (e) { if (e.target === this) closeReportModal(); });
 
-function buatPDFLaporan() {
-    var pengirim = document.getElementById('pengirim1').value.trim() || '(Nama Pelapor)';
-    document.getElementById('sigPelapor').innerText = pengirim; // Masukkan nama pelapor ke PDF
-    document.getElementById('printTitle').textContent = getReportTitle();
-    document.getElementById('printContent').textContent = buildReportMessage(); // Gunakan pesan tanpa blok WA sig karena PDF punya blok sendiri
-    return html2pdf().set({ margin: [10, 10, 10, 10], filename: getReportTitle().replace(/[^a-z0-9]+/gi, '_') + '.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(document.getElementById('printArea')).save();
+// === FUNGSI CETAK PDF DENGAN PRATINJAU ===
+function cetakPDF() {
+    var pengirim = document.getElementById('pengirim1').value.trim();
+    if (!pengirim) { alert('⚠️ Nama Pelapor wajib diisi!'); return; }
+
+    var title = getReportTitle();
+    var content = buildReportMessage();
+
+    // Update area cetak yang akan dibaca oleh browser saat print
+    document.getElementById('printTitle').textContent = title;
+    document.getElementById('printContent').textContent = content;
+
+    // Update tampilan di dalam modal pratinjau
+    document.getElementById('pdfPreviewTitle').textContent = title;
+    document.getElementById('pdfPreviewContent').textContent = content;
+
+    // Tampilkan modal pratinjau
+    document.getElementById('pdfModal').style.display = 'flex';
 }
-function cetakPDF() { if (!document.getElementById('pengirim1').value.trim()) { alert('⚠️ Nama pengirim wajib diisi!'); return; } buatPDFLaporan(); }
-async function uploadToDrive() { if (!document.getElementById('pengirim1').value.trim()) { alert('⚠️ Nama pengirim wajib diisi!'); return; } alert('📄 PDF laporan akan diunduh.\nSetelah selesai, silakan upload file tersebut ke Google Drive Anda.'); try { await buatPDFLaporan(); window.open('https://drive.google.com/drive/my-drive', '_blank'); } catch (e) { alert('❌ Gagal membuat PDF: ' + e.message); } }
+
+function closePdfModal() {
+    document.getElementById('pdfModal').style.display = 'none';
+}
+
+function triggerPrint() {
+    window.print();
+}
+
+async function uploadToDrive() {
+    if (!document.getElementById('pengirim1').value.trim()) { alert('⚠️ Nama Pelapor wajib diisi!'); return; }
+    alert('📄 Pratinjau PDF akan dibuka.\nDari sana, silakan klik tombol "Cetak / Simpan sebagai PDF" untuk menyimpan file, lalu upload ke Google Drive Anda.');
+    cetakPDF();
+}
 
 function resetData() {
     if (!confirm('⚠️ Yakin ingin mengreset SEMUA data laporan?\nTindakan ini tidak bisa dibatalkan.')) return;
@@ -1301,7 +1337,7 @@ function renderAnalitik(d) {
     html += '<div class="stat-grid"><div class="stat-card"><div class="stat-value">' + d.total + '</div><div class="stat-label">Total Pasien &amp; Tindakan HD</div></div><div class="stat-card"><div class="stat-value">' + d.ktvHi + '</div><div class="stat-label">Kt/V ≥ 1,4 (Orang)</div></div><div class="stat-card"><div class="stat-value">' + d.ktvLo + '</div><div class="stat-label">Kt/V &lt; 1,4 (Orang)</div></div><div class="stat-card"><div class="stat-value">' + d.transfusiTotal + '</div><div class="stat-label">Transfusi Darah (Pasien)</div></div></div><div class="analitik-detail"><pre class="mutu-text"></pre></div><details class="diag-box"><summary>🔍 Diagnostik Data (klik untuk detail pembacaan sheet)</summary><pre class="diag-text"></pre></details>';
     el.innerHTML = html; el.querySelector('pre.mutu-text').textContent = d.text; el.querySelector('pre.diag-text').textContent = d.diag;
 }
-function shareAnalitikWA() { if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; } var pengirim = document.getElementById('pengirim2').value.trim(); if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; } var msg = analitikData.text + '\n' + DIVIDER + '\n*PENGIRIM*\nNama: ' + pengirim + '\n' + DIVIDER + '\n_Dikirim via Laporan Digital — Gala-w v4.5_'; window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'); }
+function shareAnalitikWA() { if (!analitikData) { alert('⚠️ Silakan analisis data terlebih dahulu!'); return; } var pengirim = document.getElementById('pengirim2').value.trim(); if (!pengirim) { alert('⚠️ Nama pengirim wajib diisi!'); return; } var msg = analitikData.text + '\n' + DIVIDER + '\n*PENGIRIM*\nNama: ' + pengirim + '\n' + DIVIDER; window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'); }
 function isiPrintAreaAnalitik() { document.querySelector('#printArea h1').textContent = 'LAPORAN MUTU HEMODIALISIS'; document.getElementById('printContent').textContent = analitikData.text + '\n' + DIVIDER + '\nPengirim: ' + (document.getElementById('pengirim2').value.trim() || '-'); }
 function saveAnalitikPDF() { if (!analitikData) { alert('⚠️ Analisis data dulu!'); return; } isiPrintAreaAnalitik(); html2pdf().set({ margin: [10, 10, 10, 10], filename: 'LAPORAN_MUTU_HEMODIALISIS.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(document.getElementById('printArea')).save(); }
 function printAnalitik() { if (!analitikData) { alert('⚠️ Analisis data dulu!'); return; } isiPrintAreaAnalitik(); window.print(); }
