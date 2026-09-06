@@ -201,12 +201,195 @@
         .diag-box summary { cursor: pointer; font-weight: 700; color: var(--text-main); }
         pre.diag-text { white-space: pre-wrap; font-family: inherit; font-size: 0.7rem; margin: 6px 0 0; line-height: 1.5; }
 
-        .print-area { display: none; }
-        @media print {
-            body { background: #fff; }
-            .app-container, .modal-overlay, .mobile-sidebar, .sidebar-overlay { display: none !important; }
-            .print-area { display: block; padding: 40px; position: absolute; left: 0; top: 0; width: 100%; }
-        }
+       .print-area { display: none; }
+
+@media print {
+    body { background: #fff; }
+    .app-container, .modal-overlay, .mobile-sidebar, .sidebar-overlay {
+        display: none !important;
+    }
+    .print-area {
+        display: block;
+        padding: 40px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+/* =========================================================
+   PRINT AREA
+   ========================================================= */
+
+.print-area {
+    display: none;
+}
+
+.print-signature {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 50px;
+}
+
+.print-signature-box {
+    width: 40%;
+    min-width: 180px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.signature-label {
+    margin: 0;
+    font-size: 12px;
+}
+
+.print-signature-box img {
+    display: block;
+    width: auto;
+    height: 80px;
+    max-width: 180px;
+    object-fit: contain;
+    margin: 5px auto;
+}
+
+.signature-name {
+    margin: 0;
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 12px;
+}
+
+.signature-nip {
+    margin: 2px 0 0 0;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   MODE PRINT
+   ========================================================= */
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 15mm;
+    }
+
+    html,
+    body {
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .app-container,
+    .modal-overlay,
+    .mobile-sidebar,
+    .sidebar-overlay {
+        display: none !important;
+    }
+
+    .print-area {
+        display: block !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .print-signature {
+        display: flex !important;
+        justify-content: flex-end !important;
+        margin-top: 50px !important;
+    }
+
+    .print-signature-box {
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    .print-signature-box img {
+        display: block !important;
+        visibility: visible !important;
+        height: 80px !important;
+        width: auto !important;
+        max-width: 180px !important;
+        object-fit: contain !important;
+    }
+
+    .signature-label,
+    .signature-name,
+    .signature-nip {
+        display: block !important;
+        visibility: visible !important;
+    }
+}
+
+/* =========================================================
+   MODE PRINT
+   ========================================================= */
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 15mm;
+    }
+
+    html,
+    body {
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .app-container,
+    .modal-overlay,
+    .mobile-sidebar,
+    .sidebar-overlay {
+        display: none !important;
+    }
+
+    .print-area {
+        display: block !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .print-signature {
+        display: flex !important;
+        justify-content: flex-end !important;
+        margin-top: 50px !important;
+    }
+
+    .print-signature-box {
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    .print-signature-box img {
+        display: block !important;
+        visibility: visible !important;
+        height: 80px !important;
+        width: auto !important;
+        max-width: 180px !important;
+        object-fit: contain !important;
+    }
+
+    .signature-label,
+    .signature-name,
+    .signature-nip {
+        display: block !important;
+        visibility: visible !important;
+    }
+}
 
         .schedule-frame-wrap { position: relative; width: 100%; height: 55vh; min-height: 380px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(59,130,246,0.35); background: #fff; box-shadow: inset 0 2px 6px rgba(0,0,0,0.06); }
         .schedule-frame-wrap.expanded { height: 80vh; }
@@ -270,6 +453,61 @@
             .mobile-sidebar, .sidebar-overlay { display: none !important; }
             .page-container { padding: 30px 35px; }
         }
+
+/* =========================================================
+   TANDA TANGAN - WHATSAPP PREVIEW
+   ========================================================= */
+
+.wa-signature-box {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px dashed #cbd5e1;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.wa-signature-label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #475569;
+}
+
+.wa-signature-image {
+    width: auto;
+    height: 80px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 2px auto;
+}
+
+.wa-signature-name {
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: underline;
+    color: #0f172a;
+}
+
+.wa-signature-nip {
+    font-size: 11px;
+    color: #475569;
+    margin-top: 2px;
+}
+
+.wa-info-box {
+    margin-top: 15px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    font-size: 0.72rem;
+    line-height: 1.5;
+}
+
+.wa-info-box i {
+    margin-right: 5px;
+}
     </style>
 </head>
 <body>
@@ -613,59 +851,219 @@
 
 <!-- MODAL WHATSAPP -->
 <div id="reportModal" class="modal-overlay" style="display: none;">
-    <div class="modal-box">
+    <div class="modal-box" style="max-width: 600px; width: 95%;">
+        
         <div class="modal-header">
             <h3 id="modalTitle">Preview Laporan</h3>
-            <button onclick="closeReportModal()"><i class="fa-solid fa-xmark"></i></button>
+            <button onclick="closeReportModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
-        <div class="modal-body"><pre id="modalMessage"></pre></div>
-        <div class="modal-actions">
-            <button class="btn-secondary" onclick="closeReportModal()">✏️ Tutup / Edit</button>
-            <button class="btn-sendwa" onclick="sendReportWA()"><i class="fa-brands fa-whatsapp"></i> Kirim via WA</button>
-        </div>
-    </div>
-</div>
 
-<!-- MODAL PRATINJU PDF -->
-<div id="pdfModal" class="modal-overlay" style="display: none;">
-    <div class="modal-box" style="max-width: 800px; width: 95%;">
-        <div class="modal-header">
-            <h3>Pratinjau Cetak PDF</h3>
-            <button onclick="closePdfModal()"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="modal-body" style="max-height: 70vh; overflow-y: auto; background: #e2e8f0; padding: 20px;">
-            <div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                <h1 id="pdfPreviewTitle" style="text-align:center; font-size: 1.2rem; margin-bottom: 20px; font-family: Arial, sans-serif;"></h1>
-                <pre id="pdfPreviewContent" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; line-height: 1.5;"></pre>
-                <div style="margin-top: 60px; display: flex; justify-content: flex-end; text-align: center; font-family: Arial, sans-serif; width: 100%;">
-                    <div style="width: 40%;">
-                        <p style="margin:0; font-size: 12px; font-weight: 600;">Penanggung Jawab,</p>
-                        <img src="tanda.jpeg" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
-                        <p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p>
-                        <p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p>
-                    </div>
+        <div class="modal-body">
+
+            <!-- ISI LAPORAN -->
+            <pre id="modalMessage"></pre>
+
+            <!-- TANDA TANGAN -->
+            <div class="wa-signature-box">
+                <div class="wa-signature-label">
+                    Penanggung Jawab,
+                </div>
+
+                <img
+                    id="waSignatureImage"
+                    src="tanda.png"
+                    alt="Tanda Tangan Penanggung Jawab"
+                    class="wa-signature-image"
+                >
+
+                <div class="wa-signature-name">
+                    Wahyu Wulandari, S.Kep. Ners
+                </div>
+
+                <div class="wa-signature-nip">
+                    NIP. 198102202008012009
                 </div>
             </div>
+
+            <div class="wa-info-box">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>
+                    Tanda tangan terlihat pada pratinjau. 
+                    Jika dikirim sebagai teks WhatsApp, gambar tanda tangan
+                    tidak dapat ikut terlampir otomatis.
+                </span>
+            </div>
+
         </div>
-        <div class="modal-actions" style="grid-template-columns: 1fr;">
-            <button class="btn btn-pdf" onclick="triggerPrint()"><i class="fa-solid fa-print"></i> Cetak / Simpan sebagai PDF</button>
+
+        <div class="modal-actions" style="grid-template-columns: 1fr 1fr;">
+            
+            <button class="btn-secondary" onclick="closeReportModal()">
+                ✏️ Tutup / Edit
+            </button>
+
+            <button class="btn-sendwa" onclick="sendReportWA()">
+                <i class="fa-brands fa-whatsapp"></i>
+                Kirim Teks WA
+            </button>
+
         </div>
+
     </div>
 </div>
 
-<!-- AREA UNTUK PRINT (AKAN DIBACA SAAT window.print() DIPANGGIL) -->
-<div class="print-area" id="printArea">
-    <h1 id="printTitle" style="text-align:center; font-family: Arial;"></h1>
-    <pre id="printContent" style="font-family: monospace; white-space: pre-wrap;"></pre>
-    <div style="margin-top: 50px; display: flex; justify-content: flex-end; text-align: center; font-family: Arial, sans-serif; width: 100%;">
-        <div style="width: 40%;">
-            <p style="margin:0; font-size: 12px;">Penanggung Jawab,</p>
-            <img src="https://z-cdn-media.chatglm.cn/files/4044d773-1553-4732-a070-c18837b25ca8.png?auth_key=1888635228-3540c5d3e64647769f1bc1624240207c-0-31687077d9402cc72683a37c4b0c22a3" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
-            <p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p>
-            <p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p>
+<!-- MODAL PRATINJAU PDF -->
+<div id="pdfModal" class="modal-overlay" style="display: none;">
+
+    <div class="modal-box" style="max-width: 800px; width: 95%;">
+
+        <div class="modal-header">
+            <h3>Pratinjau Cetak PDF</h3>
+
+            <button onclick="closePdfModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
+
+        <div class="modal-body"
+             style="max-height:70vh; overflow-y:auto;
+                    background:#e2e8f0; padding:20px;">
+
+            <div style="
+                background:#fff;
+                padding:30px;
+                border-radius:8px;
+                box-shadow:0 4px 6px rgba(0,0,0,0.1);
+            ">
+
+                <h1 id="pdfPreviewTitle"
+                    style="
+                        text-align:center;
+                        font-size:1.2rem;
+                        margin-bottom:20px;
+                        font-family:Arial,sans-serif;
+                    ">
+                </h1>
+
+                <pre id="pdfPreviewContent"
+                     style="
+                        white-space:pre-wrap;
+                        word-wrap:break-word;
+                        font-family:Arial,sans-serif;
+                        font-size:0.8rem;
+                        line-height:1.5;
+                    ">
+                </pre>
+
+
+                <!-- TANDA TANGAN -->
+                <div style="
+                    margin-top:60px;
+                    display:flex;
+                    justify-content:flex-end;
+                    text-align:center;
+                    font-family:Arial,sans-serif;
+                    width:100%;
+                ">
+
+                    <div style="width:40%;">
+
+                        <p style="
+                            margin:0;
+                            font-size:12px;
+                            font-weight:600;
+                        ">
+                            Penanggung Jawab,
+                        </p>
+
+                        <img
+                            id="pdfPreviewSignature"
+                            src="tanda.png"
+                            alt="TTD Penanggung Jawab"
+                            style="
+                                height:80px;
+                                width:auto;
+                                max-width:180px;
+                                object-fit:contain;
+                                margin:5px auto;
+                                display:block;
+                            "
+                        >
+
+                        <p style="
+                            margin:0;
+                            font-weight:bold;
+                            text-decoration:underline;
+                        ">
+                            Wahyu Wulandari, S.Kep. Ners
+                        </p>
+
+                        <p style="
+                            margin:0;
+                            font-size:11px;
+                        ">
+                            NIP. 198102202008012009
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-actions"
+             style="grid-template-columns:1fr;">
+
+            <button class="btn btn-pdf"
+                    onclick="triggerPrint()">
+
+                <i class="fa-solid fa-print"></i>
+                Cetak / Simpan sebagai PDF
+
+            </button>
+
+        </div>
+
     </div>
 </div>
+<!-- AREA UNTUK PRINT -->
+<div class="print-area" id="printArea">
+
+    <h1 id="printTitle"
+        style="text-align:center; font-family:Arial, sans-serif;">
+    </h1>
+
+    <pre id="printContent"
+         style="font-family:Arial, sans-serif; white-space:pre-wrap;">
+    </pre>
+
+    <div class="print-signature">
+
+        <div class="print-signature-box">
+
+            <p class="signature-label">
+                Penanggung Jawab,
+            </p>
+
+            <img
+                id="printSignature"
+                src="tanda.png"
+                alt="TTD Penanggung Jawab"
+            >
+
+            <p class="signature-name">
+                Wahyu Wulandari, S.Kep. Ners
+            </p>
+
+            <p class="signature-nip">
+                NIP. 198102202008012009
+            </p>
+
+        </div>
 
 <script>
 var MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbxfFfPfNRq-aLSv39evhFvB85ac12koQPF1SMsjOXV4nZ3uEi4N2jMp25QMdePClh64KQ/exec";
@@ -1188,30 +1586,80 @@ document.getElementById('reportModal').addEventListener('click', function (e) { 
 
 // === FUNGSI CETAK PDF DENGAN PRATINJAU ===
 function cetakPDF() {
+
     var pengirim = document.getElementById('pengirim1').value.trim();
-    if (!pengirim) { alert('⚠️ Nama Pelapor wajib diisi!'); return; }
+
+    if (!pengirim) {
+        alert('⚠️ Nama Pelapor wajib diisi!');
+        return;
+    }
 
     var title = getReportTitle();
     var content = buildReportMessage();
 
-    // Update area cetak yang akan dibaca oleh browser saat print
+    /* =========================================
+       AREA PRINT
+       ========================================= */
+
     document.getElementById('printTitle').textContent = title;
     document.getElementById('printContent').textContent = content;
 
-    // Update tampilan di dalam modal pratinjau
+    /* =========================================
+       PREVIEW PDF
+       ========================================= */
+
     document.getElementById('pdfPreviewTitle').textContent = title;
     document.getElementById('pdfPreviewContent').textContent = content;
 
-    // Tampilkan modal pratinjau
+    /* Pastikan tanda tangan menggunakan sumber yang sama */
+    var previewSignature = document.getElementById('pdfPreviewSignature');
+
+    if (previewSignature) {
+        previewSignature.src = 'tanda.png';
+    }
+
+    var printSignature = document.getElementById('printSignature');
+
+    if (printSignature) {
+        printSignature.src = 'tanda.png';
+    }
+
+    /* Tampilkan modal */
     document.getElementById('pdfModal').style.display = 'flex';
 }
-
 function closePdfModal() {
     document.getElementById('pdfModal').style.display = 'none';
 }
 
-function triggerPrint() {
-    window.print();
+async function triggerPrint() {
+
+    var signature = document.getElementById('printSignature');
+
+    if (signature) {
+
+        // Jika gambar belum selesai dimuat
+        if (!signature.complete || signature.naturalWidth === 0) {
+
+            await new Promise(function(resolve) {
+
+                signature.onload = function() {
+                    resolve();
+                };
+
+                signature.onerror = function() {
+                    console.warn('Gagal memuat gambar tanda tangan.');
+                    resolve();
+                };
+
+            });
+
+        }
+    }
+
+    // Beri sedikit waktu agar browser menyelesaikan rendering
+    setTimeout(function() {
+        window.print();
+    }, 300);
 }
 
 async function uploadToDrive() {
