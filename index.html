@@ -202,11 +202,7 @@
         pre.diag-text { white-space: pre-wrap; font-family: inherit; font-size: 0.7rem; margin: 6px 0 0; line-height: 1.5; }
 
         .print-area { display: none; }
-        @media print {
-            body { background: #fff; }
-            .app-container, .modal-overlay, .mobile-sidebar, .sidebar-overlay { display: none !important; }
-            .print-area { display: block; padding: 40px; position: absolute; left: 0; top: 0; width: 100%; }
-        }
+        .print-area img { max-width: 100%; height: auto; }
 
         .schedule-frame-wrap { position: relative; width: 100%; height: 55vh; min-height: 380px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(59,130,246,0.35); background: #fff; box-shadow: inset 0 2px 6px rgba(0,0,0,0.06); }
         .schedule-frame-wrap.expanded { height: 80vh; }
@@ -458,6 +454,13 @@
                             <tbody id="monitoringBody"></tbody>
                         </table>
                     </div>
+                    
+                    <!-- Custom WA Nomor untuk Monitoring -->
+                    <div style="margin-top: 15px;">
+                        <label>Nomor WA Tujuan (Khusus Share Monitoring)</label>
+                        <input type="text" id="waMonitoringNumber" placeholder="Contoh: 6281234567890 (Kosongkan jika umum)">
+                    </div>
+
                     <div class="btn-group" style="margin-top: 10px; margin-bottom: 10px;">
                         <button class="btn btn-pdf" onclick="submitMonitoringSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Sheet</button>
                         <button class="btn btn-wa" onclick="shareMonitoringWA()"><i class="fa-brands fa-whatsapp"></i> Share WA Monitoring</button>
@@ -626,7 +629,7 @@
     </div>
 </div>
 
-<!-- MODAL PRATINJU PDF -->
+<!-- MODAL PRATINJAU PDF -->
 <div id="pdfModal" class="modal-overlay" style="display: none;">
     <div class="modal-box" style="max-width: 800px; width: 95%;">
         <div class="modal-header">
@@ -640,7 +643,7 @@
                 <div style="margin-top: 60px; display: flex; justify-content: flex-end; text-align: center; font-family: Arial, sans-serif; width: 100%;">
                     <div style="width: 40%;">
                         <p style="margin:0; font-size: 12px; font-weight: 600;">Penanggung Jawab,</p>
-                        <img src="tanda.png" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
+                        <img src="https://z-cdn-media.chatglm.cn/files/4044d773-1553-4732-a070-c18837b25ca8.png?auth_key=1888635228-3540c5d3e64647769f1bc1624240207c-0-31687077d9402cc72683a37c4b0c22a3" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
                         <p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p>
                         <p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p>
                     </div>
@@ -653,7 +656,7 @@
     </div>
 </div>
 
-<!-- AREA UNTUK PRINT (AKAN DIBACA SAAT window.print() DIPANGGIL) -->
+<!-- AREA UNTUK PRINT (Dibaca oleh html2pdf) -->
 <div class="print-area" id="printArea">
     <h1 id="printTitle" style="text-align:center; font-family: Arial;"></h1>
     <pre id="printContent" style="font-family: monospace; white-space: pre-wrap;"></pre>
@@ -1120,7 +1123,18 @@ function shareMonitoringWA() {
     var msg = '*' + getReportTitle() + ' — MONITORING*\n' + DIVIDER + '\nTanggal: ' + formatTanggalID(document.getElementById('tanggal1').value) + '\nTim: ' + document.getElementById('tim1').value + '\n';
     if (getRole() === 'PERAWAT') msg += 'Shift: ' + document.getElementById('shift1').value + '\n';
     msg += '\n' + DIVIDER + '\n*MONITORING*\n' + dp.text + 'Total pasien: ' + dp.total + '\n' + DIVIDER;
-    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+    
+    // Cek apakah ada custom nomor WA untuk monitoring
+    var customNum = document.getElementById('waMonitoringNumber').value.trim();
+    var baseUrl = 'https://wa.me/';
+    if (customNum) {
+        customNum = customNum.replace(/[^0-9]/g, ''); // Hapus karakter selain angka
+        baseUrl = 'https://wa.me/' + customNum;
+    } else if (WA_NUMBER) {
+        baseUrl = 'https://wa.me/' + WA_NUMBER;
+    }
+    
+    window.open(baseUrl + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function buildReportMessage() {
@@ -1170,8 +1184,8 @@ function kirimWA() {
         if (hasPatientData && !monitoringSheetSaved) { alert('⚠️ PERHATIAN!\nData Monitoring belum disimpan ke Sheet.\nHarap klik tombol "Simpan ke Sheet" terlebih dahulu.'); document.getElementById('secPasien').scrollIntoView({ behavior: 'smooth' }); return; }
     }
     
-    // Hanya tambahkan blok Penanggung Jawab di bawah
-    var waSig = '\n\n*Penanggung Jawab,*\n\n\nWahyu Wulandari, S.Kep. Ners\nNIP. 198102202008012009';
+    // Tanda tangan dengan wavy dash besar dan huruf W tebal besar
+    var waSig = '\n\n*Penanggung Jawab,*\n\n〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️\n*WAHYU WULANDARI, S.Kep. Ners*\nNIP. 198102202008012009';
                 
     currentReportMessage = buildReportMessage() + waSig;
 
@@ -1194,7 +1208,7 @@ function cetakPDF() {
     var title = getReportTitle();
     var content = buildReportMessage();
 
-    // Update area cetak yang akan dibaca oleh browser saat print
+    // Update area cetak yang akan dibaca oleh html2pdf
     document.getElementById('printTitle').textContent = title;
     document.getElementById('printContent').textContent = content;
 
@@ -1211,7 +1225,34 @@ function closePdfModal() {
 }
 
 function triggerPrint() {
-    window.print();
+    var printArea = document.getElementById('printArea');
+    var opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     getReportTitle().replace(/[^a-z0-9]+/gi, '_') + '.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    closePdfModal(); // Tutup modal pratinjau agar tidak ikut tercetak
+
+    // Pastikan element terlihat saat dirender oleh html2pdf
+    printArea.style.position = 'absolute';
+    printArea.style.left = '-9999px';
+    printArea.style.top = '0';
+    printArea.style.display = 'block';
+
+    html2pdf().set(opt).from(printArea).save().then(function() {
+        // Kembalikan ke kondisi semula setelah selesai
+        printArea.style.display = 'none';
+        printArea.style.position = '';
+        printArea.style.left = '';
+    }).catch(function(err) {
+        alert('Gagal membuat PDF: ' + err);
+        printArea.style.display = 'none';
+        printArea.style.position = '';
+        printArea.style.left = '';
+    });
 }
 
 async function uploadToDrive() {
