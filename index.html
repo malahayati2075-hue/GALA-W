@@ -21,6 +21,7 @@
             --border-color: #e2e8f0;
             --wa-green: #25D366;
             --drive-blue: #4285F4;
+            --word-blue: #2b579a;
 
             --sore-1: #14b8a6;
             --sore-2: #0d9488;
@@ -121,7 +122,8 @@
 
         .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 25px; }
         .btn-group-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 25px; }
-        @media (max-width: 480px) { .btn-group-3 { grid-template-columns: 1fr; } }
+        .btn-group-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 25px; }
+        @media (max-width: 480px) { .btn-group-3, .btn-group-4 { grid-template-columns: 1fr; } }
 
         .btn { border: none; padding: 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 0 rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.1); text-decoration: none; font-family: inherit; }
         .btn:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1); }
@@ -131,6 +133,9 @@
         .btn-pdf:hover { background: #f0f9ff; }
         .btn-drive { background: var(--drive-blue); color: #fff; box-shadow: 0 4px 0 #3367D6, 0 6px 12px rgba(66, 133, 244, 0.3); }
         .btn-drive:hover { background: #3367D6; }
+        .btn-word { background: #fff; color: var(--word-blue); border: 1.5px solid var(--word-blue); box-shadow: 0 4px 0 #1e3a8a; }
+        .btn-word:hover { background: #eff6ff; }
+        
         .btn-add { background: rgba(240, 249, 255, 0.8); color: var(--secondary); border: 1.5px dashed var(--secondary); margin-bottom: 10px; width: 100%; padding: 8px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; font-size: 0.85rem; }
         .btn-add:hover { background: #e0f2fe; border-style: solid; }
         .btn-reset { background: rgba(255, 241, 242, 0.8); color: var(--accent); margin-top: 10px; width: 100%; padding: 8px; border: 1px solid #fecdd3; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; font-size: 0.85rem; }
@@ -203,6 +208,8 @@
 
         .print-area { display: none; }
         .print-area img { max-width: 100%; height: auto; }
+        .print-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+        .print-table th, .print-table td { border: 1px solid #555; padding: 4px; text-align: center; }
 
         .schedule-frame-wrap { position: relative; width: 100%; height: 55vh; min-height: 380px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(59,130,246,0.35); background: #fff; box-shadow: inset 0 2px 6px rgba(0,0,0,0.06); }
         .schedule-frame-wrap.expanded { height: 80vh; }
@@ -491,10 +498,11 @@
                         <h2>Pelapor</h2>
                     </div>
                     <input type="text" id="pengirim1" placeholder="Nama Anda (Wajib diisi untuk Laporan)">
-                    <div class="btn-group-3">
+                    <div class="btn-group-4">
                         <button class="btn btn-wa" onclick="kirimWA()"><i class="fa-brands fa-whatsapp"></i> Kirim WA</button>
-                        <button class="btn btn-drive" onclick="uploadToDrive()"><i class="fa-brands fa-google-drive"></i> Upload Drive</button>
                         <button class="btn btn-pdf" onclick="cetakPDF()"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+                        <button class="btn btn-word" onclick="exportWord()"><i class="fa-solid fa-file-word"></i> Export Word</button>
+                        <button class="btn btn-drive" onclick="uploadToDrive()"><i class="fa-brands fa-google-drive"></i> Upload Drive</button>
                     </div>
                     <button class="btn-reset" onclick="resetData()"><i class="fa-solid fa-trash-can"></i> Reset Semua Data</button>
                 </div>
@@ -639,11 +647,11 @@
         <div class="modal-body" style="max-height: 70vh; overflow-y: auto; background: #e2e8f0; padding: 20px;">
             <div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 <h1 id="pdfPreviewTitle" style="text-align:center; font-size: 1.2rem; margin-bottom: 20px; font-family: Arial, sans-serif;"></h1>
-                <pre id="pdfPreviewContent" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; line-height: 1.5;"></pre>
+                <div id="pdfPreviewContent" style="font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; line-height: 1.5;"></div>
                 <div style="margin-top: 60px; display: flex; justify-content: flex-end; text-align: center; font-family: Arial, sans-serif; width: 100%;">
                     <div style="width: 40%;">
                         <p style="margin:0; font-size: 12px; font-weight: 600;">Penanggung Jawab,</p>
-                        <img src="https://z-cdn-media.chatglm.cn/files/4044d773-1553-4732-a070-c18837b25ca8.png?auth_key=1888635228-3540c5d3e64647769f1bc1624240207c-0-31687077d9402cc72683a37c4b0c22a3" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
+                        <img src="tanda.png" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
                         <p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p>
                         <p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p>
                     </div>
@@ -659,11 +667,11 @@
 <!-- AREA UNTUK PRINT (Dibaca oleh html2pdf) -->
 <div class="print-area" id="printArea">
     <h1 id="printTitle" style="text-align:center; font-family: Arial;"></h1>
-    <pre id="printContent" style="font-family: monospace; white-space: pre-wrap;"></pre>
-    <div style="margin-top: 50px; display: flex; justify-content: flex-end; text-align: center; font-family: Arial, sans-serif; width: 100%;">
-        <div style="width: 40%;">
+    <div id="printContentHTML" style="font-family: Arial;"></div>
+    <div style="margin-top: 60px; text-align: right; width: 100%;">
+        <div style="display: inline-block; text-align: center; font-family: Arial;">
             <p style="margin:0; font-size: 12px;">Penanggung Jawab,</p>
-            <img src="https://z-cdn-media.chatglm.cn/files/4044d773-1553-4732-a070-c18837b25ca8.png?auth_key=1888635228-3540c5d3e64647769f1bc1624240207c-0-31687077d9402cc72683a37c4b0c22a3" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
+            <img src="tanda.png" alt="TTD Penanggung Jawab" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;" crossorigin="anonymous">
             <p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p>
             <p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p>
         </div>
@@ -1174,6 +1182,68 @@ function buildReportMessage() {
     return msg;
 }
 
+// Fungsi untuk generate HTML Tabel Laporan (digunakan di PDF & Word)
+function generateHTMLReport() {
+    var role = getRole();
+    var html = '';
+    html += '<div style="margin-bottom: 15px;"><b>Tanggal:</b> ' + formatTanggalID(document.getElementById('tanggal1').value) + '<br><b>Tim:</b> ' + document.getElementById('tim1').value + '<br><b>Peran:</b> ' + getRoleLabel() + '</div>';
+    
+    html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Anggota Tim</h3>';
+    var anggota = [];
+    document.querySelectorAll('#memberContainer input[type="text"]').forEach(function (i) { if (i.value.trim()) anggota.push(i.value.trim()); });
+    html += '<p>' + (anggota.length ? anggota.join(', ') : '-') + '</p>';
+
+    if (role === 'KATIM') {
+        html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Job Desk Petugas</h3>';
+        document.querySelectorAll('#perawatContainer .job-box').forEach(function (box) {
+            var namaEl = box.querySelector('input[id^="perawat"]'); var nama = namaEl ? namaEl.value.trim() : ''; if (!nama) return;
+            var b1 = box.querySelector('input[id$="_start"]'); var b2 = box.querySelector('input[id$="_end"]');
+            var bed = (b1 && b2) ? (b1.value + '–' + b2.value) : '-'; var jobs = [];
+            box.querySelectorAll('input[type="checkbox"]:checked').forEach(function (c) { jobs.push(c.value); });
+            html += '<p><b>' + escapeHtml(nama) + ' (Bed ' + escapeHtml(bed) + '):</b> ' + (jobs.length ? escapeHtml(jobs.join(', ')) : '-') + '</p>';
+        });
+        var padat = document.getElementById('namaPadatkarya').value.trim();
+        if (padat) {
+            var pj = []; document.querySelectorAll('#padatkaryaBox input[type="checkbox"]:checked').forEach(function (c) { pj.push(c.value); });
+            html += '<p><b>Padatkarya — ' + escapeHtml(padat) + ':</b> ' + (pj.length ? escapeHtml(pj.join(', ')) : '-') + '</p>';
+        }
+        html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Rencana Tindakan Umum</h3>';
+        html += '<p style="white-space: pre-wrap;">' + escapeHtml(document.getElementById('rencanaTindakan').value.trim() || '-') + '</p>';
+    } else {
+        // Monitoring Table
+        html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Monitoring</h3>';
+        var rows = getMonitoringRows();
+        if (rows.length > 0) {
+            html += '<table class="print-table"><thead><tr><th>Bed</th><th>Nama</th><th>JK</th><th>TD Pre</th><th>TD Intra</th><th>TD Post</th><th>Goldar</th><th>TB</th><th>BB</th><th>Akses</th><th>UFG</th><th>QB</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>Transfusi</th><th>Keterangan</th><th>Penyerah</th><th>Penerima</th></tr></thead><tbody>';
+            rows.forEach(function(f) {
+                html += '<tr>';
+                for(var i=0; i<20; i++) {
+                    html += '<td>' + (i === 17 ? escapeHtml(f[i] || '-').replace(/\n/g, '<br>') : escapeHtml(f[i] || '-')) + '</td>';
+                }
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+        } else {
+            html += '<p>Tidak ada data monitoring.</p>';
+        }
+
+        html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Masalah & Inventaris</h3>';
+        html += '<ul style="list-style: none; padding: 0; font-size: 11px;">';
+        html += '<li><b>Masalah Pasien</b>: ' + escapeHtml(document.getElementById('masalahPasien').value.trim() || '-') + '</li>';
+        html += '<li><b>Masalah Mesin/Alat</b>: ' + escapeHtml(document.getElementById('masalahMesin').value.trim() || '-') + '</li>';
+        var hfParts = []; [70, 90, 110, 130, 150, 170].forEach(function (s) { var el = document.getElementById('hf' + s); if (el && el.value !== '' && el.value !== '0') hfParts.push('HF' + s + ': ' + el.value); });
+        html += '<li><b>Sisa Dialyzer</b>: ' + escapeHtml(hfParts.join(', ') || '-') + '</li>';
+        html += '<li><b>Sisa GD Stick</b>: ' + escapeHtml(document.getElementById('gdStick').value.trim() || '-') + '</li>';
+        html += '<li><b>BOR / Bed Kosong</b>: ' + escapeHtml(document.getElementById('sisaBed').value.trim() || '-') + '</li>';
+        html += '</ul>';
+    }
+    
+    html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Pelapor</h3>';
+    html += '<p><b>Nama:</b> ' + escapeHtml(document.getElementById('pengirim1').value.trim()) + '</p>';
+    
+    return html;
+}
+
 var currentReportMessage = '';
 function kirimWA() {
     var pengirim = document.getElementById('pengirim1').value.trim();
@@ -1184,9 +1254,7 @@ function kirimWA() {
         if (hasPatientData && !monitoringSheetSaved) { alert('⚠️ PERHATIAN!\nData Monitoring belum disimpan ke Sheet.\nHarap klik tombol "Simpan ke Sheet" terlebih dahulu.'); document.getElementById('secPasien').scrollIntoView({ behavior: 'smooth' }); return; }
     }
     
-    // Tanda tangan dengan wavy dash besar dan huruf W tebal besar
     var waSig = '\n\n*Penanggung Jawab,*\n\n〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️\n*WAHYU WULANDARI, S.Kep. Ners*\nNIP. 198102202008012009';
-                
     currentReportMessage = buildReportMessage() + waSig;
 
     document.getElementById('modalTitle').textContent = getReportTitle();
@@ -1206,15 +1274,15 @@ function cetakPDF() {
     if (!pengirim) { alert('⚠️ Nama Pelapor wajib diisi!'); return; }
 
     var title = getReportTitle();
-    var content = buildReportMessage();
+    var content = generateHTMLReport();
 
     // Update area cetak yang akan dibaca oleh html2pdf
     document.getElementById('printTitle').textContent = title;
-    document.getElementById('printContent').textContent = content;
+    document.getElementById('printContentHTML').innerHTML = content;
 
     // Update tampilan di dalam modal pratinjau
     document.getElementById('pdfPreviewTitle').textContent = title;
-    document.getElementById('pdfPreviewContent').textContent = content;
+    document.getElementById('pdfPreviewContent').innerHTML = content;
 
     // Tampilkan modal pratinjau
     document.getElementById('pdfModal').style.display = 'flex';
@@ -1231,19 +1299,17 @@ function triggerPrint() {
         filename:     getReportTitle().replace(/[^a-z0-9]+/gi, '_') + '.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' } // Landscape agar tabel monitoring muat
     };
 
-    closePdfModal(); // Tutup modal pratinjau agar tidak ikut tercetak
+    closePdfModal();
 
-    // Pastikan element terlihat saat dirender oleh html2pdf
     printArea.style.position = 'absolute';
     printArea.style.left = '-9999px';
     printArea.style.top = '0';
     printArea.style.display = 'block';
 
     html2pdf().set(opt).from(printArea).save().then(function() {
-        // Kembalikan ke kondisi semula setelah selesai
         printArea.style.display = 'none';
         printArea.style.position = '';
         printArea.style.left = '';
@@ -1253,6 +1319,48 @@ function triggerPrint() {
         printArea.style.position = '';
         printArea.style.left = '';
     });
+}
+
+// === FUNGSI EXPORT WORD ===
+async function exportWord() {
+    var pengirim = document.getElementById('pengirim1').value.trim();
+    if (!pengirim) { alert('⚠️ Nama Pelapor wajib diisi!'); return; }
+
+    var title = getReportTitle();
+    var content = generateHTMLReport();
+    
+    // Ambil gambar tanda tangan sebagai base64 agar bisa terbawa di Word
+    var ttdImg = document.querySelector('#printArea img');
+    var ttdSrc = 'tanda.png';
+    if (ttdImg) {
+        try {
+            var canvas = document.createElement("canvas");
+            canvas.width = ttdImg.naturalWidth;
+            canvas.height = ttdImg.naturalHeight;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(ttdImg, 0, 0);
+            ttdSrc = canvas.toDataURL("image/png");
+        } catch(e) {
+            console.warn("Tidak bisa konversi TTD ke base64, memakai path biasa.");
+        }
+    }
+    
+    var ttdHtml = '<div style="margin-top: 60px; text-align: right; width: 100%;"><div style="display: inline-block; text-align: center; font-family: Arial;"><p style="margin:0; font-size: 12px;">Penanggung Jawab,</p><img src="' + ttdSrc + '" style="height: 80px; object-fit: contain; margin: 0 auto; display: block;"><p style="margin:0; font-weight: bold; text-decoration: underline;">Wahyu Wulandari, S.Kep. Ners</p><p style="margin:0; font-size: 11px;">NIP. 198102202008012009</p></div></div>';
+    
+    var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>' + title + '</title><style>body { font-family: Arial, sans-serif; } .print-table { width: 100%; border-collapse: collapse; font-size: 10px; } .print-table th, .print-table td { border: 1px solid #555; padding: 4px; text-align: center; }</style></head><body>';
+    html += '<h1 style="text-align: center;">' + title + '</h1>';
+    html += content;
+    html += ttdHtml;
+    html += '</body></html>';
+    
+    var blob = new Blob(['\ufeff', html], {
+        type: 'application/msword'
+    });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = title.replace(/[^a-z0-9]+/gi, '_') + '.doc';
+    link.click();
 }
 
 async function uploadToDrive() {
