@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Digital - Gala-w v4.9</title>
+    <title>Laporan Digital - Gala-w v5.0</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -288,7 +288,7 @@
             <button class="nav-item" data-tab="4" onclick="switchTab(4)"><i class="fa-solid fa-calendar-days"></i> Jadwal</button>
             <button class="nav-item" data-tab="5" onclick="switchTab(5)"><i class="fa-solid fa-thumbtack"></i> Quick Access</button>
         </nav>
-        <div class="sidebar-footer">Gala-w versi 4.9</div>
+        <div class="sidebar-footer">Gala-w versi 5.0</div>
     </aside>
 
     <div class="main-wrapper">
@@ -323,7 +323,7 @@
                         <p>
                             Aplikasi <b>Laporan Digital Hemodialisis</b> adalah sistem pelaporan elektronik yang dirancang khusus untuk mempermudah dokumentasi harian tindakan hemodialisis. Dibangun dengan antarmuka yang ringan dan kompatibel di berbagai perangkat (HP maupun PC).
                             <br><br>
-                            <span class="version-tag">Gala-w versi 4.9</span>
+                            <span class="version-tag">Gala-w versi 5.0</span>
                         </p>
                     </div>
 
@@ -334,7 +334,7 @@
 
                     <div class="home-card">
                         <h3><i class="fa-solid fa-heart"></i> Manfaat untuk Perawat</h3>
-                        <p>Memudahkan perawat pelaksana maupun KATIM dalam menginput data 21 kolom monitoring (Pre, Intra, Post HD). Data statik pasien (JK, TB, BB, Gol Darah, Akses, Dialyzer, QB, QD) akan <b>terisi otomatis</b> dari database. Kt/V juga terhitung otomatis. Laporan dapat langsung dikirim via WhatsApp atau disimpan menjadi PDF/Word tanpa perlu mengetik manual di pesan teks.</p>
+                        <p>Memudahkan perawat pelaksana maupun KATIM dalam menginput data 21 kolom monitoring (Pre, Intra, Post HD). Data statik pasien (JK, TB, BB, Gol Darah, Akses, Dialyzer, QB, QD) akan <b>terisi otomatis</b> dari database. Laporan dapat langsung dikirim via WhatsApp atau disimpan menjadi PDF/Word tanpa perlu mengetik manual di pesan teks.</p>
                     </div>
 
                     <div class="home-card">
@@ -433,7 +433,7 @@
                         <h2>Monitoring</h2>
                     </div>
                     <p style="font-size:0.72rem; color:var(--text-muted); margin:0 0 8px;">
-                        <i class="fa-solid fa-circle-info"></i> Ketik/pilih <b>Nama Pasien</b> → kolom <b>JK, Gol Darah, TB, BB, Akses, Dialyzer, QB, QD, Kt/V</b> terisi otomatis dari database. Jika pasien tidak ada, data bisa diketik manual.
+                        <i class="fa-solid fa-circle-info"></i> Ketik/pilih <b>Nama Pasien</b> → kolom <b>JK, Gol Darah, TB, BB, Akses, Dialyzer, QB, QD</b> terisi otomatis dari database. Jika pasien tidak ada, data bisa diketik manual.
                     </p>
                     <button class="btn-add" onclick="addMonitorRow()" style="margin-bottom:10px;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Monitoring</button>
                     
@@ -847,16 +847,16 @@ function addMonitorRow(focusCol) {
         '<td><input type="text" placeholder="mmHg" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="cm" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
-        '<td><input type="text" placeholder="kg" style="padding:4px; font-size:0.75rem;" oninput="hitungKtV(this)"></td>' +
+        '<td><input type="text" placeholder="kg" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" list="aksesList" placeholder="-" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="size" style="padding:4px; font-size:0.75rem;" oninput="autoFillDialyzer(this)" onchange="autoFillDialyzer(this)"></td>' +
-        '<td><input type="number" value="5" min="1" max="8" style="padding:4px; font-size:0.75rem; font-weight:700; color:#0d9488;" oninput="hitungKtV(this)"></td>' +
+        '<td><input type="number" value="5" min="1" max="8" style="padding:4px; font-size:0.75rem; font-weight:700; color:#0d9488;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" placeholder="liter" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
-        '<td><input type="text" value="250" style="padding:4px; font-size:0.75rem; font-weight:700; color:#0d9488;" oninput="hitungKtV(this)"></td>' +
+        '<td><input type="text" value="250" style="padding:4px; font-size:0.75rem; font-weight:700; color:#0d9488;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" value="' + defaultQD + '" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" value="' + defaultHeparin + '" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><select style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"><option value="">-</option><option value="EPO">EPO</option><option value="FE">FE</option></select></td>' +
-        '<td><input type="text" placeholder="auto" readonly style="padding:4px; font-size:0.75rem; background:#f0fdfa; font-weight:700; color:#0d9488;"></td>' +
+        '<td><input type="text" placeholder="-" style="padding:4px; font-size:0.75rem; background:#f0fdfa; font-weight:700; color:#0d9488;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><input type="text" list="transfusiList" placeholder="HB/Trans" style="padding:4px; font-size:0.75rem;" oninput="markMonitoringUnsaved()"></td>' +
         '<td><textarea oninput="markMonitoringUnsaved()" style="padding:4px; font-size:0.7rem; min-height:45px; width:100%; text-align:left;">' + soapTemplate + '</textarea></td>';
     document.getElementById('monitoringBody').appendChild(tr);
@@ -891,24 +891,7 @@ function autoFillDialyzer(inputEl) {
             if (randomQB > 100) randomQB = 100;
             qbInput.value = randomQB;
         }
-        hitungKtV(qbInput);
     }
-}
-
-function hitungKtV(inputEl) {
-    var tr = inputEl.closest('tr');
-    if (!tr) return;
-    var inputs = tr.querySelectorAll('input');
-    var qb = parseFloat(String(inputs[13].value || '').replace(',', '.')) || 0; 
-    var bb = parseFloat(String(inputs[8].value || '').replace(',', '.')) || 0;  
-    var timeHD = parseFloat(String(inputs[11].value || '').replace(',', '.')) || 5; 
-    var ktvInput = inputs[17]; 
-
-    if (qb > 0 && bb > 0) {
-        var ktv = 1.4 * (qb / 250) * (timeHD / 4) * Math.sqrt(60 / bb);
-        ktvInput.value = ktv.toFixed(2);
-    }
-    markMonitoringUnsaved();
 }
 
 (function setupMonitoringKeyboardNav() {
@@ -992,7 +975,6 @@ function autoFillPasien(inputEl) {
         autoFillDialyzer(inputs[10]); 
     }
     if (p.qd) inputs[14].value = p.qd;
-    hitungKtV(inputs[13]); 
     tr.style.transition = 'background-color 0.5s'; tr.style.backgroundColor = '#e6fff0';
     setTimeout(function () { tr.style.backgroundColor = ''; }, 900);
 }
@@ -1148,7 +1130,7 @@ function generateHTMLReport() {
             html += '<p><b>Padatkarya — ' + escapeHtml(padat) + ':</b> ' + (pj.length ? escapeHtml(pj.join(', ')) : '-') + '</p>';
         }
         html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Rencana Tindakan Umum</h3>';
-        html += '<p style="white-space: pre-wrap;">' + escapeHtml(document.getElementById('rencanaTindakan').value.trim() || '-') + '</p>';
+        html += '<p style="white-space: pre-wrap;">' + escapeHtml(document.getElementById('rencanaTindakan').value.trim() or '-') + '</p>';
     } else {
         html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Monitoring</h3>';
         var rows = getMonitoringRows();
