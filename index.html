@@ -1130,7 +1130,7 @@ function generateHTMLReport() {
             html += '<p><b>Padatkarya — ' + escapeHtml(padat) + ':</b> ' + (pj.length ? escapeHtml(pj.join(', ')) : '-') + '</p>';
         }
         html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Rencana Tindakan Umum</h3>';
-        html += '<p style="white-space: pre-wrap;">' + escapeHtml(document.getElementById('rencanaTindakan').value.trim() or '-') + '</p>';
+        html += '<p style="white-space: pre-wrap;">' + escapeHtml(document.getElementById('rencanaTindakan').value.trim() || '-') + '</p>';
     } else {
         html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Monitoring</h3>';
         var rows = getMonitoringRows();
