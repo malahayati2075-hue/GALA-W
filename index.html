@@ -160,26 +160,16 @@
         .monitoring-table th:nth-child(9), .monitoring-table td:nth-child(9) { width: 30px; } 
         .monitoring-table th:nth-child(12), .monitoring-table td:nth-child(12) { width: 45px; } 
         .monitoring-table th:nth-child(13), .monitoring-table td:nth-child(13) { width: 45px; } 
-        .monitoring-table th:nth-child(19), .monitoring-table td:nth-child(19) { width: 60px; } /* HB/Trans lb */
-        .monitoring-table th:nth-child(20), .monitoring-table td:nth-child(20) { width: 300px; } /* SOAP */
+        .monitoring-table th:nth-child(19), .monitoring-table td:nth-child(19) { width: 60px; } 
+        .monitoring-table th:nth-child(20), .monitoring-table td:nth-child(20) { width: 300px; } 
         
-        /* === FREEZE Bed & Nama COLUMNS === */
-        .monitoring-table th:nth-child(1),
-        .monitoring-table td:nth-child(1) {
-            position: sticky; left: 0; z-index: 6;
-        }
+        .monitoring-table th:nth-child(1), .monitoring-table td:nth-child(1) { position: sticky; left: 0; z-index: 6; }
         .monitoring-table th:nth-child(1) { z-index: 7; }
         .monitoring-table td:nth-child(1) { background: rgba(255, 255, 255, 0.97); }
 
-        .monitoring-table th:nth-child(2),
-        .monitoring-table td:nth-child(2) {
-            position: sticky; left: 40px; z-index: 6;
-        }
+        .monitoring-table th:nth-child(2), .monitoring-table td:nth-child(2) { position: sticky; left: 40px; z-index: 6; }
         .monitoring-table th:nth-child(2) { z-index: 7; }
-        .monitoring-table td:nth-child(2) {
-            background: rgba(255, 255, 255, 0.97);
-            box-shadow: 4px 0 6px -3px rgba(0,0,0,0.15);
-        }
+        .monitoring-table td:nth-child(2) { background: rgba(255, 255, 255, 0.97); box-shadow: 4px 0 6px -3px rgba(0,0,0,0.15); }
         
         .row-del { border: none; background: transparent; color: var(--accent); cursor: pointer; font-size: 0.85rem; padding: 2px 4px; }
 
@@ -880,7 +870,6 @@ function addMonitorRow(focusCol) {
     }
 }
 
-// === FUNGSI DIALIZER → QB OTOMATIS ===
 function autoFillDialyzer(inputEl) {
     markMonitoringUnsaved();
     var tr = inputEl.closest('tr');
@@ -888,7 +877,7 @@ function autoFillDialyzer(inputEl) {
     var inputs = tr.querySelectorAll('input');
     var dialyzerVal = String(inputEl.value || '').trim();
     var dialyzerSize = parseInt(dialyzerVal.replace(/[^0-9]/g, ''), 10);
-    var qbInput = inputs[13]; // QB di index 13
+    var qbInput = inputs[13]; 
 
     if (!isNaN(dialyzerSize) && dialyzerSize > 0) {
         if (dialyzerSize >= 130) {
@@ -906,15 +895,14 @@ function autoFillDialyzer(inputEl) {
     }
 }
 
-// === FUNGSI HITUNG Kt/V OTOMATIS MENGGUNAKAN TIME HD ===
 function hitungKtV(inputEl) {
     var tr = inputEl.closest('tr');
     if (!tr) return;
     var inputs = tr.querySelectorAll('input');
-    var qb = parseFloat(String(inputs[13].value || '').replace(',', '.')) || 0; // QB index 13
-    var bb = parseFloat(String(inputs[8].value || '').replace(',', '.')) || 0;  // BB index 8
-    var timeHD = parseFloat(String(inputs[11].value || '').replace(',', '.')) || 5; // TIME HD index 11
-    var ktvInput = inputs[17]; // Kt/V index 17
+    var qb = parseFloat(String(inputs[13].value || '').replace(',', '.')) || 0; 
+    var bb = parseFloat(String(inputs[8].value || '').replace(',', '.')) || 0;  
+    var timeHD = parseFloat(String(inputs[11].value || '').replace(',', '.')) || 5; 
+    var ktvInput = inputs[17]; 
 
     if (qb > 0 && bb > 0) {
         var ktv = 1.4 * (qb / 250) * (timeHD / 4) * Math.sqrt(60 / bb);
@@ -1009,7 +997,6 @@ function autoFillPasien(inputEl) {
     setTimeout(function () { tr.style.backgroundColor = ''; }, 900);
 }
 
-// FIX: Logika pengambilan array data monitoring dari HTML
 function getMonitoringRows() {
     var rows = [];
     document.querySelectorAll('#monitoringBody tr').forEach(function (tr) {
@@ -1018,15 +1005,13 @@ function getMonitoringRows() {
         var textareas = tr.querySelectorAll('textarea');
         
         var f = []; 
-        inputs.forEach(function (el) { f.push(el.value.trim()); }); // Mengisi 18 item input (index 0-17)
+        inputs.forEach(function (el) { f.push(el.value.trim()); }); 
         
-        // Sisipkan EPO/FE di index 15 (setelah Heparin)
         f.splice(15, 0, selects.length > 0 ? selects[0].value.trim() : '');
         
-        // Sisipkan SOAP di index 19 (setelah HB/Trans lb)
         if(textareas.length > 0) { f.splice(19, 0, textareas[0].value.trim()); }
         
-        if (f.length >= 20) rows.push(f.slice(0, 20)); // Potong pas 20 kolom
+        if (f.length >= 20) rows.push(f.slice(0, 20)); 
     }); 
     return rows;
 }
