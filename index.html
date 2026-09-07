@@ -441,7 +441,7 @@
                         <table class="monitoring-table" id="monitoringTable">
                             <thead>
                                 <tr>
-                                    <th>Bed</th><th>Nama</th><th>JK</th><th>TD PRE</th><th>TD INTRA</th><th>TD POST</th><th>Gol Darah</th><th>TB</th><th>BB</th><th>AKSES</th><th>DIALIZER</th><th>TIME HD</th><th>UFG (L)</th><th>QB</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>HB/Trans lb</th><th>SOAP</th><th>Aksi</th>
+                                    <th>Bed</th><th>Nama</th><th>JK</th><th>TD PRE</th><th>TD INTRA</th><th>TD POST</th><th>Gol Darah</th><th>TB</th><th>BB</th><th>AKSES</th><th>DIALIZER</th><th>TIME HD</th><th>UFG (L)</th><th>QB</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>HB/Trans lb</th><th>Assesment</th><th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="monitoringBody"></tbody>
@@ -834,7 +834,8 @@ function markMonitoringUnsaved() { monitoringSheetSaved = false; }
 function addMonitorRow(focusCol) {
     markMonitoringUnsaved();
     var tr = document.createElement('tr');
-    var soapTemplate = "DS: <keluhan>\nDO:<TD: , ND:, RR:, S:, dll>\nA: \nP: <HD sesuai program, cek ..., dll>";
+    // Kosongkan template Assesmen (sebelumnya berisi template SOAP)
+    var soapTemplate = ""; 
     var defaultQD = "500";
     var defaultHeparin = "5000";
 
@@ -869,7 +870,6 @@ function addMonitorRow(focusCol) {
         if (targetInput) { targetInput.focus(); if (targetInput.select) targetInput.select(); }
     }
 }
-
 function autoFillDialyzer(inputEl) {
     markMonitoringUnsaved();
     var tr = inputEl.closest('tr');
@@ -1135,7 +1135,7 @@ function generateHTMLReport() {
         html += '<h3 style="border-bottom: 1px solid #000; padding-bottom: 5px;">Monitoring</h3>';
         var rows = getMonitoringRows();
         if (rows.length > 0) {
-            html += '<table class="print-table"><thead><tr><th>Bed</th><th>Nama</th><th>JK</th><th>TD Pre</th><th>TD Intra</th><th>TD Post</th><th>Goldar</th><th>TB</th><th>BB</th><th>Akses</th><th>Dialyzer</th><th>Time HD</th><th>UFG</th><th>QB</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>HB/Trans lb</th><th>SOAP</th></tr></thead><tbody>';
+            html += '<table class="print-table"><thead><tr><th>Bed</th><th>Nama</th><th>JK</th><th>TD Pre</th><th>TD Intra</th><th>TD Post</th><th>Goldar</th><th>TB</th><th>BB</th><th>Akses</th><th>Dialyzer</th><th>Time HD</th><th>UFG</th><th>QB</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>HB/Trans lb</th><th>Assesment</th></tr></thead><tbody>';
             rows.forEach(function(f) {
                 html += '<tr>';
                 for(var i=0; i<20; i++) {
