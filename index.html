@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Digital - Gala-w v4.8</title>
+    <title>Laporan Digital - Gala-w v4.9</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -160,8 +160,8 @@
         .monitoring-table th:nth-child(9), .monitoring-table td:nth-child(9) { width: 30px; } 
         .monitoring-table th:nth-child(12), .monitoring-table td:nth-child(12) { width: 45px; } 
         .monitoring-table th:nth-child(13), .monitoring-table td:nth-child(13) { width: 45px; } 
-        .monitoring-table th:nth-child(19), .monitoring-table td:nth-child(19) { width: 60px; } /* HB/Trans lb dipersedikit */
-        .monitoring-table th:nth-child(20), .monitoring-table td:nth-child(20) { width: 300px; } /* SOAP diperlebar */
+        .monitoring-table th:nth-child(19), .monitoring-table td:nth-child(19) { width: 60px; } /* HB/Trans lb */
+        .monitoring-table th:nth-child(20), .monitoring-table td:nth-child(20) { width: 300px; } /* SOAP */
         
         /* === FREEZE Bed & Nama COLUMNS === */
         .monitoring-table th:nth-child(1),
@@ -298,7 +298,7 @@
             <button class="nav-item" data-tab="4" onclick="switchTab(4)"><i class="fa-solid fa-calendar-days"></i> Jadwal</button>
             <button class="nav-item" data-tab="5" onclick="switchTab(5)"><i class="fa-solid fa-thumbtack"></i> Quick Access</button>
         </nav>
-        <div class="sidebar-footer">Gala-w versi 4.8</div>
+        <div class="sidebar-footer">Gala-w versi 4.9</div>
     </aside>
 
     <div class="main-wrapper">
@@ -333,7 +333,7 @@
                         <p>
                             Aplikasi <b>Laporan Digital Hemodialisis</b> adalah sistem pelaporan elektronik yang dirancang khusus untuk mempermudah dokumentasi harian tindakan hemodialisis. Dibangun dengan antarmuka yang ringan dan kompatibel di berbagai perangkat (HP maupun PC).
                             <br><br>
-                            <span class="version-tag">Gala-w versi 4.8</span>
+                            <span class="version-tag">Gala-w versi 4.9</span>
                         </p>
                     </div>
 
@@ -445,7 +445,6 @@
                     <p style="font-size:0.72rem; color:var(--text-muted); margin:0 0 8px;">
                         <i class="fa-solid fa-circle-info"></i> Ketik/pilih <b>Nama Pasien</b> → kolom <b>JK, Gol Darah, TB, BB, Akses, Dialyzer, QB, QD, Kt/V</b> terisi otomatis dari database. Jika pasien tidak ada, data bisa diketik manual.
                     </p>
-                    <!-- Tombol Recall Dihapus, hanya menyisakan tombol tambah baris -->
                     <button class="btn-add" onclick="addMonitorRow()" style="margin-bottom:10px;"><i class="fa-solid fa-circle-plus"></i> Tambah Baris Monitoring</button>
                     
                     <div class="table-container">
@@ -459,7 +458,6 @@
                         </table>
                     </div>
                     
-                    <!-- Custom WA Nomor untuk Monitoring -->
                     <div style="margin-top: 15px;">
                         <label>Nomor WA Tujuan (Khusus Share Monitoring)</label>
                         <input type="text" id="waMonitoringNumber" placeholder="Contoh: 6281234567890 (Kosongkan jika umum)">
@@ -1011,6 +1009,7 @@ function autoFillPasien(inputEl) {
     setTimeout(function () { tr.style.backgroundColor = ''; }, 900);
 }
 
+// FIX: Logika pengambilan array data monitoring dari HTML
 function getMonitoringRows() {
     var rows = [];
     document.querySelectorAll('#monitoringBody tr').forEach(function (tr) {
@@ -1019,13 +1018,15 @@ function getMonitoringRows() {
         var textareas = tr.querySelectorAll('textarea');
         
         var f = []; 
-        inputs.forEach(function (el) { f.push(el.value.trim()); });
+        inputs.forEach(function (el) { f.push(el.value.trim()); }); // Mengisi 18 item input (index 0-17)
         
+        // Sisipkan EPO/FE di index 15 (setelah Heparin)
         f.splice(15, 0, selects.length > 0 ? selects[0].value.trim() : '');
         
-        if(textareas.length > 0) { f.splice(18, 0, textareas[0].value.trim()); }
+        // Sisipkan SOAP di index 19 (setelah HB/Trans lb)
+        if(textareas.length > 0) { f.splice(19, 0, textareas[0].value.trim()); }
         
-        if (f.length >= 19) rows.push(f.slice(0, 19));
+        if (f.length >= 20) rows.push(f.slice(0, 20)); // Potong pas 20 kolom
     }); 
     return rows;
 }
@@ -1063,9 +1064,9 @@ function formatDaftarPasien() {
         var f = []; 
         inputs.forEach(function (el) { f.push(el.value.trim()); });
         f.splice(15, 0, selects.length > 0 ? selects[0].value.trim() : '');
-        if(textareas.length > 0) { f.splice(18, 0, textareas[0].value.trim()); }
+        if(textareas.length > 0) { f.splice(19, 0, textareas[0].value.trim()); }
         
-        if (f.length < 19) return; if (!f.some(function (x) { return x !== ''; })) return; idx++;
+        if (f.length < 20) return; if (!f.some(function (x) { return x !== ''; })) return; idx++;
 
         msg += idx + '. *Bed ' + (f[0] || '-') + ' — ' + (f[1] || '-') + '*\n';
         msg += '   • JK: ' + (f[2] || '-') + ' | Goldar: ' + (f[6] || '-') + ' | TB: ' + (f[7] || '-') + ' | BB: ' + (f[8] || '-') + '\n';
@@ -1170,8 +1171,8 @@ function generateHTMLReport() {
             html += '<table class="print-table"><thead><tr><th>Bed</th><th>Nama</th><th>JK</th><th>TD Pre</th><th>TD Intra</th><th>TD Post</th><th>Goldar</th><th>TB</th><th>BB</th><th>Akses</th><th>Dialyzer</th><th>Time HD</th><th>UFG</th><th>QB</th><th>QD</th><th>Heparin</th><th>EPO/FE</th><th>Kt/V</th><th>HB/Trans lb</th><th>SOAP</th></tr></thead><tbody>';
             rows.forEach(function(f) {
                 html += '<tr>';
-                for(var i=0; i<19; i++) {
-                    html += '<td>' + (i === 18 ? escapeHtml(f[i] || '-').replace(/\n/g, '<br>') : escapeHtml(f[i] || '-')) + '</td>';
+                for(var i=0; i<20; i++) {
+                    html += '<td>' + (i === 19 ? escapeHtml(f[i] || '-').replace(/\n/g, '<br>') : escapeHtml(f[i] || '-')) + '</td>';
                 }
                 html += '</tr>';
             });
