@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Pacifico&family=Righteous&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -45,14 +46,68 @@
         .sidebar-footer { margin-top: auto; padding: 10px; text-align: center; font-size: 0.7rem; font-weight: 600; color: rgba(255, 255, 255, 0.6); border-top: 1px solid rgba(255,255,255,0.2); }
 
         .main-wrapper { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); gap: 10px; position: sticky; top: 0; z-index: 10; }
-        .top-left-group { display: flex; align-items: center; gap: 10px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); gap: 10px; position: sticky; top: 0; z-index: 10; min-height: 60px; }
+        
+        .top-left-group { display: flex; align-items: center; gap: 10px; z-index: 12; }
         .hamburger { display: none; width: 36px; height: 36px; flex: none; border: 1px solid var(--border-color); background: #fff; color: var(--text-main); border-radius: 10px; font-size: 1rem; cursor: pointer; align-items: center; justify-content: center; }
         .hamburger:active { background: #f1f5f9; }
         .realtime-clock { text-align: left; }
         .realtime-clock .time { font-size: 1.1rem; font-weight: 800; letter-spacing: 1px; color: var(--sore-deep); }
         .realtime-clock .date { font-size: 0.7rem; opacity: 0.9; color: var(--text-muted); }
-        .prayer-times { text-align: right; font-size: 0.65rem; line-height: 1.4; background: rgba(255,255,255,0.8); padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border-color); max-width: 180px; color: var(--text-main); }
+        
+        /* Header Retro Gala-W (300x120 di atas) */
+        .header-galaw-container {
+            width: 300px;
+            height: 120px;
+            position: absolute;
+            top: -30px; /* Agar menonjol ke atas header */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* Penting agar tidak menghalangi klik tombol di bawahnya */
+            z-index: 11;
+        }
+        .galaw-text {
+            font-family: 'UnifrakturMaguntia', cursive; /* Font Blackletter */
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 1px;
+            position: relative;
+            background: linear-gradient(90deg, #ff5722, #ffc107, #00bcd4, #3f51b5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(0,0,0,0.1);
+            
+            text-shadow: 
+                2px 2px 0px #f43f5e,
+                4px 4px 0px #f59e0b,
+                6px 6px 0px #eab308,
+                8px 8px 0px #14b8a6,
+                10px 10px 0px #0284c7,
+                12px 12px 15px rgba(0,0,0,0.3);
+            
+            animation: galawPop 15s linear infinite;
+        }
+        @keyframes galawPop {
+            0%   { text-shadow: 0 0 0 transparent; }
+            15%  { text-shadow: 2px 2px 0px #f43f5e; }
+            30%  { text-shadow: 2px 2px 0px #f43f5e, 4px 4px 0px #f59e0b; }
+            45%  { text-shadow: 2px 2px 0px #f43f5e, 4px 4px 0px #f59e0b, 6px 6px 0px #eab308; }
+            60%  { text-shadow: 2px 2px 0px #f43f5e, 4px 4px 0px #f59e0b, 6px 6px 0px #eab308, 8px 8px 0px #14b8a6; }
+            75%  { text-shadow: 2px 2px 0px #f43f5e, 4px 4px 0px #f59e0b, 6px 6px 0px #eab308, 8px 8px 0px #14b8a6, 10px 10px 0px #0284c7; }
+            90%  { text-shadow: 2px 2px 0px #f43f5e, 4px 4px 0px #f59e0b, 6px 6px 0px #eab308, 8px 8px 0px #14b8a6, 10px 10px 0px #0284c7, 12px 12px 15px rgba(0,0,0,0.3); }
+            100% { text-shadow: 2px 2px 0px #f43f5e, 4px 4px 0px #f59e0b, 6px 6px 0px #eab308, 8px 8px 0px #14b8a6, 10px 10px 0px #0284c7, 12px 12px 15px rgba(0,0,0,0.3); }
+        }
+        @media (max-width: 768px) {
+            .galaw-text { font-size: 2.2rem; }
+            .header-galaw-container { width: 200px; top: -10px; }
+        }
+
+        .prayer-times { text-align: right; font-size: 0.65rem; line-height: 1.4; background: rgba(255,255,255,0.8); padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border-color); max-width: 180px; color: var(--text-main); z-index: 12; }
         .prayer-times .loc { font-weight: 700; color: var(--sore-deep); margin-bottom: 2px; display: block; border-bottom: 1px solid var(--border-color); padding-bottom: 2px; }
         .prayer-times span { font-weight: 700; color: var(--sore-1); }
 
@@ -300,6 +355,11 @@
                     <div class="date" id="clockDate">Hari, Tanggal</div>
                 </div>
             </div>
+            
+            <div class="header-galaw-container">
+                <div class="galaw-text">Gala-W</div>
+            </div>
+
             <div class="prayer-times" id="prayerTimes">
                 <span class="loc">📍 Memuat...</span>
                 Jadwal Sholat
@@ -605,6 +665,22 @@
             </div>
         </div>
     </div>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <aside class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-top">
+            <div class="sidebar-brand">Menu Navigasi</div>
+            <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <nav class="sidebar-menu">
+            <button class="side-item active" data-tab="0" onclick="switchTab(0)"><i class="fa-solid fa-house"></i> Beranda</button>
+            <button class="side-item" data-tab="1" onclick="switchTab(1)"><i class="fa-solid fa-file-pen"></i> Laporan Harian</button>
+            <button class="side-item" data-tab="2" onclick="switchTab(2)"><i class="fa-solid fa-chart-line"></i> MUTU</button>
+            <button class="side-item" data-tab="3" onclick="switchTab(3)"><i class="fa-solid fa-magnifying-glass"></i> Cari Pasien</button>
+            <button class="side-item" data-tab="4" onclick="switchTab(4)"><i class="fa-solid fa-calendar-days"></i> Jadwal</button>
+            <button class="side-item" data-tab="5" onclick="switchTab(5)"><i class="fa-solid fa-thumbtack"></i> Quick Access</button>
+        </nav>
+    </aside>
 </div>
 
 <script>
