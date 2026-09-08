@@ -557,56 +557,20 @@
                 </div>
             </div>
 
-            <!-- ================= SLIDE 5 : Quick Access ================= -->
+                 <!-- ================= SLIDE 5 : Quick Access ================= -->
             <div id="slide5" class="page">
                 <div class="main-title-3d">
                     <div class="icon-box">📌</div>
                     <h2>Quick Access</h2>
                 </div>
-                <p style="color: var(--text-muted); text-align: center; margin: 15px 0; font-size: 0.85rem;">
-                    Daftar dokumen atau Quick Access beserta bukti link. Data tersimpan di Spreadsheet dan dapat dilihat semua pengguna.
-                </p>
-                <div class="section-card section-card-green">
-                    <div class="section-title">
-                        <div class="icon-box">🔗</div>
-                        <h2>Tambah Dokumen / Link</h2>
-                    </div>
-                    <div class="grid-2">
-                        <div><label>Nama Dokumen / Laporan</label><input type="text" id="specialName" placeholder="Contoh: Laporan Insiden Bulan Mei"></div>
-                        <div><label>Bukti Link (URL)</label><input type="url" id="specialUrl" placeholder="https://drive.google.com/..."></div>
-                    </div>
-                    <button class="btn btn-wa" onclick="addSpecialLink()" style="width: 100%; margin-top: 12px;"><i class="fa-solid fa-plus"></i> Simpan ke Server</button>
-                </div>
-                <div class="section-card section-card-blue">
-                    <div class="section-title">
-                        <div class="icon-box">📂</div>
-                        <h2>Daftar Dokumen Tersimpan</h2>
-                    </div>
-                    <div id="specialListContainer" style="display: flex; flex-direction: column; gap: 8px;">
-                        <div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 20px;">Memuat data dari server...</div>
-                    </div>
+                <div style="text-align: center; margin-top: 40px;">
+                    <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Klik tombol di bawah untuk membuka halaman Quick Access.</p>
+                    <a href="https://script.google.com/macros/s/AKfycbzjJfX-c5YfbjqugGbhgxqrFuweZBrysxTYZei6yag7oDrQ2u5awGayFL7nUmxFRhX0/exec" target="_blank" class="btn btn-wa" style="display: inline-flex; text-decoration: none; padding: 12px 30px; font-size: 1rem;">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Halaman Quick Access
+                    </a>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
-<aside id="mobileSidebar" class="mobile-sidebar">
-    <div class="sidebar-top">
-        <span class="sidebar-brand">☰ Menu Navigasi</span>
-        <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="sidebar-menu">
-        <button class="side-item active" data-tab="0" onclick="switchTab(0)"><i class="fa-solid fa-house"></i> Beranda</button>
-        <button class="side-item" data-tab="1" onclick="switchTab(1)"><i class="fa-solid fa-file-pen"></i> Laporan Harian</button>
-        <button class="side-item" data-tab="2" onclick="switchTab(2)"><i class="fa-solid fa-chart-line"></i> MUTU</button>
-        <button class="side-item" data-tab="3" onclick="switchTab(3)"><i class="fa-solid fa-magnifying-glass"></i> Cari Pasien</button>
-        <button class="side-item" data-tab="4" onclick="switchTab(4)"><i class="fa-solid fa-calendar-days"></i> Jadwal</button>
-        <button class="side-item" data-tab="5" onclick="switchTab(5)"><i class="fa-solid fa-thumbtack"></i> Quick Access</button>
-    </div>
-</aside>
-
+            
 <!-- MODAL WHATSAPP -->
 <div id="reportModal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
@@ -1532,7 +1496,7 @@ function renderSpecialLinks() {
     for (var i = 0; i < 5; i++) { 
         addMonitorRow(false);
     }
-    applyRoleRules(); populatePatientDatalist(); loadSpecialLinks();
+    applyRoleRules(); populatePatientDatalist();
 })();
 </script>
 </body>
