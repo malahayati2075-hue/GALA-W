@@ -1447,14 +1447,14 @@ function renderSpecialLinks() {
     }).join('');
 }
 
-// FUNGSI PENCARIAN PASIEN BERDASARKAN TANGGAL, SHIFT, DAN TIM
+// FUNGSI PENCARIAN PASIEN BERDASARKAN TANGGAL, SHIFT, DAN TIM (DIPERBAIKI)
 async function searchPasienByParams() {
     var dateVal = document.getElementById('searchPasienDate').value;
     var shifts = Array.from(document.querySelectorAll('#searchShiftGroup input:checked')).map(el => el.value);
     var tims = Array.from(document.querySelectorAll('#searchTimGroup input:checked')).map(el => el.value);
     
     var resultDiv = document.getElementById('searchPasienResult');
-    resultDiv.innerHTML = '<div class="stat-loading">⏳ Mencari data pasien...</div>';
+    resultDiv.innerHTML = '<div class="stat-loading">⏳ Mengambil data dari sheet DATABASE...</div>';
     
     try {
         var res = await fetch(SEARCH_PASIEN_CSV_URL + '&t=' + Date.now(), { cache: 'no-store' });
@@ -1462,7 +1462,7 @@ async function searchPasienByParams() {
         var rows = parseCSV(csvText);
         
         if (rows.length < 2) {
-            resultDiv.innerHTML = '<div class="stat-loading">❌ Data tidak ditemukan di sheet.</div>';
+            resultDiv.innerHTML = '<div class="stat-loading">❌ Data tidak ditemukan atau sheet kosong. Pastikan sheet "DATABASE" sudah dipublikasikan sebagai CSV.</div>';
             return;
         }
         
@@ -1482,23 +1482,26 @@ async function searchPasienByParams() {
             
             var match = true;
             
-            if (match && dateVal) {
-                if (cTgl > -1) {
-                    var d = parseSheetDate(r[cTgl]);
-                    var targetD = new Date(dateVal + 'T00:00:00');
-                    if (!d || d.getTime() !== targetD.getTime()) match = false;
-                } else {
-                    match = false;
-                }
+            // Filter Tanggal
+            if (dateVal && cTgl > -1) {
+                var d = parseSheetDate(r[cTgl]);
+                var targetD = new Date(dateVal + 'T00:00:00');
+                if (!d || d.getTime() !== targetD.getTime()) match = false;
+            } else if (dateVal && cTgl === -1) {
+                match = false;
             }
             
+            // Filter Shift (Ekstrak angka shift)
             if (match && shifts.length > 0 && cShift > -1) {
-                var sh = String(r[cShift] || '').trim();
-                if (!shifts.includes(sh)) match = false;
+                var sh = parseShift(r[cShift]);
+                if (sh === 0 || !shifts.includes(String(sh))) match = false;
             }
             
+            // Filter Tim (Ekstrak angka Tim)
             if (match && tims.length > 0 && cTim > -1) {
-                var tm = String(r[cTim] || '').trim();
+                var tmStr = String(r[cTim] || '').trim();
+                var tmMatch = tmStr.match(/(\d)/);
+                var tm = tmMatch ? tmMatch[1] : tmStr;
                 if (!tims.includes(tm)) match = false;
             }
             
@@ -1508,19 +1511,26 @@ async function searchPasienByParams() {
         }
         
         if (found.length === 0) {
-            resultDiv.innerHTML = '<div class="stat-loading">❌ Tidak ada pasien yang cocok dengan kriteria pencarian.</div>';
+            var errHtml = '<div class="stat-loading">❌ Tidak ada pasien yang cocok dengan kriteria pencarian.<br><br><b>Diagnostik:</b><br>';
+            errHtml += 'Header Terbaca: ' + rows[0].join(' | ') + '<br>';
+            errHtml += 'Kolom Tanggal: ' + (cTgl > -1 ? 'Ditemukan (Index ' + cTgl + ')' : 'TIDAK DITEMUKAN') + '<br>';
+            errHtml += 'Kolom Shift: ' + (cShift > -1 ? 'Ditemukan (Index ' + cShift + ')' : 'TIDAK DITEMUKAN') + '<br>';
+            errHtml += 'Kolom Tim: ' + (cTim > -1 ? 'Ditemukan (Index ' + cTim + ')' : 'TIDAK DITEMUKAN') + '<br>';
+            errHtml += 'Total Baris: ' + (rows.length - 1);
+            errHtml += '</div>';
+            resultDiv.innerHTML = errHtml;
             return;
         }
         
         var html = '<div class="table-container"><table class="monitoring-table" style="min-width: 600px;"><thead><tr>';
-        headers.forEach(h => {
+        rows[0].forEach(h => {
             html += '<th>' + escapeHtml(h || '') + '</th>';
         });
         html += '</tr></thead><tbody>';
         
         found.forEach(r => {
             html += '<tr>';
-            for (var j = 0; j < headers.length; j++) {
+            for (var j = 0; j < rows[0].length; j++) {
                 html += '<td>' + escapeHtml(r[j] || '-') + '</td>';
             }
             html += '</tr>';
@@ -1530,7 +1540,7 @@ async function searchPasienByParams() {
         resultDiv.innerHTML = html;
         
     } catch (e) {
-        resultDiv.innerHTML = '<div class="stat-loading">❌ Gagal memuat data: ' + escapeHtml(e.message) + '</div>';
+        resultDiv.innerHTML = '<div class="stat-loading">❌ Gagal memuat data: ' + escapeHtml(e.message) + '<br>Pastikan link CSV dapat diakses publik.</div>';
     }
 }
 
