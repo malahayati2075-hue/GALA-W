@@ -532,11 +532,47 @@
                     <div class="icon-box">🔍</div>
                     <h2>Pencarian Pasien</h2>
                 </div>
-                <div style="text-align: center; margin-top: 40px;">
-                    <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Klik tombol di bawah untuk membuka halaman pencarian pasien Hemodialisa.</p>
+                
+                <div class="section-card section-card-purple">
+                    <div class="section-title">
+                        <div class="icon-box">🔗</div>
+                        <h2>Pencarian Cepat (Link Eksternal)</h2>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 5px 0 15px;">Klik tombol di bawah untuk membuka halaman pencarian pasien Hemodialisa.</p>
                     <a href="https://bumimadinahdb26-cloud.github.io/pencarianHD/" target="_blank" class="btn btn-wa" style="display: inline-flex; text-decoration: none; padding: 12px 30px; font-size: 1rem;">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Halaman Pencarian
                     </a>
+                </div>
+
+                <div class="section-card section-card-green">
+                    <div class="section-title">
+                        <div class="icon-box">🔎</div>
+                        <h2>Pencarian Berdasarkan Tanggal, Shift & Tim</h2>
+                    </div>
+                    <div class="grid-2">
+                        <div>
+                            <label>Tanggal</label>
+                            <input type="date" id="searchPasienDate">
+                        </div>
+                        <div></div>
+                    </div>
+                    <label>Shift</label>
+                    <div class="checkbox-group" id="searchShiftGroup">
+                        <label class="check-item"><input type="checkbox" value="1" checked> Shift 1</label>
+                        <label class="check-item"><input type="checkbox" value="2" checked> Shift 2</label>
+                        <label class="check-item"><input type="checkbox" value="3" checked> Shift 3</label>
+                    </div>
+                    
+                    <label>Tim</label>
+                    <div class="checkbox-group" id="searchTimGroup">
+                        <label class="check-item"><input type="checkbox" value="1" checked> Tim 1</label>
+                        <label class="check-item"><input type="checkbox" value="2" checked> Tim 2</label>
+                    </div>
+                    
+                    <button class="btn btn-wa" onclick="searchPasienByParams()" style="width: 100%; margin-top: 15px;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Cari Pasien
+                    </button>
+                    <div id="searchPasienResult" style="margin-top: 20px;"></div>
                 </div>
             </div>
 
@@ -654,6 +690,8 @@ var DIVIDER = "━━━━━━━━━━━━━━━━━";
 var SPECIAL_API_URL = "https://script.google.com/macros/s/AKfycbxfFfPfNRq-aLSv39evhFvB85ac12koQPF1SMsjOXV4nZ3uEi4N2jMp25QMdePClh64KQ/exec"; 
 var SPECIAL_SHEET_ID = "1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c";
 var SPECIAL_GID = "197653163";
+
+var SEARCH_PASIEN_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLoc7yUqr4bOCQ8hN8b7dkoxaiUPQMbi3B1lL4QmNRfhQxpKovP5OUd6j3Hc4I2cMdPk64k0KvXdQy/pub?gid=1350268941&single=true&output=csv";
 
 var patientData = [];
 var specialLinks = [];
@@ -1407,6 +1445,93 @@ function renderSpecialLinks() {
                '<span style="font-size: 1.2rem; color: var(--drive-blue);">📄</span><span style="flex: 1; font-weight: 700; font-size: 0.85rem;">' + escapeHtml(l.name) + '</span>' +
                '<i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--secondary); font-size: 0.8rem;"></i></a>';
     }).join('');
+}
+
+// FUNGSI PENCARIAN PASIEN BERDASARKAN TANGGAL, SHIFT, DAN TIM
+async function searchPasienByParams() {
+    var dateVal = document.getElementById('searchPasienDate').value;
+    var shifts = Array.from(document.querySelectorAll('#searchShiftGroup input:checked')).map(el => el.value);
+    var tims = Array.from(document.querySelectorAll('#searchTimGroup input:checked')).map(el => el.value);
+    
+    var resultDiv = document.getElementById('searchPasienResult');
+    resultDiv.innerHTML = '<div class="stat-loading">⏳ Mencari data pasien...</div>';
+    
+    try {
+        var res = await fetch(SEARCH_PASIEN_CSV_URL + '&t=' + Date.now(), { cache: 'no-store' });
+        var csvText = await res.text();
+        var rows = parseCSV(csvText);
+        
+        if (rows.length < 2) {
+            resultDiv.innerHTML = '<div class="stat-loading">❌ Data tidak ditemukan di sheet.</div>';
+            return;
+        }
+        
+        var headers = rows[0].map(h => String(h || '').toLowerCase().trim());
+        
+        var cTgl = findCol(headers, ['tanggal', 'timestamp', 'tgl', 'date']);
+        var cShift = findCol(headers, ['shift']);
+        var cTim = findCol(headers, ['tim', 'team']);
+        var cNama = findCol(headers, ['nama', 'pasien']);
+        
+        if (cNama === -1) cNama = 1;
+        
+        var found = [];
+        for (var i = 1; i < rows.length; i++) {
+            var r = rows[i];
+            if (!r || r.length === 0) continue;
+            
+            var match = true;
+            
+            if (match && dateVal) {
+                if (cTgl > -1) {
+                    var d = parseSheetDate(r[cTgl]);
+                    var targetD = new Date(dateVal + 'T00:00:00');
+                    if (!d || d.getTime() !== targetD.getTime()) match = false;
+                } else {
+                    match = false;
+                }
+            }
+            
+            if (match && shifts.length > 0 && cShift > -1) {
+                var sh = String(r[cShift] || '').trim();
+                if (!shifts.includes(sh)) match = false;
+            }
+            
+            if (match && tims.length > 0 && cTim > -1) {
+                var tm = String(r[cTim] || '').trim();
+                if (!tims.includes(tm)) match = false;
+            }
+            
+            if (match) {
+                found.push(r);
+            }
+        }
+        
+        if (found.length === 0) {
+            resultDiv.innerHTML = '<div class="stat-loading">❌ Tidak ada pasien yang cocok dengan kriteria pencarian.</div>';
+            return;
+        }
+        
+        var html = '<div class="table-container"><table class="monitoring-table" style="min-width: 600px;"><thead><tr>';
+        headers.forEach(h => {
+            html += '<th>' + escapeHtml(h || '') + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+        
+        found.forEach(r => {
+            html += '<tr>';
+            for (var j = 0; j < headers.length; j++) {
+                html += '<td>' + escapeHtml(r[j] || '-') + '</td>';
+            }
+            html += '</tr>';
+        });
+        
+        html += '</tbody></table></div>';
+        resultDiv.innerHTML = html;
+        
+    } catch (e) {
+        resultDiv.innerHTML = '<div class="stat-loading">❌ Gagal memuat data: ' + escapeHtml(e.message) + '</div>';
+    }
 }
 
 (function preloadTTD() {
