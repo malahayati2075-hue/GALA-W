@@ -1077,7 +1077,7 @@ function getMonitoringRows() {
         var f = []; 
         inputs.forEach(function (el) { f.push(el.value.trim()); }); 
         
-        f.splice(15, 0, selects.length > 0 ? selects[0].value.trim() : '');
+        f.splice(16, 0, selects.length > 0 ? selects[0].value.trim() : '');
         
         if(textareas.length > 0) { f.splice(19, 0, textareas[0].value.trim()); }
         
@@ -1118,7 +1118,7 @@ function formatDaftarPasien() {
         
         var f = []; 
         inputs.forEach(function (el) { f.push(el.value.trim()); });
-        f.splice(15, 0, selects.length > 0 ? selects[0].value.trim() : '');
+        f.splice(16, 0, selects.length > 0 ? selects[0].value.trim() : '');
         if(textareas.length > 0) { f.splice(19, 0, textareas[0].value.trim()); }
         
         if (f.length < 20) return; if (!f.some(function (x) { return x !== ''; })) return; idx++;
