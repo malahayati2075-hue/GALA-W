@@ -54,6 +54,8 @@
         .realtime-clock { text-align: left; }
         .realtime-clock .time { font-size: 1.1rem; font-weight: 800; letter-spacing: 1px; color: var(--sore-deep); }
         .realtime-clock .date { font-size: 0.7rem; opacity: 0.9; color: var(--text-muted); }
+        .realtime-clock .hijri-date { font-size: 0.7rem; font-weight: 700; color: var(--accent); cursor: pointer; margin-top: 2px; text-decoration: underline dotted; display: inline-block; }
+        .realtime-clock .hijri-date:hover { opacity: 0.8; }
         
         .prayer-times { text-align: right; font-size: 0.65rem; line-height: 1.4; background: rgba(255,255,255,0.8); padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border-color); max-width: 180px; color: var(--text-main); z-index: 12; }
         .prayer-times .loc { font-weight: 700; color: var(--sore-deep); margin-bottom: 2px; display: block; border-bottom: 1px solid var(--border-color); padding-bottom: 2px; }
@@ -374,6 +376,7 @@
                 <div class="realtime-clock">
                     <div class="time" id="clockTime">00:00:00</div>
                     <div class="date" id="clockDate">Hari, Tanggal</div>
+                    <div class="hijri-date" id="clockHijri" onclick="adjustHijri()" title="Klik untuk menyesuaikan tanggal Hijriyah">Hijriyah: -</div>
                 </div>
             </div>
 
@@ -776,8 +779,38 @@ function updateClock() {
     var h = String(now.getHours()).padStart(2, '0'), m = String(now.getMinutes()).padStart(2, '0'), s = String(now.getSeconds()).padStart(2, '0');
     document.getElementById('clockTime').innerText = h + ':' + m + ':' + s;
     document.getElementById('clockDate').innerText = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+    
+    // Penanggalan Hijriyah
+    var adj = parseInt(localStorage.getItem('hijriAdjustment') || '0', 10);
+    now.setDate(now.getDate() + adj);
+    try {
+        var hijriFmt = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        var hijriText = hijriFmt.format(now) + ' H';
+        document.getElementById('clockHijri').innerText = 'Hijriyah: ' + hijriText;
+    } catch (e) {
+        document.getElementById('clockHijri').innerText = 'Hijriyah: -';
+    }
 }
 setInterval(updateClock, 1000); updateClock();
+
+function adjustHijri() {
+    var currentAdj = parseInt(localStorage.getItem('hijriAdjustment') || '0', 10);
+    var input = prompt('Pengaturan Penyesuaian Tanggal Hijriyah\n\nKarena perbedaan metode Hisab & Rukyat, tanggal Hijriyah mungkin perlu disesuaikan dengan keputusan Kemenag setempat.\n\nMasukkan angka penyesuaian (hari):\nContoh: 1 (tambah 1 hari)\n-1 (kurangi 1 hari)\n0 (Tanpa penyesuaian)\n\nNilai saat ini: ' + currentAdj, String(currentAdj));
+    if (input !== null) {
+        var newAdj = parseInt(input.trim(), 10);
+        if (!isNaN(newAdj)) {
+            localStorage.setItem('hijriAdjustment', newAdj);
+            alert('✅ Penyesuaian disimpan! Tanggal Hijriyah akan otomatis diperbarui pada jam dan laporan.');
+            updateClock();
+        } else {
+            alert('⚠️ Masukkan angka yang valid!');
+        }
+    }
+}
 
 async function fetchPrayerTimes() {
     try {
@@ -806,7 +839,23 @@ function formatTanggalID(value) {
     var d = new Date(value + 'T00:00:00'); if (isNaN(d.getTime())) return value;
     var hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][d.getDay()];
     var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][d.getMonth()];
-    return hari + ', ' + d.getDate() + ' ' + bulan + ' ' + d.getFullYear();
+    var gregText = hari + ', ' + d.getDate() + ' ' + bulan + ' ' + d.getFullYear();
+    
+    // Tambahkan tanggalan Hijriyah
+    var adj = parseInt(localStorage.getItem('hijriAdjustment') || '0', 10);
+    var hijriDate = new Date(d);
+    hijriDate.setDate(hijriDate.getDate() + adj);
+    try {
+        var hijriFmt = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        var hijriText = hijriFmt.format(hijriDate) + ' H';
+        return gregText + ' / ' + hijriText;
+    } catch (e) {
+        return gregText;
+    }
 }
 function getLocalISODate(d) {
     if (!d) return '';
