@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Pacifico&family=Righteous&display=swap" rel="stylesheet">
 
     <style>
@@ -60,6 +61,71 @@
         .prayer-times { text-align: right; font-size: 0.65rem; line-height: 1.4; background: rgba(255,255,255,0.8); padding: 6px 10px; border-radius: 10px; border: 1px solid var(--border-color); max-width: 180px; color: var(--text-main); z-index: 12; }
         .prayer-times .loc { font-weight: 700; color: var(--sore-deep); margin-bottom: 2px; display: block; border-bottom: 1px solid var(--border-color); padding-bottom: 2px; }
         .prayer-times span { font-weight: 700; color: var(--sore-1); }
+
+        /* CSS WINAMP PLAYER */
+        .winamp-player {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 4px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 0.65rem;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            margin: 0 auto;
+        }
+        .wa-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #000;
+            padding: 3px 8px;
+            border-radius: 3px;
+            border: 1px solid #222;
+            min-width: 130px;
+            max-width: 160px;
+        }
+        .wa-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #00ff00; }
+        .wa-eq { display: flex; gap: 2px; align-items: flex-end; height: 12px; }
+        .wa-eq span { width: 3px; background: #00ff00; height: 4px; transition: height 0.1s; }
+        .wa-eq.playing span { animation: eq 0.5s infinite ease-in-out; }
+        .wa-eq span:nth-child(1) { animation-delay: 0.1s; }
+        .wa-eq span:nth-child(2) { animation-delay: 0.3s; }
+        .wa-eq span:nth-child(3) { animation-delay: 0.2s; }
+        .wa-eq span:nth-child(4) { animation-delay: 0.4s; }
+        .wa-eq span:nth-child(5) { animation-delay: 0.15s; }
+        @keyframes eq {
+            0% { height: 3px; }
+            50% { height: 12px; }
+            100% { height: 6px; }
+        }
+        .wa-controls {
+            display: flex;
+            gap: 3px;
+        }
+        .wa-controls button {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            font-size: 0.65rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .wa-controls button:hover { background: #3a3a3a; color: #fff; }
+        .wa-controls button:active { transform: scale(0.9); }
+        @media (max-width: 768px) {
+            .wa-display { display: none; }
+            .wa-controls button { width: 20px; height: 20px; font-size: 0.55rem; }
+        }
 
         .sheet-header-data { padding: 6px 12px; background: #f8fafc; text-align: center; font-size: 0.65rem; line-height: 1.4; color: var(--text-muted); border-bottom: 1px solid var(--border-color); overflow-x: auto; white-space: nowrap; position: relative; z-index: 5; }
         .sheet-header-data span { display: inline-block; margin: 0 6px; font-weight: 600; }
@@ -398,6 +464,26 @@
                 <div class="home-content">
                     <h1 class="home-title">Selamat Datang di Laporan Digital</h1>
                     
+                    <!-- WINAMP PLAYER DI BERANDA -->
+                    <div class="home-card" style="text-align: center;">
+                        <h3><i class="fa-solid fa-music"></i> Playlist Musik</h3>
+                        <p style="margin-bottom: 15px;">Klik tombol play untuk memutar musik pengiring saat mengisi laporan.</p>
+                        <div class="winamp-player" id="winampPlayer">
+                            <div class="wa-display">
+                                <div class="wa-text" id="waTitle">🎵 Loading Playlist...</div>
+                                <div class="wa-eq" id="waEq">
+                                    <span></span><span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                            <div class="wa-controls">
+                                <button id="waPrev" onclick="prevYtTrack()" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+                                <button id="waPlayPause" onclick="toggleYtPlayPause()" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
+                                <button id="waStop" onclick="stopYtTrack()" title="Stop"><i class="fa-solid fa-stop"></i></button>
+                                <button id="waNext" onclick="nextYtTrack()" title="Next"><i class="fa-solid fa-forward-step"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="home-card">
                         <h3><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi</h3>
                         <p>
@@ -752,7 +838,19 @@
     </aside>
 </div>
 
+<!-- Hidden div for YouTube IFrame API -->
+<div id="ytHiddenPlayer" style="position: absolute; width: 1px; height: 1px; left: -9999px; top: -9999px; opacity: 0; pointer-events: none;"></div>
+
 <script>
+// Wrapping localStorage untuk menghindari error di iframe/preview yang memblok storage
+function getLocalData(key, def) {
+    try { return localStorage.getItem(key) || def; }
+    catch(e) { return def; }
+}
+function setLocalData(key, val) {
+    try { localStorage.setItem(key, val); } catch(e) {}
+}
+
 var MONITORING_API_URL = "https://script.google.com/macros/s/AKfycbw9tYfIIP1ZYNSyWKlrHxMLGpty3lyx3kjlpDWvvBqkxF92W8WcZL04ONZ8VnOe3iHXvg/exec";
 var REKAP_SHEET_ID = "1gD_mYqo5x30zYfQQWb5dm8woKgwsV5aqjBXVNpUyf0c";
 var REKAP_GID = "652284391";
@@ -772,6 +870,102 @@ var patientData = [];
 var specialLinks = [];
 var monitoringSheetSaved = false; 
 
+// ===== YOUTUBE WINAMP PLAYER LOGIC =====
+var ytVideoIds = ['FKijnRja8is', 'XJ1Jigjg1wo', 'cPkE0IbDVs4', 'd4CF4km1rUQ', 'Z5xZ4gFwGGk'];
+var currentYtIndex = 0;
+var ytPlayer;
+var ytReady = false;
+
+function onYouTubeIframeAPIReady() {
+    try {
+        ytPlayer = new YT.Player('ytHiddenPlayer', {
+            height: '1',
+            width: '1',
+            videoId: ytVideoIds[currentYtIndex],
+            playerVars: {
+                'autoplay': 1,
+                'controls': 0,
+                'disablekb': 1,
+                'fs': 0,
+                'modestbranding': 1,
+                'mute': 1 
+            },
+            events: {
+                'onReady': onYtPlayerReady,
+                'onStateChange': onYtPlayerStateChange
+            }
+        });
+    } catch(e) { console.warn("YT Player Error:", e); }
+}
+
+function onYtPlayerReady(event) {
+    ytReady = true;
+    event.target.playVideo();
+    setTimeout(function() {
+        try { event.target.unMute(); } catch(e) {}
+    }, 500);
+    updateWaUI(true);
+}
+
+function onYtPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+        updateWaUI(true);
+    } else if (event.data == YT.PlayerState.ENDED) {
+        nextYtTrack();
+    } else if (event.data == YT.PlayerState.PAUSED) {
+        updateWaUI(false);
+    }
+}
+
+function updateWaUI(isPlaying) {
+    var playPauseBtn = document.getElementById('waPlayPause');
+    var eq = document.getElementById('waEq');
+    var title = document.getElementById('waTitle');
+    if (isPlaying) {
+        playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        eq.classList.add('playing');
+        title.innerText = "▶ Now Playing: Track " + (currentYtIndex + 1) + "/" + ytVideoIds.length;
+    } else {
+        playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        eq.classList.remove('playing');
+        title.innerText = "❚❚ Paused: Track " + (currentYtIndex + 1) + "/" + ytVideoIds.length;
+    }
+}
+
+function toggleYtPlayPause() {
+    if (!ytReady) return;
+    var state = ytPlayer.getPlayerState();
+    if (state == 1) { 
+        ytPlayer.pauseVideo();
+    } else {
+        ytPlayer.playVideo();
+        if (ytPlayer.isMuted()) ytPlayer.unMute(); 
+    }
+}
+
+function stopYtTrack() {
+    if (!ytReady) return;
+    ytPlayer.stopVideo();
+    updateWaUI(false);
+}
+
+function nextYtTrack() {
+    if (!ytReady) return;
+    currentYtIndex = (currentYtIndex + 1) % ytVideoIds.length;
+    ytPlayer.loadVideoById(ytVideoIds[currentYtIndex]);
+    ytPlayer.playVideo();
+    if (ytPlayer.isMuted()) ytPlayer.unMute();
+}
+
+function prevYtTrack() {
+    if (!ytReady) return;
+    currentYtIndex = (currentYtIndex - 1 + ytVideoIds.length) % ytVideoIds.length;
+    ytPlayer.loadVideoById(ytVideoIds[currentYtIndex]);
+    ytPlayer.playVideo();
+    if (ytPlayer.isMuted()) ytPlayer.unMute();
+}
+// ===== END YOUTUBE LOGIC =====
+
 function updateClock() {
     var now = new Date();
     var days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -780,8 +974,7 @@ function updateClock() {
     document.getElementById('clockTime').innerText = h + ':' + m + ':' + s;
     document.getElementById('clockDate').innerText = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
     
-    // Penanggalan Hijriyah
-    var adj = parseInt(localStorage.getItem('hijriAdjustment') || '0', 10);
+    var adj = parseInt(getLocalData('hijriAdjustment', '0'), 10);
     now.setDate(now.getDate() + adj);
     try {
         var hijriFmt = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', {
@@ -798,12 +991,12 @@ function updateClock() {
 setInterval(updateClock, 1000); updateClock();
 
 function adjustHijri() {
-    var currentAdj = parseInt(localStorage.getItem('hijriAdjustment') || '0', 10);
+    var currentAdj = parseInt(getLocalData('hijriAdjustment', '0'), 10);
     var input = prompt('Pengaturan Penyesuaian Tanggal Hijriyah\n\nKarena perbedaan metode Hisab & Rukyat, tanggal Hijriyah mungkin perlu disesuaikan dengan keputusan Kemenag setempat.\n\nMasukkan angka penyesuaian (hari):\nContoh: 1 (tambah 1 hari)\n-1 (kurangi 1 hari)\n0 (Tanpa penyesuaian)\n\nNilai saat ini: ' + currentAdj, String(currentAdj));
     if (input !== null) {
         var newAdj = parseInt(input.trim(), 10);
         if (!isNaN(newAdj)) {
-            localStorage.setItem('hijriAdjustment', newAdj);
+            setLocalData('hijriAdjustment', newAdj);
             alert('✅ Penyesuaian disimpan! Tanggal Hijriyah akan otomatis diperbarui pada jam dan laporan.');
             updateClock();
         } else {
@@ -841,8 +1034,7 @@ function formatTanggalID(value) {
     var bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][d.getMonth()];
     var gregText = hari + ', ' + d.getDate() + ' ' + bulan + ' ' + d.getFullYear();
     
-    // Tambahkan tanggalan Hijriyah
-    var adj = parseInt(localStorage.getItem('hijriAdjustment') || '0', 10);
+    var adj = parseInt(getLocalData('hijriAdjustment', '0'), 10);
     var hijriDate = new Date(d);
     hijriDate.setDate(hijriDate.getDate() + adj);
     try {
@@ -1126,7 +1318,6 @@ function getMonitoringRows() {
         var f = []; 
         inputs.forEach(function (el) { f.push(el.value.trim()); }); 
         
-        // PERBAIKAN: EPO/FE (select) disisipkan di indeks 16 (setelah Heparin di indeks 15)
         f.splice(16, 0, selects.length > 0 ? selects[0].value.trim() : '');
         
         if(textareas.length > 0) { f.splice(19, 0, textareas[0].value.trim()); }
@@ -1169,10 +1360,8 @@ function formatDaftarPasien() {
         var f = []; 
         inputs.forEach(function (el) { f.push(el.value.trim()); });
         
-        // PERBAIKAN: EPO/FE (select) disisipkan di indeks 16 (setelah Heparin di indeks 15)
         f.splice(16, 0, selects.length > 0 ? selects[0].value.trim() : '');
         
-        // Assesment (textarea) disisipkan di indeks 19
         if(textareas.length > 0) { f.splice(19, 0, textareas[0].value.trim()); }
         
         if (f.length < 20) return; if (!f.some(function (x) { return x !== ''; })) return; idx++;
