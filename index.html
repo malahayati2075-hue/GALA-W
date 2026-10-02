@@ -102,17 +102,39 @@
             50% { height: 20px; }
             100% { height: 10px; }
         }
-        .wa-controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+        .wa-controls { 
+            display: flex; 
+            gap: 8px; 
+            justify-content: center; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            margin-bottom: 15px; 
+        }
         .wa-btn {
             background: #2a3a36; border: 1px solid #3a4a44; color: #a0ffa0; border-radius: 8px;
-            cursor: pointer; width: 36px; height: 36px; font-size: 0.8rem;
-            display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+            cursor: pointer; height: 36px; min-width: 36px; width: auto; padding: 0 10px; font-size: 0.8rem;
+            display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s;
             box-shadow: 0 3px 5px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
         }
-        .wa-btn:hover { background: #3a4a44; color: #fff; border-color: #69ffb0; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
-        .wa-btn:active { transform: translateY(0px); box-shadow: none; }
-        .wa-btn-add { width: auto; padding: 0 12px; font-size: 0.7rem; gap: 6px; }
+        .wa-btn:hover { background: #3a4a44; color: #fff; border-color: #69ffb0; transform: translateY(-2px); }
+        .wa-btn:active { transform: translateY(0px); }
+        .wa-btn-add { font-size: 0.7rem; gap: 6px; cursor: pointer; }
         
+        .wa-playlist-container {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .wa-playlist-container select {
+            width: 100%;
+            background: #0a0e0c;
+            color: #69ffb0;
+            border: 1px solid #2a3331;
+            border-radius: 6px;
+            padding: 8px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+        }
+
         .wa-sliders {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: 15px; padding-top: 15px; border-top: 1px solid #3a4a44;
@@ -489,7 +511,7 @@
                     
                     <div class="home-card" style="text-align: center;">
                         <h3><i class="fa-solid fa-music"></i> Playlist Musik</h3>
-                        <p style="margin-bottom: 15px; font-size: 0.85rem;">Putar playlist YouTube atau tambahkan file MP3/MP4 lokal dari perangkat Anda.</p>
+                        <p style="margin-bottom: 15px; font-size: 0.85rem;">Putar playlist YouTube, tambahkan file MP3/MP4 lokal, atau masukkan link dari internet.</p>
                         
                         <div class="winamp-container">
                             <div class="wa-screen">
@@ -499,19 +521,33 @@
                                 </div>
                             </div>
                             
+                            <!-- Tombol Kontrol Sejajar Rapi -->
                             <div class="wa-controls">
                                 <button class="wa-btn" onclick="prevTrack()" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
                                 <button class="wa-btn" onclick="playTrack()" title="Play"><i class="fa-solid fa-play"></i></button>
                                 <button class="wa-btn" onclick="pauseTrack()" title="Pause"><i class="fa-solid fa-pause"></i></button>
                                 <button class="wa-btn" onclick="stopTrack()" title="Stop"><i class="fa-solid fa-stop"></i></button>
                                 <button class="wa-btn" onclick="nextTrack()" title="Next"><i class="fa-solid fa-forward-step"></i></button>
-                                <label class="wa-btn wa-btn-add" title="Add Local MP3/MP4">
-                                    <i class="fa-solid fa-folder-plus"></i> Add Local
-                                    <input type="file" id="localFileInput" accept="audio/mp3,audio/*,video/mp4,video/*" multiple style="display: none;" onchange="addLocalFiles(event)">
-                                </label>
                                 <button class="wa-btn" onclick="toggleEQ()" title="Equalizer"><i class="fa-solid fa-sliders"></i></button>
                             </div>
 
+                            <!-- Tombol Add File & URL Sejajar Rapi -->
+                            <div class="wa-controls" style="margin-bottom: 15px;">
+                                <label class="wa-btn wa-btn-add" title="Add Local MP3/MP4" style="cursor: pointer;">
+                                    <i class="fa-solid fa-folder-plus"></i> Add Local
+                                    <input type="file" id="localFileInput" accept="audio/mp3,audio/*,video/mp4,video/*" multiple style="display: none;" onchange="addLocalFiles(event)">
+                                </label>
+                                <button class="wa-btn wa-btn-add" onclick="addUrlTrack()" title="Add from Internet (YouTube/MP3 Link)" style="cursor: pointer;">
+                                    <i class="fa-solid fa-globe"></i> Add URL
+                                </button>
+                            </div>
+
+                            <!-- Dropdown Playlist -->
+                            <div class="wa-playlist-container" style="margin-bottom: 15px;">
+                                <select id="playlistDropdown" onchange="jumpToTrack(this.value)"></select>
+                            </div>
+
+                            <!-- Sliders Volume & Stereo -->
                             <div class="wa-sliders">
                                 <div class="wa-slider-group">
                                     <div class="wa-slider-label">Volume <span id="volLabel">80%</span></div>
@@ -523,6 +559,7 @@
                                 </div>
                             </div>
 
+                            <!-- Equalizer (Tersembunyi) -->
                             <div class="wa-eq-sliders" id="eqContainer">
                                 <div class="wa-slider-group">
                                     <div class="wa-slider-label">EQ 1 (Bass) <span id="eq1l">0</span></div>
@@ -548,7 +585,7 @@
                             
                             <div class="yt-small-screen">
                                 <div id="ytVisiblePlayer" style="width: 100%; height: 100%;"></div>
-                                <audio id="localAudioPlayer" style="display:none;"></audio>
+                                <audio id="localAudioPlayer" style="display:none;" crossorigin="anonymous"></audio>
                             </div>
                         </div>
                     </div>
@@ -969,7 +1006,9 @@ function initAudioContext() {
         stereoPanner.connect(audioCtx.destination);
         
         gainNode.gain.value = 0.8; 
-    } catch(e) { console.warn("AudioContext init error:", e); }
+    } catch(e) { 
+        console.warn("AudioContext init error ( kemungkinan masalah CORS pada file online ):", e); 
+    }
 }
 
 function onYouTubeIframeAPIReady() {
@@ -979,7 +1018,7 @@ function onYouTubeIframeAPIReady() {
             videoId: playlist[0].type === 'yt' ? playlist[0].id : '',
             playerVars: { 'autoplay': 0, 'controls': 1, 'disablekb': 1, 'fs': 0, 'modestbranding': 1 },
             events: {
-                'onReady': function(e) { ytReady = true; },
+                'onReady': function(e) { ytReady = true; updatePlaylistDropdown(); },
                 'onStateChange': function(e) {
                     if (e.data == YT.PlayerState.PLAYING) updateUI(true);
                     else if (e.data == YT.PlayerState.ENDED) nextTrack();
@@ -990,7 +1029,7 @@ function onYouTubeIframeAPIReady() {
     } catch(e) { console.warn("YT Error:", e); }
 }
 
-localAudio.addEventListener('play', function() { initAudioContext(); if (audioCtx.state === 'suspended') audioCtx.resume(); updateUI(true); });
+localAudio.addEventListener('play', function() { initAudioContext(); if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); updateUI(true); });
 localAudio.addEventListener('pause', function() { updateUI(false); });
 localAudio.addEventListener('ended', function() { nextTrack(); });
 
@@ -1029,6 +1068,11 @@ function prevTrack() {
     loadTrack(currentTrackIndex, true);
 }
 
+function jumpToTrack(index) {
+    currentTrackIndex = parseInt(index, 10);
+    loadTrack(currentTrackIndex, true);
+}
+
 function loadTrack(index, autoplay) {
     if (index >= playlist.length) return;
     var track = playlist[index];
@@ -1045,6 +1089,7 @@ function loadTrack(index, autoplay) {
         localAudio.src = track.src;
         if (autoplay) localAudio.play().catch(e=>console.warn("Play prevented:", e));
     }
+    updatePlaylistDropdown();
 }
 
 function updateUI(isPlaying) {
@@ -1060,6 +1105,20 @@ function updateUI(isPlaying) {
         eq.classList.remove('playing');
         title.innerText = "❚❚ Paused: Track " + (currentTrackIndex + 1) + "/" + playlist.length;
     }
+}
+
+function updatePlaylistDropdown() {
+    var dropdown = document.getElementById('playlistDropdown');
+    if(!dropdown) return;
+    dropdown.innerHTML = '';
+    playlist.forEach(function(track, index) {
+        var option = document.createElement('option');
+        option.value = index;
+        var name = track.type === 'yt' ? "YouTube Track " + (index + 1) : track.name;
+        option.innerText = (index + 1) + ". " + name;
+        if (index === currentTrackIndex) option.selected = true;
+        dropdown.appendChild(option);
+    });
 }
 
 function setVolume(val) {
@@ -1096,8 +1155,29 @@ function addLocalFiles(event) {
         var url = URL.createObjectURL(file);
         playlist.push({ type: 'local', src: url, name: file.name });
     }
-    alert(files.length + " file berhasil ditambahkan ke playlist!");
-    loadTrack(currentTrackIndex, false); 
+    alert(files.length + " file lokal berhasil ditambahkan ke playlist!");
+    updatePlaylistDropdown(); 
+}
+
+function addUrlTrack() {
+    var url = prompt("Masukkan Link (URL):\n- Link YouTube (contoh: https://youtu.be/XXXX)\n- Link MP3/MP4 Online (contoh: https://web.com/lagu.mp3)");
+    if (!url || url.trim() === "") return;
+    
+    var ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([a-zA-Z0-9_-]{11})/);
+    
+    if (ytMatch && ytMatch[1]) {
+        playlist.push({ type: 'yt', id: ytMatch[1] });
+        alert("Link YouTube berhasil ditambahkan!");
+    } else {
+        playlist.push({ type: 'local', src: url, name: "Online URL" });
+        alert("Link media berhasil ditambahkan! (Catatan: Equalizer mungkin tidak berfungsi penuh pada link online karena batasan keamanan CORS browser)");
+    }
+    
+    updatePlaylistDropdown();
+    if (playlist.length > 0) {
+        currentTrackIndex = playlist.length - 1;
+        loadTrack(currentTrackIndex, true);
+    }
 }
 // ==== END PLAYER LOGIC ====
 
@@ -1966,7 +2046,7 @@ function printSearchPasien() {
     var html = '<html><head><title>Cetak Hasil Pencarian</title>';
     html += '<style>body{font-family:Arial, sans-serif; padding: 20px;} h1{text-align:center;} table{width:100%; border-collapse:collapse; margin-top:20px;} th, td{border:1px solid #555; padding:8px; text-align:center;} th{background:#0d9488; color:#fff;}</style>';
     html += '</head><body>';
-    html += '<h1>Hasil Pencarian Pasien</h1>';
+    html += '<h1>Hasil Pencarian Pasien</h1';
     html += '<div style="text-align:center; margin-bottom:15px;">';
     if (document.getElementById('searchPasienDate').value) html += '<b>Tanggal:</b> ' + formatTanggalID(document.getElementById('searchPasienDate').value) + '<br>';
     var shifts = Array.from(document.querySelectorAll('#searchShiftGroup input:checked')).map(el => 'Shift ' + el.value).join(', ');
