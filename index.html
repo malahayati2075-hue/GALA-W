@@ -62,35 +62,35 @@
         .prayer-times .loc { font-weight: 700; color: var(--sore-deep); margin-bottom: 2px; display: block; border-bottom: 1px solid var(--border-color); padding-bottom: 2px; }
         .prayer-times span { font-weight: 700; color: var(--sore-1); }
 
-        /* CSS WINAMP PLAYER */
-        .winamp-player {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 4px 8px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #00ff00;
+        /* CSS WINAMP MODERN SUPER PLAYER */
+        .winamp-container {
+            background: linear-gradient(145deg, #1c2e2a, #2a3a36);
+            border: 1px solid #3a4a44;
+            border-radius: 16px;
+            padding: 20px;
+            color: #a0ffa0;
             font-family: 'Courier New', monospace;
-            font-size: 0.65rem;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 500px;
             margin: 0 auto;
+            text-align: left;
+            position: relative;
         }
-        .wa-display {
+        .wa-screen {
+            background: #0a0e0c;
+            border: 1px solid #2a3331;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: #000;
-            padding: 3px 8px;
-            border-radius: 3px;
-            border: 1px solid #222;
-            min-width: 130px;
-            max-width: 160px;
+            justify-content: space-between;
+            gap: 10px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
-        .wa-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #00ff00; }
-        .wa-eq { display: flex; gap: 2px; align-items: flex-end; height: 12px; }
-        .wa-eq span { width: 3px; background: #00ff00; height: 4px; transition: height 0.1s; }
+        .wa-text { color: #69ffb0; font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; text-shadow: 0 0 5px rgba(105,255,176,0.5); }
+        .wa-eq { display: flex; gap: 4px; align-items: flex-end; height: 24px; }
+        .wa-eq span { width: 4px; background: #69ffb0; height: 6px; border-radius: 2px; }
         .wa-eq.playing span { animation: eq 0.5s infinite ease-in-out; }
         .wa-eq span:nth-child(1) { animation-delay: 0.1s; }
         .wa-eq span:nth-child(2) { animation-delay: 0.3s; }
@@ -98,43 +98,57 @@
         .wa-eq span:nth-child(4) { animation-delay: 0.4s; }
         .wa-eq span:nth-child(5) { animation-delay: 0.15s; }
         @keyframes eq {
-            0% { height: 3px; }
-            50% { height: 12px; }
-            100% { height: 6px; }
+            0% { height: 4px; }
+            50% { height: 20px; }
+            100% { height: 10px; }
         }
-        .wa-controls {
-            display: flex;
-            gap: 3px;
+        .wa-controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+        .wa-btn {
+            background: #2a3a36; border: 1px solid #3a4a44; color: #a0ffa0; border-radius: 8px;
+            cursor: pointer; width: 36px; height: 36px; font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
         }
-        .wa-controls button {
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: #ddd;
-            border-radius: 3px;
-            cursor: pointer;
-            width: 24px;
-            height: 24px;
-            font-size: 0.65rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s;
+        .wa-btn:hover { background: #3a4a44; color: #fff; border-color: #69ffb0; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+        .wa-btn:active { transform: translateY(0px); box-shadow: none; }
+        .wa-btn-add { width: auto; padding: 0 12px; font-size: 0.7rem; gap: 6px; }
+        
+        .wa-sliders {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px; padding-top: 15px; border-top: 1px solid #3a4a44;
         }
-        .wa-controls button:hover { background: #3a3a3a; color: #fff; }
-        .wa-controls button:active { transform: scale(0.9); }
+        
+        /* CSS untuk menyembunyikan Equalizer */
+        .wa-eq-sliders {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 15px; padding-top: 15px; margin-top: 15px; border-top: 1px solid #3a4a44;
+        }
+        .wa-eq-sliders.wa-eq-show {
+            display: grid;
+        }
+
+        .wa-slider-group {}
+        .wa-slider-label { color: #889080; font-size: 0.65rem; margin-bottom: 6px; display: flex; justify-content: space-between; text-transform: uppercase; letter-spacing: 1px; }
+        .wa-slider-label span { color: #69ffb0; font-weight: bold; }
+
+        input[type="range"] {
+            -webkit-appearance: none; width: 100%; height: 6px; background: #0a0e0c; border-radius: 3px; outline: none; border: 1px solid #2a3331;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 14px; height: 14px; background: #69ffb0; border-radius: 50%; cursor: pointer; box-shadow: 0 0 5px rgba(105,255,176,0.5);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 14px; height: 14px; background: #69ffb0; border-radius: 50%; cursor: pointer; border: none;
+        }
+
         .yt-small-screen {
-            margin: 15px auto 0;
-            width: 100%;
-            max-width: 320px;
-            aspect-ratio: 16/9;
-            border: 1px solid #333;
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            margin: 20px auto 0; width: 100%; max-width: 300px; aspect-ratio: 16/9;
+            border: 1px solid #3a4a44; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
         }
         @media (max-width: 768px) {
-            .wa-display { display: none; }
-            .wa-controls button { width: 20px; height: 20px; font-size: 0.55rem; }
+            .wa-sliders { grid-template-columns: 1fr; }
         }
 
         .sheet-header-data { padding: 6px 12px; background: #f8fafc; text-align: center; font-size: 0.65rem; line-height: 1.4; color: var(--text-muted); border-bottom: 1px solid var(--border-color); overflow-x: auto; white-space: nowrap; position: relative; z-index: 5; }
@@ -475,23 +489,67 @@
                     
                     <div class="home-card" style="text-align: center;">
                         <h3><i class="fa-solid fa-music"></i> Playlist Musik</h3>
-                        <p style="margin-bottom: 15px;">Klik tombol play untuk memutar musik pengiring saat mengisi laporan.</p>
-                        <div class="winamp-player" id="winampPlayer">
-                            <div class="wa-display">
+                        <p style="margin-bottom: 15px; font-size: 0.85rem;">Putar playlist YouTube atau tambahkan file MP3/MP4 lokal dari perangkat Anda.</p>
+                        
+                        <div class="winamp-container">
+                            <div class="wa-screen">
                                 <div class="wa-text" id="waTitle">🎵 Loading Playlist...</div>
                                 <div class="wa-eq" id="waEq">
                                     <span></span><span></span><span></span><span></span><span></span>
                                 </div>
                             </div>
+                            
                             <div class="wa-controls">
-                                <button id="waPrev" onclick="prevYtTrack()" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
-                                <button id="waPlayPause" onclick="toggleYtPlayPause()" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
-                                <button id="waStop" onclick="stopYtTrack()" title="Stop"><i class="fa-solid fa-stop"></i></button>
-                                <button id="waNext" onclick="nextYtTrack()" title="Next"><i class="fa-solid fa-forward-step"></i></button>
+                                <button class="wa-btn" onclick="prevTrack()" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+                                <button class="wa-btn" onclick="playTrack()" title="Play"><i class="fa-solid fa-play"></i></button>
+                                <button class="wa-btn" onclick="pauseTrack()" title="Pause"><i class="fa-solid fa-pause"></i></button>
+                                <button class="wa-btn" onclick="stopTrack()" title="Stop"><i class="fa-solid fa-stop"></i></button>
+                                <button class="wa-btn" onclick="nextTrack()" title="Next"><i class="fa-solid fa-forward-step"></i></button>
+                                <label class="wa-btn wa-btn-add" title="Add Local MP3/MP4">
+                                    <i class="fa-solid fa-folder-plus"></i> Add Local
+                                    <input type="file" id="localFileInput" accept="audio/mp3,audio/*,video/mp4,video/*" multiple style="display: none;" onchange="addLocalFiles(event)">
+                                </label>
+                                <button class="wa-btn" onclick="toggleEQ()" title="Equalizer"><i class="fa-solid fa-sliders"></i></button>
                             </div>
-                        </div>
-                        <div class="yt-small-screen">
-                            <div id="ytVisiblePlayer" style="width: 100%; height: 100%;"></div>
+
+                            <div class="wa-sliders">
+                                <div class="wa-slider-group">
+                                    <div class="wa-slider-label">Volume <span id="volLabel">80%</span></div>
+                                    <input type="range" id="volumeSlider" min="0" max="100" value="80" oninput="setVolume(this.value)">
+                                </div>
+                                <div class="wa-slider-group">
+                                    <div class="wa-slider-label">Stereo <span id="balLabel">C</span></div>
+                                    <input type="range" id="balanceSlider" min="-50" max="50" value="0" oninput="setBalance(this.value)">
+                                </div>
+                            </div>
+
+                            <div class="wa-eq-sliders" id="eqContainer">
+                                <div class="wa-slider-group">
+                                    <div class="wa-slider-label">EQ 1 (Bass) <span id="eq1l">0</span></div>
+                                    <input type="range" id="eq1" min="-12" max="12" value="0" oninput="setEQ(1, this.value)">
+                                </div>
+                                <div class="wa-slider-group">
+                                    <div class="wa-slider-label">EQ 2 (Mid-Low) <span id="eq2l">0</span></div>
+                                    <input type="range" id="eq2" min="-12" max="12" value="0" oninput="setEQ(2, this.value)">
+                                </div>
+                                <div class="wa-slider-group">
+                                    <div class="wa-slider-label">EQ 3 (Mid) <span id="eq3l">0</span></div>
+                                    <input type="range" id="eq3" min="-12" max="12" value="0" oninput="setEQ(3, this.value)">
+                                </div>
+                                <div class="wa-slider-group">
+                                    <div class="wa-slider-label">EQ 4 (Mid-High) <span id="eq4l">0</span></div>
+                                    <input type="range" id="eq4" min="-12" max="12" value="0" oninput="setEQ(4, this.value)">
+                                </div>
+                                <div class="wa-slider-group">
+                                    <div class="wa-slider-label">EQ 5 (Treble) <span id="eq5l">0</span></div>
+                                    <input type="range" id="eq5" min="-12" max="12" value="0" oninput="setEQ(5, this.value)">
+                                </div>
+                            </div>
+                            
+                            <div class="yt-small-screen">
+                                <div id="ytVisiblePlayer" style="width: 100%; height: 100%;"></div>
+                                <audio id="localAudioPlayer" style="display:none;"></audio>
+                            </div>
                         </div>
                     </div>
 
@@ -871,100 +929,177 @@ var patientData = [];
 var specialLinks = [];
 var monitoringSheetSaved = false; 
 
-// ===== YOUTUBE WINAMP PLAYER LOGIC =====
-var ytVideoIds = ['FKijnRja8is', 'XJ1Jigjg1wo', 'cPkE0IbDVs4', 'd4CF4km1rUQ', 'Z5xZ4gFwGGk', 'SeSAwqq_Kpo', 'nPY3rSpHyFo', '9xd-DQMDrHw',]; 
-var currentYtIndex = 0;
+// ==== YOUTUBE & LOCAL SUPER PLAYER LOGIC ====
+var ytVideoIds = ['FKijnRja8is', 'XJ1Jigjg1wo', 'cPkE0IbDVs4', 'd4CF4km1rUQ', 'Z5xZ4gFwGGk'];
+var playlist = []; 
+ytVideoIds.forEach(function(id) { playlist.push({type: 'yt', id: id}); });
+
+var currentTrackIndex = 0;
 var ytPlayer;
 var ytReady = false;
+var localAudio = document.getElementById('localAudioPlayer');
+var audioCtx; 
+var sourceNode;
+var gainNode;
+var stereoPanner;
+var filters = [];
+
+function initAudioContext() {
+    if (audioCtx) return;
+    try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        sourceNode = audioCtx.createMediaElementSource(localAudio);
+        gainNode = audioCtx.createGain();
+        stereoPanner = audioCtx.createStereoPanner();
+        
+        var freqs = [60, 230, 910, 3600, 11000]; 
+        freqs.forEach(function(freq, i) {
+            var filter = audioCtx.createBiquadFilter();
+            filter.type = 'peaking';
+            filter.frequency.value = freq;
+            filter.Q.value = 1.4;
+            filter.gain.value = 0;
+            if (i > 0) filters[i-1].connect(filter);
+            filters.push(filter);
+        });
+
+        sourceNode.connect(filters[0]);
+        filters[filters.length - 1].connect(gainNode);
+        gainNode.connect(stereoPanner);
+        stereoPanner.connect(audioCtx.destination);
+        
+        gainNode.gain.value = 0.8; 
+    } catch(e) { console.warn("AudioContext init error:", e); }
+}
 
 function onYouTubeIframeAPIReady() {
     try {
         ytPlayer = new YT.Player('ytVisiblePlayer', {
-            height: '100%',
-            width: '100%',
-            videoId: ytVideoIds[currentYtIndex],
-            playerVars: {
-                'autoplay': 1,
-                'controls': 1, 
-                'disablekb': 1,
-                'fs': 0,
-                'modestbranding': 1,
-                'mute': 1 
-            },
+            height: '100%', width: '100%',
+            videoId: playlist[0].type === 'yt' ? playlist[0].id : '',
+            playerVars: { 'autoplay': 0, 'controls': 1, 'disablekb': 1, 'fs': 0, 'modestbranding': 1 },
             events: {
-                'onReady': onYtPlayerReady,
-                'onStateChange': onYtPlayerStateChange
+                'onReady': function(e) { ytReady = true; },
+                'onStateChange': function(e) {
+                    if (e.data == YT.PlayerState.PLAYING) updateUI(true);
+                    else if (e.data == YT.PlayerState.ENDED) nextTrack();
+                    else if (e.data == YT.PlayerState.PAUSED) updateUI(false);
+                }
             }
         });
-    } catch(e) { console.warn("YT Player Error:", e); }
+    } catch(e) { console.warn("YT Error:", e); }
 }
 
-function onYtPlayerReady(event) {
-    ytReady = true;
-    event.target.playVideo();
-    setTimeout(function() {
-        try { event.target.unMute(); } catch(e) {}
-    }, 500);
-    updateWaUI(true);
-}
+localAudio.addEventListener('play', function() { initAudioContext(); if (audioCtx.state === 'suspended') audioCtx.resume(); updateUI(true); });
+localAudio.addEventListener('pause', function() { updateUI(false); });
+localAudio.addEventListener('ended', function() { nextTrack(); });
 
-function onYtPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-        updateWaUI(true);
-    } else if (event.data == YT.PlayerState.ENDED) {
-        nextYtTrack();
-    } else if (event.data == YT.PlayerState.PAUSED) {
-        updateWaUI(false);
+function playTrack() {
+    if (currentTrackIndex >= playlist.length) return;
+    var track = playlist[currentTrackIndex];
+    if (track.type === 'yt') {
+        localAudio.pause();
+        if (ytReady) ytPlayer.playVideo();
+    } else {
+        if (ytReady) ytPlayer.stopVideo();
+        if (track.src) { localAudio.src = track.src; localAudio.play().catch(e=>console.warn("Play prevented:", e)); }
     }
 }
 
-function updateWaUI(isPlaying) {
-    var playPauseBtn = document.getElementById('waPlayPause');
+function pauseTrack() {
+    var track = playlist[currentTrackIndex];
+    if (track.type === 'yt') { if (ytReady) ytPlayer.pauseVideo(); }
+    else { localAudio.pause(); }
+}
+
+function stopTrack() {
+    var track = playlist[currentTrackIndex];
+    if (track.type === 'yt') { if (ytReady) ytPlayer.stopVideo(); }
+    else { localAudio.pause(); localAudio.currentTime = 0; }
+    updateUI(false);
+}
+
+function nextTrack() {
+    currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+    loadTrack(currentTrackIndex, true);
+}
+
+function prevTrack() {
+    currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+    loadTrack(currentTrackIndex, true);
+}
+
+function loadTrack(index, autoplay) {
+    if (index >= playlist.length) return;
+    var track = playlist[index];
+    document.getElementById('waTitle').innerText = "Loading Track " + (index + 1) + "/" + playlist.length + "...";
+    
+    if (track.type === 'yt') {
+        localAudio.pause();
+        if (ytReady) {
+            ytPlayer.loadVideoById(track.id);
+            if (autoplay) ytPlayer.playVideo();
+        }
+    } else {
+        if (ytReady) ytPlayer.stopVideo();
+        localAudio.src = track.src;
+        if (autoplay) localAudio.play().catch(e=>console.warn("Play prevented:", e));
+    }
+}
+
+function updateUI(isPlaying) {
     var eq = document.getElementById('waEq');
     var title = document.getElementById('waTitle');
+    var track = playlist[currentTrackIndex];
+    
     if (isPlaying) {
-        playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
         eq.classList.add('playing');
-        title.innerText = "▶ Now Playing: Track " + (currentYtIndex + 1) + "/" + ytVideoIds.length;
+        var name = track.type === 'yt' ? "YouTube Track " + (currentTrackIndex + 1) : track.name;
+        title.innerText = "▶ " + name + " (" + (currentTrackIndex + 1) + "/" + playlist.length + ")";
     } else {
-        playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
         eq.classList.remove('playing');
-        title.innerText = "❚❚ Paused: Track " + (currentYtIndex + 1) + "/" + ytVideoIds.length;
+        title.innerText = "❚❚ Paused: Track " + (currentTrackIndex + 1) + "/" + playlist.length;
     }
 }
 
-function toggleYtPlayPause() {
-    if (!ytReady) return;
-    var state = ytPlayer.getPlayerState();
-    if (state == 1) { 
-        ytPlayer.pauseVideo();
-    } else {
-        ytPlayer.playVideo();
-        if (ytPlayer.isMuted()) ytPlayer.unMute(); 
+function setVolume(val) {
+    document.getElementById('volLabel').innerText = val + "%";
+    var vol = val / 100;
+    if (audioCtx && gainNode) gainNode.gain.value = vol; 
+    if (ytReady) ytPlayer.setVolume(vol * 100); 
+    localAudio.volume = vol; 
+}
+
+function setBalance(val) {
+    document.getElementById('balLabel').innerText = val == 0 ? 'C' : (val < 0 ? 'L' + Math.abs(val) : 'R' + val);
+    if (audioCtx && stereoPanner) {
+        stereoPanner.pan.value = val / 50; 
     }
 }
 
-function stopYtTrack() {
-    if (!ytReady) return;
-    ytPlayer.stopVideo();
-    updateWaUI(false);
+function setEQ(index, val) {
+    document.getElementById('eq' + index + 'l').innerText = val;
+    if (audioCtx && filters[index - 1]) {
+        filters[index - 1].gain.value = val; 
+    }
 }
 
-function nextYtTrack() {
-    if (!ytReady) return;
-    currentYtIndex = (currentYtIndex + 1) % ytVideoIds.length;
-    ytPlayer.loadVideoById(ytVideoIds[currentYtIndex]);
-    ytPlayer.playVideo();
-    if (ytPlayer.isMuted()) ytPlayer.unMute();
+function toggleEQ() {
+    var eqDiv = document.getElementById('eqContainer');
+    if(eqDiv) eqDiv.classList.toggle('wa-eq-show');
 }
 
-function prevYtTrack() {
-    if (!ytReady) return;
-    currentYtIndex = (currentYtIndex - 1 + ytVideoIds.length) % ytVideoIds.length;
-    ytPlayer.loadVideoById(ytVideoIds[currentYtIndex]);
-    ytPlayer.playVideo();
-    if (ytPlayer.isMuted()) ytPlayer.unMute();
+function addLocalFiles(event) {
+    var files = event.target.files;
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var url = URL.createObjectURL(file);
+        playlist.push({ type: 'local', src: url, name: file.name });
+    }
+    alert(files.length + " file berhasil ditambahkan ke playlist!");
+    loadTrack(currentTrackIndex, false); 
 }
+// ==== END PLAYER LOGIC ====
 
 function updateClock() {
     var now = new Date();
@@ -1818,7 +1953,7 @@ function shareSearchPasienWA() {
             var v = r[j] || '-';
             msg += h + ': ' + v + ' | ';
         }
-        msg = msg.slice(0, -3) + '\n'; // remove last ' | '
+        msg = msg.slice(0, -3) + '\n'; 
     });
     msg += '\n' + DIVIDER + '\nTotal: ' + lastSearchPasienData.rows.length + ' pasien';
     var url = 'https://wa.me/?text=' + encodeURIComponent(msg);
